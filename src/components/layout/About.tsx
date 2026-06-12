@@ -1,7 +1,7 @@
-import React from 'react';
-import { resumeData } from '../../data/resume';
-import { Tag } from '../common/Tag';
-import { Briefcase } from 'lucide-react';
+import React from "react";
+import { resumeData } from "../../data/resume";
+import { Tag } from "../common/Tag";
+import { Briefcase } from "lucide-react";
 
 export const About: React.FC = () => {
   return (
@@ -11,13 +11,18 @@ export const About: React.FC = () => {
           <Briefcase className="text-accent" size={24} /> Experience
         </h2>
         <p className="text-zinc-400 text-lg">
-          I've worked on complex backend systems, focusing on architecture design, asynchronous processing, and performance optimization in production environments.
+          I build and scale reliable SaaS platforms, focusing on real-time
+          systems, event-driven systems, secure API integrations, and scalable
+          backend solutions that deliver business impact.
         </p>
       </div>
 
       <div className="space-y-0">
         {resumeData.experience.map((exp, index) => (
-          <div key={index} className="grid grid-cols-1 md:grid-cols-[160px_auto_1fr] gap-x-8 group">
+          <div
+            key={index}
+            className="grid grid-cols-1 md:grid-cols-[160px_auto_1fr] gap-x-8 group"
+          >
             {/* Date Column */}
             <div className="hidden md:block text-right pt-1">
               <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest group-hover:text-accent transition-colors">
@@ -47,29 +52,28 @@ export const About: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-zinc-400 text-sm">
-                  <span className="font-semibold text-zinc-300">{exp.company}</span>
+                  <span className="font-semibold text-zinc-300">
+                    {exp.company}
+                  </span>
                   <span>•</span>
                   <span>{exp.location}</span>
                 </div>
               </div>
 
               <div className="space-y-4 text-zinc-400 leading-relaxed max-w-2xl">
-                {exp.description.map((desc, i) => (
-                  <p key={i}>{desc}</p>
-                ))}
                 <ul className="space-y-3">
                   {exp.achievements.map((achievement, i) => (
                     <li key={i} className="flex gap-3 text-sm">
-                      <span 
-                        className="mt-2 w-1.5 h-1.5 rounded-full bg-zinc-700 shrink-0 group-hover:bg-accent/50 transition-colors" 
-                      />
-                      <span 
-                        dangerouslySetInnerHTML={{ 
-                          __html: achievement.replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-200">$1</strong>') 
-                        }} 
+                      <span className="mt-2 w-1.5 h-1.5 rounded-full bg-zinc-700 shrink-0 group-hover:bg-accent/50 transition-colors" />
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: achievement.replace(
+                            /\*\*(.*?)\*\*/g,
+                            '<strong class="text-zinc-200">$1</strong>',
+                          ),
+                        }}
                       />
                     </li>
-
                   ))}
                 </ul>
               </div>
@@ -88,7 +92,9 @@ export const About: React.FC = () => {
           Education
         </h3>
         <div className="border-l-2 border-zinc-800 ml-1.5 pl-8 space-y-2">
-          <h4 className="text-lg font-bold text-white">{resumeData.education.degree}</h4>
+          <h4 className="text-lg font-bold text-white">
+            {resumeData.education.degree}
+          </h4>
           <p className="text-zinc-400 font-medium">
             {resumeData.education.school} • {resumeData.education.location}
           </p>
@@ -97,4 +103,3 @@ export const About: React.FC = () => {
     </div>
   );
 };
-

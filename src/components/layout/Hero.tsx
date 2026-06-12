@@ -8,12 +8,26 @@ export const Hero: React.FC = () => {
     <div className="flex flex-col md:flex-row items-center justify-between gap-12 py-20 md:py-32 animate-fade-in">
       <div className="flex-1 space-y-8 text-center md:text-left">
         <div className="space-y-4">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white">
+          <div className="text-accent font-mono text-sm tracking-wider uppercase font-semibold">
             {resumeData.name}
+          </div>
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            Product-Focused Backend Engineer specializing in SaaS Development, Real-Time & Event-Driven Systems.
           </h1>
-          <h2 className="text-xl md:text-2xl font-medium text-zinc-400 font-mono tracking-tight">
-            {resumeData.title}
-          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl text-zinc-400 pt-2">
+          {[
+            "SaaS Platform Development",
+            "Real-time Systems",
+            "API & Webhook",
+            "Reliability engineering",
+          ].map((item) => (
+            <div key={item} className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+              <span className="text-sm font-medium">{item}</span>
+            </div>
+          ))}
         </div>
 
         <p className="text-lg text-zinc-400 max-w-xl leading-relaxed">
@@ -21,7 +35,7 @@ export const Hero: React.FC = () => {
         </p>
 
         <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start">
-          {resumeData.skills.backend.slice(0, 3).map((skill) => (
+          {resumeData.skills.backend.slice(0, 4).map((skill) => (
             <span
               key={skill}
               className="px-3 py-1 text-xs font-mono bg-zinc-900 border border-zinc-800 rounded-full text-zinc-400"
@@ -55,7 +69,7 @@ export const Hero: React.FC = () => {
               <Linkedin size={20} />
             </a>
             <a
-              href="https://docs.google.com/document/d/1c7zm6n-JWt1MxGUjMRtRX9eZW_nvF1YuOQoQF0Tu8wI"
+              href="https://docs.google.com/document/d/1ntE36TFH7bNb9cD55czwiqYrgiu4jTjfyip4PqRO4qA"
               target="_blank"
               rel="noopener noreferrer"
               className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1 text-sm font-medium"

@@ -2,7 +2,7 @@ import React from 'react';
 import { Project } from '../../data/projects';
 import { Tag } from '../common/Tag';
 import { Button } from '../common/Button';
-import { ExternalLink, Github, Layers, Cpu, Shield, Zap } from 'lucide-react';
+import { ExternalLink, Github, Layers, Cpu, Shield, Zap, CheckCircle2 } from 'lucide-react';
 
 interface FeaturedProjectProps {
   project: Project;
@@ -17,7 +17,7 @@ export const FeaturedProject: React.FC<FeaturedProjectProps> = ({ project }) => 
         <h2 className="text-3xl font-bold tracking-tight text-white">Featured Project</h2>
 
         <p className="text-zinc-400 text-lg italic">
-          Deep dive into the architecture and scaling of Smicos.
+          Deep dive into the architecture and scaling of {project.title}.
         </p>
       </div>
 
@@ -61,33 +61,41 @@ export const FeaturedProject: React.FC<FeaturedProjectProps> = ({ project }) => 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-zinc-300 font-bold text-sm">
-                <Cpu size={16} className="text-accent/70" /> Context
+                <Cpu size={16} className="text-accent/70" /> Problem
               </div>
-              <p className="text-zinc-500 text-sm leading-relaxed">
+              <p className="text-zinc-400 text-sm leading-relaxed">
                 {project.featuredDetails.problem}
               </p>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-zinc-300 font-bold text-sm">
-                <Layers size={16} className="text-accent/70" /> System Design
+                <Layers size={16} className="text-accent/70" /> Architecture
               </div>
-              <p className="text-zinc-500 text-sm leading-relaxed">
+              <p className="text-zinc-400 text-sm leading-relaxed">
                 {project.featuredDetails.architecture}
               </p>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-zinc-300 font-bold text-sm">
-                <Shield size={16} className="text-accent/70" /> Engineering Depth
+                <Shield size={16} className="text-accent/70" /> Challenges
               </div>
-              <p className="text-zinc-500 text-sm leading-relaxed">
+              <p className="text-zinc-400 text-sm leading-relaxed">
                 {project.featuredDetails.challenges}
               </p>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-zinc-300 font-bold text-sm">
-                <Zap size={16} className="text-accent/70" /> Ownership & Leadership
+                <CheckCircle2 size={16} className="text-accent/70" /> Solutions
               </div>
-              <p className="text-zinc-500 text-sm leading-relaxed">
+              <p className="text-zinc-400 text-sm leading-relaxed">
+                {project.featuredDetails.solutions}
+              </p>
+            </div>
+            <div className="space-y-3 md:col-span-2">
+              <div className="flex items-center gap-2 text-zinc-300 font-bold text-sm">
+                <Zap size={16} className="text-accent/70" /> Impact
+              </div>
+              <p className="text-zinc-400 text-sm leading-relaxed">
                 {project.featuredDetails.impact}
               </p>
             </div>

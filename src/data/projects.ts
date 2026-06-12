@@ -19,68 +19,86 @@ export const projects: Project[] = [
   {
     id: "smicos",
     title: "Smicos",
-    description: "A real-time messaging SaaS platform integrating 8+ external platforms, supporting 10K+ concurrent connections and 50K+ daily events.",
-    tech: ["Laravel", "Vue.js", "MySQL", "Redis", "AWS", "WebSockets", "Docker"],
+    description:
+      "AI customer engagement SaaS platform centralizing leads and support tickets from 8+ messaging channels into a single real-time workspace.",
+    tech: [
+      "Laravel",
+      "Vue.js",
+      "MySQL",
+      "Redis",
+      "AWS",
+      "WebSockets",
+      "Docker",
+    ],
     featured: true,
     featuredDetails: {
-      problem: "Enterprise clients needed a unified, real-time interface to manage customer interactions across fragmented messaging platforms (Messenger, Instagram, Viber, etc.).",
-      architecture: "Designed a real-time, event-driven architecture using WebSockets and asynchronous pipelines. Owned backend architecture, AWS infrastructure, and production support.",
-      challenges: "Eliminating race conditions in multi-user booking scenarios and ensuring system resilience during third-party API failures and traffic spikes.",
-      solutions: "Implemented concurrency-safe workflows using transactional locking and queue-based distribution. Developed Redis-backed idempotent processing pipelines with exponential backoff.",
-      impact: "Reduced database query latency by ~40% through schema optimization. Led production incident response and improved system reliability through enhanced logging and monitoring.",
+      problem:
+        "Businesses lost up to 20% of sales leads and delayed support responses due to fragmented messaging channels.",
+      architecture:
+        "Unified routing engine built with WebSockets and Redis-backed queues.",
+      challenges:
+        "Handling out-of-order webhook delivery and bursty API retries under high-concurrency loads.",
+      solutions:
+        "Atomic locks with idempotency keys for duplicate retries, and timestamp sequence tracking for out-of-order webhooks.",
+      impact:
+        "Sustained 10K+ concurrent sessions, reduced response times to <500ms, and eliminated lead capture data loss.",
     },
     demo: "https://smicos.com",
   },
   {
-    id: "distributed-systems",
-    title: "Distributed Systems Project",
-    description: "Multi-service backend architecture for social media scheduling, exploring asynchronous communication and system performance under load.",
-    tech: ["Python", "FastAPI", "Redis", "PostgreSQL", "Docker", "k6"],
+    id: "distributed-publishing-platform",
+    title: "Distributed Publishing Platform",
+    description:
+      "A containerized, asynchronous multi-service backend using FastAPI, Python, and Docker, implementing fault-tolerant event delivery with fanout scaling, failure recovery, and ensuring transactional correctness under high concurrency workloads.",
+    tech: ["Python", "FastAPI", "Docker", "Redis", "PostgreSQL"],
     github: "https://github.com/zerexei/posexei",
   },
 
   {
     id: "observability",
     title: "Observability Stack",
-    description: "Production-ready demonstration featuring the LGTP stack (Loki, Grafana, Tempo, Prometheus) integrated with OpenTelemetry.",
-    tech: ["FastAPI", "OpenTelemetry", "Grafana", "Prometheus", "Loki", "Tempo"],
+    description:
+      "A centralized monitoring setup utilizing OpenTelemetry, Prometheus, and Grafana to track backend application performance, trace latency, and monitor error rates in real-time.",
+    tech: [
+      "FastAPI",
+      "OpenTelemetry",
+      "Grafana",
+      "Prometheus",
+      "Loki",
+      "Tempo",
+    ],
     github: "https://github.com/zerexei/observability",
   },
   {
     id: "botman-drivers",
     title: "BotMan Driver",
-    description: "Custom drivers for the BotMan framework, providing unified integration for Web, Messenger, Viber, and WhatsApp.",
+    description:
+      "API integration drivers extending the BotMan framework, enabling seamless messaging connections with Web, Messenger, Viber, and WhatsApp.",
     tech: ["PHP", "BotMan", "APIs", "Webhooks"],
     github: "https://github.com/zerexei/botman-drivers",
   },
   {
     id: "centralize-logging",
     title: "Centralized Logging System",
-    description: "Lightweight service for log management across multiple environments, featuring centralized querying and storage.",
+    description:
+      "A centralized logging service built with FastAPI and PostgreSQL to aggregate, query, and store application logs from multiple environments.",
     tech: ["FastAPI", "Python", "Supabase", "PostgreSQL"],
     github: "https://github.com/zerexei/centralize-logging-system",
   },
   {
     id: "php-core",
     title: "PHP-Core Framework",
-    description: "A minimal MVC framework featuring a custom Service Container, routing, request handling, and middleware.",
+    description:
+      "A lightweight, custom PHP MVC framework developed to implement core dependency injection, request-response routing, and middleware pipelines.",
     tech: ["PHP", "MVC", "OOP", "System Design"],
     github: "https://github.com/zerexei/PHP-Core",
   },
   {
     id: "p2p-file-transfer",
     title: "P2P File Transfer",
-    description: "Browser-based peer-to-peer file transfer tool using WebRTC for direct, serverless data exchange.",
+    description:
+      "A peer-to-peer web tool built with WebRTC and React to enable direct, secure, and serverless file transfers between browsers.",
     tech: ["TypeScript", "React.js", "Peer.js", "WebRTC"],
     github: "https://github.com/zerexei/p2p-file-transfer",
   },
-//   {
-//     id: "grapejs-web-builder",
-//     title: "Web Builder",
-//     description: "A drag-and-drop web application builder with custom components and real-time preview.",
-//     tech: ["GrapesJS", "JavaScript", "Vue.js", "CSS"],
-//     github: "https://github.com/zerexei/grapejs-components",
-//   },
-
 ];
-
