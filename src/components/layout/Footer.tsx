@@ -12,7 +12,7 @@ export const Footer: React.FC = () => {
               AD<span className="text-accent">.</span>
             </h3>
             <p className="text-zinc-500 text-sm max-w-xs">
-              Backend Software Engineer focusing on distributed systems, performance, and reliability.
+              Product-focused Backend Engineer specializing in SaaS platform development, real-time systems, API & Webhook, and Reliability engineering.
             </p>
           </div>
           <div className="flex flex-col md:items-end gap-6">

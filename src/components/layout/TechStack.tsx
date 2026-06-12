@@ -1,14 +1,14 @@
 import React from 'react';
 import { resumeData } from '../../data/resume';
-import { Code2, Database, Layout, Server, ShieldCheck } from 'lucide-react';
+import { Database, Layout, Server, Cloud, Target } from 'lucide-react';
 
 export const TechStack: React.FC = () => {
   const categories = [
     { name: 'Backend', icon: Server, skills: resumeData.skills.backend },
-    { name: 'Infrastructure', icon: ShieldCheck, skills: resumeData.skills.infrastructure },
-    { name: 'Databases', icon: Database, skills: resumeData.skills.databases },
     { name: 'Frontend', icon: Layout, skills: resumeData.skills.frontend },
-    { name: 'Practices', icon: Code2, skills: resumeData.skills.practices },
+    { name: 'Databases', icon: Database, skills: resumeData.skills.databases },
+    { name: 'Cloud & DevOps', icon: Cloud, skills: resumeData.skills.cloudDevops },
+    { name: 'Engineering Focus', icon: Target, skills: resumeData.skills.engineeringFocus },
   ];
 
   return (
@@ -16,7 +16,7 @@ export const TechStack: React.FC = () => {
       <div className="space-y-4 max-w-2xl">
         <h2 className="text-3xl font-bold tracking-tight text-white">Technical Arsenal</h2>
         <p className="text-zinc-400 text-lg">
-          A collection of technologies and tools I use to build scalable, reliable software.
+          A collection of technologies and tools I use to build reliable SaaS applications and backend APIs.
         </p>
       </div>
 
