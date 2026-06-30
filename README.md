@@ -1,77 +1,100 @@
-# Portfolio & SWE Flashcards
+# Angelo Arcillas — Product-Focused Backend Engineer Portfolio
 
-A professional portfolio website built to showcase personal projects, technical skills, and experience. This application includes an integrated Software Engineering (SWE) Flashcard module designed for active learning and interview preparation.
+The source code for [zerexei.github.io](https://zerexei.github.io), a production-grade personal portfolio and technical blog built to showcase distributed systems architecture, backend reliability case studies, and engineering services.
 
-## Features
+---
 
-- **Responsive Portfolio**: A modern, mobile-friendly interface showcasing professional experience and projects.
-- **Secure Authentication**: Integrated Google Authentication via Firebase for personalized access.
-- **Dynamic Content**: Data-driven components powered by Cloud Firestore.
-- **SWE Flashcard Module**: An interactive module for mastering software engineering concepts, featuring categorized cards and progress tracking.
+## 🛠️ Tech Stack & Architecture
 
-## Tech Stack
+- **Core Framework:** React 18, TypeScript, Vite
+- **Styling & Design System:** Tailwind CSS v4, custom utility layers, Framer Motion (for smooth micro-animations and route transitions).
+- **Theme Strategy:** System-responsive dark mode by default (`.dark`) with dynamic brand accent branding.
+- **Key Renderers:** `react-markdown` for technical writing, `mermaid` for interactive architecture diagrams.
+- **Hosting & Deployment:** Automated production builds deployed directly to GitHub Pages.
 
-- **Frontend**: React 18, TypeScript, Vite
-- **Backend/Services**: Firebase (Authentication, Firestore)
-- **State Management**: React Hooks / Context API
-- **Styling**: Modern CSS with a focus on performance and responsiveness
+---
 
-## Getting Started
+## 🚀 Key Modules
+
+### 1. High-Reliability Case Studies
+Interactive breakdown of actual backend engineering projects (e.g., **Smicos**, **AD. Publish**, **AD. Sentry**, **AD. Routine**). Each case study outlines:
+- **Problem Statement:** The core distributed system failure, race condition, or bottleneck.
+- **Architecture:** The structural data flow, messaging, and storage layer choices.
+- **Challenges:** Hard engineering limits (e.g., worker crashes, out-of-order webhook delivery, database lock contention).
+- **Solutions:** Applied patterns including Redis stream consumer groups, token-bucket rate limiters, composite database constraints, and custom MVC framework pipelines.
+- **Business Impact:** Concrete performance metrics, latency reductions, and data safety guarantees.
+
+### 2. Project Cost Estimator
+A transparent project scope calculator that allows prospective clients and recruiters to estimate development costs in real-time. Built with interactive state bindings to calculate:
+- **Core Service Scopes:** SaaS Development, API & Webhook Integration, Data Reliability Audits.
+- **Project Specifications:** Concurrency locking, CI/CD automation pipelines, and unit/integration testing coverage.
+
+### 3. Technical Articles
+A lightweight, markdown-based blogging module that parses and displays system design principles, backend optimization strategies, and DevOps methodologies.
+
+---
+
+## 📂 Project Structure
+
+```text
+├── public/                # Static assets, manifests, and favicons
+└── src/
+    ├── components/
+    │   ├── common/        # Shared buttons, section wrappers, tag/badge components
+    │   ├── layout/        # Navbar, footer, hero, tech stack, services
+    │   └── projects/      # Featured case studies and project grids
+    ├── css/               # Core design system configuration and Tailwind layers
+    ├── data/              # Static schema-enforced project, article, and resume data
+    ├── pages/             # Route-level page views (Home, Services, Articles, Case Studies)
+    ├── App.tsx            # Main application router and scroll utilities
+    ├── main.tsx           # React mounting and entrypoint
+    └── routes.ts          # Centralized route registry
+```
+
+---
+
+## 💻 Local Development
 
 ### Prerequisites
 
 - Node.js (v18 or higher)
 - npm or yarn
-- A Firebase project
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/zerexei/zerexei.github.io.git
    cd zerexei.github.io
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. Create a `.env` file in the root directory and add your Firebase configuration (see below).
-
-4. Start the development server:
+3. **Start the local development server:**
    ```bash
    npm run dev
    ```
 
-### Environment Variables
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
-Create a `.env` file in the root directory with the following variables:
+---
 
-```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_GOOGLE_GEN_AI_KEY=your_google_gemini_api_key
+## 📦 Deployment
+
+The application is deployed using the `gh-pages` package:
+
+```bash
+npm run deploy
 ```
 
-## SWE Flashcard Module
+---
 
-The Software Engineering Flashcard module is a core feature of this platform. It provides a structured way to review critical topics including data structures, algorithms, system design, and language-specific nuances. It is built to be lightweight, fast, and extensible, allowing for a focused study experience.
-
-## Contributing
-
-Contributions are welcome, particularly for the **SWE Flashcard module**. If you have suggestions for new flashcard categories, high-quality question/answer pairs, or improvements to the flashcard engine, your input is greatly appreciated.
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/NewFlashcards`).
-3. Commit your changes (`git commit -m 'Add new system design flashcards'`).
-4. Push to the branch (`git push origin feature/NewFlashcards`).
-5. Open a Pull Request.
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License.
