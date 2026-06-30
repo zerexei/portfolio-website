@@ -30,7 +30,7 @@ export const SystemDesignDetail: React.FC = () => {
 
   return (
     <Section>
-      <div className="max-w-3xl mx-auto space-y-12">
+      <div className="max-w-3xl mx-auto space-y-12 pt-20">
         <Link
           to={routes.systemDesign.path}
           className="text-zinc-500 hover:text-accent transition-colors flex items-center gap-2 text-sm font-medium mb-8 group"

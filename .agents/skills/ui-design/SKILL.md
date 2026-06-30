@@ -24,6 +24,10 @@ Follow this order when generating UI:
 
 Do not recreate existing components using Tailwind utilities.
 
+## Tailwind CSS Guidelines
+
+Design System Overrides: If Tailwind CSS utilities must override a strict design system class, append the ! modifier (or the important: prefix) to ensure the utility takes precedence.
+
 ## Existing Components
 
 Prefer these classes whenever applicable.

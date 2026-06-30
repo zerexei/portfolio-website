@@ -5,7 +5,7 @@ import { Github, Linkedin, FileText } from "lucide-react";
 
 export const Hero: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between gap-12 animate-fade-in">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-12 animate-fade-in pt-20">
       <div className="flex-1 space-y-8 text-center md:text-left">
         <div className="space-y-4">
           <div className="text-accent font-mono text-sm tracking-wider uppercase font-semibold">

@@ -10,7 +10,7 @@ export const FeaturedProject: React.FC<FeaturedProjectProps> = ({ project }) => 
   if (!project.featuredDetails) return null;
 
   return (
-    <div className="card bg-zinc-950/20 border border-zinc-900 p-6 md:p-10 space-y-8 relative overflow-hidden group hover:border-accent/15 transition-all duration-300">
+    <div className="card !bg-zinc-950/20 !border !border-zinc-900 p-6 md:p-10 space-y-8 relative overflow-hidden group hover:!border-accent/15 transition-all duration-300">
       {/* Subtle background glow */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[120px] rounded-full -mr-32 -mt-32 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
 

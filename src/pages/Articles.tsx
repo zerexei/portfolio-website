@@ -8,7 +8,7 @@ import routes from "@/routes";
 export const Articles: React.FC = () => {
   return (
     <Section>
-      <div className="space-y-12">
+      <div className="space-y-12 pt-20">
         <div className="space-y-4 max-w-2xl">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
             Articles
@@ -24,8 +24,11 @@ export const Articles: React.FC = () => {
             <Link
               key={article.id}
               to={routes.articleDetail.getPath(article.slug)}
-              className="group flex flex-col md:!flex-row md:items-center justify-between w-full p-8 card hover:bg-zinc-900 transition-all border-zinc-800 text-left"
+              className="group relative overflow-hidden flex flex-col md:!flex-row md:items-center justify-between w-full p-8 card hover:!bg-zinc-900 hover:!border-accent/15 transition-all duration-300 !border-zinc-800 text-left"
             >
+              {/* Subtle background glow */}
+              <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[100px] rounded-full -mr-24 -mt-24 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
+
               <div className="space-y-3 flex-1 text-left">
                 <div className="flex items-center gap-4 text-xs font-mono text-zinc-500 uppercase tracking-widest group-hover:text-accent/70 transition-colors">
                   <span>{article.date}</span>
