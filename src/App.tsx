@@ -1,11 +1,7 @@
 import { useEffect } from "react";
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, useLocation, Navigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { Home } from "@/pages/Home";
-import { Articles } from "@/pages/Articles";
-import { ArticleDetail } from "@/pages/ArticleDetail";
-
-import ROUTES from "@/routes";
+import routes from "@/routes";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -17,24 +13,72 @@ const ScrollToTop = () => {
   return null;
 };
 
-function App() {
+const LayoutWrapper = () => {
   return (
     <>
       <ScrollToTop />
-      <Routes>
-        <Route path={ROUTES.home.path} element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path={ROUTES.articles.path} element={<Articles />} />
-          <Route
-            path={ROUTES.articleDetail.path}
-            element={<ArticleDetail />}
-          />
-
-          <Route path="*" element={<Navigate to={ROUTES.home.path} replace />} />
-        </Route>
-      </Routes>
+      <Layout />
     </>
   );
+};
+
+const router = createBrowserRouter([
+  {
+    path: routes.home.path,
+    element: <LayoutWrapper />,
+    children: [
+      {
+        index: true,
+        lazy: async () => {
+          const { Home } = await import("@/pages/Home");
+          return { Component: Home };
+        },
+      },
+      {
+        path: routes.services.path,
+        lazy: async () => {
+          const { ServicesPage } = await import("@/pages/ServicesPage");
+          return { Component: ServicesPage };
+        },
+      },
+      {
+        path: routes.systemDesign.path,
+        lazy: async () => {
+          const { SystemDesign } = await import("@/pages/SystemDesign");
+          return { Component: SystemDesign };
+        },
+      },
+      {
+        path: routes.systemDesignDetail.path,
+        lazy: async () => {
+          const { SystemDesignDetail } = await import("@/pages/SystemDesignDetail");
+          return { Component: SystemDesignDetail };
+        },
+      },
+      {
+        path: routes.articles.path,
+        lazy: async () => {
+          const { Articles } = await import("@/pages/Articles");
+          return { Component: Articles };
+        },
+      },
+      {
+        path: routes.articleDetail.path,
+        lazy: async () => {
+          const { ArticleDetail } = await import("@/pages/ArticleDetail");
+          return { Component: ArticleDetail };
+        },
+      },
+      {
+        path: "*",
+        element: <Navigate to={routes.home.path} replace />,
+      },
+    ],
+  },
+]);
+
+export function App() {
+  return <RouterProvider router={router} />;
 }
 
 export default App;

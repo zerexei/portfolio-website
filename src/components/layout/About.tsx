@@ -5,7 +5,7 @@ import { Briefcase } from "lucide-react";
 
 export const About: React.FC = () => {
   return (
-    <div className="space-y-16 py-20 animate-slide-up">
+    <div className="space-y-16 animate-slide-up">
       <div className="space-y-4 max-w-2xl">
         <h2 className="text-3xl font-bold tracking-tight text-white flex items-center gap-2">
           <Briefcase className="text-accent" size={24} /> Experience

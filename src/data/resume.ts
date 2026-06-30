@@ -17,6 +17,7 @@ export interface ResumeData {
   github: string;
   linkedin: string;
   website: string;
+  upwork?: string;
   skills: {
     backend: string[];
     frontend: string[];
@@ -43,6 +44,7 @@ export const resumeData: ResumeData = {
   github: "https://github.com/zerexei",
   linkedin: "https://linkedin.com/in/angeloarcillas",
   website: "https://angeloarcillas.pages.dev",
+  upwork: "https://www.upwork.com/freelancers/~01ed41bc95427c452a?mp_source=share",
   skills: {
     backend: [
       "PHP (Laravel)",
@@ -83,14 +85,24 @@ export const resumeData: ResumeData = {
   },
   experience: [
     {
-      company: "Distributed Publishing Platform (Independent Project)",
+      company: "AD. Publish (Independent Project)",
       role: "Software Engineer",
       location: "Remote",
       period: "Jan 2026 - Present",
       achievements: [
-        "Developing a containerized, asynchronous multi-service backend using FastAPI, Python, and Docker, implementing fault-tolerant event delivery with fanout scaling, failure recovery, and ensuring  transactional correctness under high concurrency workloads. ",
+        "Developing a containerized, asynchronous multi-service backend with **fault-tolerant event delivery**, fan-out event distribution, failure recovery, and **transactional correctness under high concurrency**.",
       ],
       technologies: ["Python", "FastAPI", "Docker", "Redis", "PostgreSQL"],
+    },
+    {
+      company: "AD. Sentry (Independent Project)",
+      role: "Software Engineer",
+      location: "Remote",
+      period: "Jan 2026 - Present",
+      achievements: [
+        "Designing a telemetry and reliability platform for **application log ingestion**, issue grouping, and operational insights, with **scalable log processing** and high-volume event ingestion.",
+      ],
+      technologies: ["Python", "FastAPI", "Docker", "Redis", "PostgreSQL", "React.js"],
     },
     {
       company: "PurpleBug Inc.",
@@ -98,13 +110,12 @@ export const resumeData: ResumeData = {
       location: "Makati City, Philippines - Remote",
       period: "Jun 2022 - Dec 2025",
       achievements: [
-        "**Led the design and development** of an AI customer engagement SaaS  platform, building a real-time messaging system with Laravel, Redis, WebSockets supporting **10K+ concurrent connections** and **50K+ daily events** across **8+ CRM and social channel integrations**.",
+        "**Led the design and development** of an AI customer engagement SaaS platform, building a real-time messaging system, WebSockets supporting **10K+ concurrent connections** and **50K+ daily events** across **8+ CRM and social channel integrations**.",
         "Built a **fault-tolerant async processing system** with retries and idempotency to ensure **reliable message delivery** and **data consistency** across third-party integrations.",
         "Eliminated **race conditions** and duplicate bookings in **high-concurrency booking workflows** using transactional locking and concurrency-safe validation to ensure **accurate scheduling data**.",
-        "Reduced query latency by **~40%** through strategic **database schema optimization** and **indexing**, improving responsiveness for **high-traffic real-time workloads**.",
-        "Designed a **queue-based live-agent routing system** using asynchronous queues, enabling **real-time customer support workflows** with seamless **agent transfers** and **multi-agent communication**.",
-        "Architected a **multi-tenant SaaS platform** using usage and feature-based billing models and **Role-Based Access Control (RBAC)** to support **subscription-based customer access and permissions**.",
-        "Managed **AWS infrastructure** (EC2, RDS, S3, IAM) and **automated CI/CD pipelines**, ensuring **high availability** and **zero-downtime** production deployments.",
+        "Designed a **queue-based live-agent routing system** using asynchronous queues, enabling **real-time customer support workflows** with seamless agent transfers and multi-agent communication.",
+        "Architected a **multi-tenant SaaS platform** using usage and feature-based billing models and **Role-Based Access Control (RBAC)** to support subscription-based customer access and permissions.",
+        "Managed **AWS infrastructure** (EC2, RDS, S3, IAM) and **automated CI/CD pipelines**, ensuring high availability and zero-downtime production deployments.",
       ],
       technologies: [
         "Laravel",

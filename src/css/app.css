@@ -118,7 +118,7 @@
 
 @layer components {
   .section-container {
-    @apply max-w-5xl mx-auto px-6 py-20 md:py-32;
+    @apply max-w-5xl mx-auto px-6 py-12 md:py-20;
   }
 
   .tag {
