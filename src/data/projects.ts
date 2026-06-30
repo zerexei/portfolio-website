@@ -33,27 +33,80 @@ export const projects: Project[] = [
     featured: true,
     featuredDetails: {
       problem:
-        "Businesses lost up to 20% of sales leads and delayed support responses due to fragmented messaging channels.",
+        "Fragmented customer communications across channels resulted in missed sales opportunities, duplicate agent assignments, and race conditions during simultaneous booking requests.",
       architecture:
-        "Unified routing engine built with WebSockets and Redis-backed queues.",
+        "Unified event gateway built with Laravel and Redis queues, using WebSockets for real-time bi-directional agent-to-customer communication.",
       challenges:
-        "Handling out-of-order webhook delivery and bursty API retries under high-concurrency loads.",
+        "Handling out-of-order webhook delivery and double bookings from concurrent clicks.",
       solutions:
-        "Atomic locks with idempotency keys for duplicate retries, and timestamp sequence tracking for out-of-order webhooks.",
+        "Implemented organization-scoped Redis locks to serialize mutative events, alongside atomic database transaction constraints.",
       impact:
-        "Sustained 10K+ concurrent sessions, reduced response times to <500ms, and eliminated lead capture data loss.",
+        "Supported 10K+ concurrent WebSocket connections, successfully processed 50K+ daily events, and reduced database query latency by ~40% through indexing optimization.",
     },
     demo: "https://smicos.com",
   },
   {
-    id: "distributed-publishing-platform",
-    title: "Distributed Publishing Platform",
+    id: "ad-publish",
+    title: "AD. Publish",
     description:
-      "A containerized, asynchronous multi-service backend using FastAPI, Python, and Docker, implementing fault-tolerant event delivery with fanout scaling, failure recovery, and ensuring transactional correctness under high concurrency workloads.",
+      "An event-driven task worker engine designed to execute high-reliability publishing workflows with at-least-once delivery guarantees.",
     tech: ["Python", "FastAPI", "Docker", "Redis", "PostgreSQL"],
     github: "https://github.com/zerexei/posexei",
+    demo: "https://ad-technology-inc.github.io/publish",
+    featuredDetails: {
+      problem:
+        "Network instability and transient API outages from downstream publishing channels resulted in dropped payloads and untraceable failures.",
+      architecture:
+        "FastAPI gateway, Redis Streams consumer groups, stateless Python worker pools, and PostgreSQL schema state tracking.",
+      challenges:
+        "Worker node crashes (lease expirations) and duplicate deliveries.",
+      solutions:
+        "Implemented worker leases, request deduplication via Redis SET NX (24h TTL), token bucket rate-limiters, and Dead Letter Queues (DLQ).",
+      impact:
+        "Achieved structured failure isolation; zero data loss during simulated third-party API capacity drops and worker crashes.",
+    },
   },
-
+  {
+    id: "ad-sentry",
+    title: "AD. Sentry",
+    description:
+      "An independent log ingestion and threat telemetry auditing platform that aggregates application events and compiles automated SLA compliance reports.",
+    tech: ["React.js", "Python", "FastAPI", "PostgreSQL", "Redis", "Docker"],
+    github: "https://github.com/AD-Technology-Inc/sentry",
+    demo: "https://ad-technology-inc.github.io/Sentry",
+    featuredDetails: {
+      problem:
+        "Log ingestion surges during upstream application errors caused database write saturation, high alert noise, and CPU exhaustion.",
+      architecture:
+        "Non-blocking FastAPI Ingress, Redis Token-Bucket rate-limiter, SQLAlchemy 2.0 AsyncPG connections, and out-of-band analytical PDF compilers.",
+      challenges:
+        "Processing millions of logs without storage saturation or duplicate alerts.",
+      solutions:
+        "Implemented regex-based log pattern normalization converting dynamic logs into deterministic MD5 signatures, grouping duplicate alerts into single issues.",
+      impact:
+        "Reduced downstream alert volume by aggregating logs, enforced gateway-level backpressure (HTTP 429), and isolated report generation from the hot ingest path.",
+    },
+  },
+  {
+    id: "ad-routine",
+    title: "AD. Routine",
+    description:
+      "A scheduling engine and routine coordinator prioritizing state-machine correctness and deterministic resource allocation.",
+    tech: ["Laravel", "Redis", "PostgreSQL"],
+    github: "https://github.com/AD-Technology-Inc/routine",
+    featuredDetails: {
+      problem:
+        "Overlapping scheduler runs caused duplicate cron-style events and thread conflicts, corrupting calendar states.",
+      architecture:
+        "Laravel scheduling layer, Redis-backed synchronization locks, PostgreSQL relational data store.",
+      challenges:
+        "Handling schedule generation requests that exceed daily time budgets.",
+      solutions:
+        "Configured composite unique database constraints (routine_id, date) to catch duplicate writes at the storage layer, combined with a greedy knapsack packing algorithm.",
+      impact:
+        "Eliminated calendar state corruption with absolute database-enforced scheduling constraints.",
+    },
+  },
   {
     id: "observability",
     title: "Observability Stack",
@@ -70,20 +123,12 @@ export const projects: Project[] = [
     github: "https://github.com/zerexei/observability",
   },
   {
-    id: "botman-drivers",
-    title: "BotMan Driver",
+    id: "p2p-transfer",
+    title: "P2P File Transfer",
     description:
-      "API integration drivers extending the BotMan framework, enabling seamless messaging connections with Web, Messenger, Viber, and WhatsApp.",
-    tech: ["PHP", "BotMan", "APIs", "Webhooks"],
-    github: "https://github.com/zerexei/botman-drivers",
-  },
-  {
-    id: "centralize-logging",
-    title: "Centralized Logging System",
-    description:
-      "A centralized logging service built with FastAPI and PostgreSQL to aggregate, query, and store application logs from multiple environments.",
-    tech: ["FastAPI", "Python", "Supabase", "PostgreSQL"],
-    github: "https://github.com/zerexei/centralize-logging-system",
+      "A peer-to-peer web tool built with WebRTC and React to enable direct, secure, and serverless file transfers between browsers.",
+    tech: ["TypeScript", "React.js", "Peer.js", "WebRTC"],
+    github: "https://github.com/zerexei/peer-to-peer-file-sharing-app",
   },
   {
     id: "php-core",
@@ -91,14 +136,14 @@ export const projects: Project[] = [
     description:
       "A lightweight, custom PHP MVC framework developed to implement core dependency injection, request-response routing, and middleware pipelines.",
     tech: ["PHP", "MVC", "OOP", "System Design"],
-    github: "https://github.com/zerexei/PHP-Core",
+    github: "https://github.com/zerexei/php-core",
   },
   {
-    id: "p2p-file-transfer",
-    title: "P2P File Transfer",
+    id: "botman-drivers",
+    title: "BotMan Driver",
     description:
-      "A peer-to-peer web tool built with WebRTC and React to enable direct, secure, and serverless file transfers between browsers.",
-    tech: ["TypeScript", "React.js", "Peer.js", "WebRTC"],
-    github: "https://github.com/zerexei/p2p-file-transfer",
+      "API integration drivers extending the BotMan framework, enabling messaging connections with Web, Messenger, Viber, and WhatsApp.",
+    tech: ["PHP", "BotMan", "APIs", "Webhooks"],
+    github: "https://github.com/zerexei/botman-drivers",
   },
 ];

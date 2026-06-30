@@ -1,48 +1,37 @@
-const ROUTES = {
+export const routes = {
   home: {
     name: "home",
     path: "/",
     title: "Home",
   },
-
-  login: {
-    name: "login",
-    path: "/login",
-    title: "Login",
+  services: {
+    name: "services",
+    path: "/services",
+    title: "Services",
   },
-
-  articles: {
-    name: "articles",
-    path: "/articles",
-    title: "Articles",
-  },
-
-  articleDetail: {
-    name: "articleDetail",
-    path: "/articles/:slug",
-    title: "Article",
-    getPath: (slug: string) => `/articles/${slug}`,
-  },
-
-  flashcards: {
-    name: "flashcards",
-    path: "/flash-cards",
-    title: "Flashcards",
-  },
-
   systemDesign: {
     name: "systemDesign",
     path: "/system-design",
     title: "System Design",
   },
-
-  admin: {
-    flashcards: {
-      name: "admin.flashcards",
-      path: "/admin/flash-cards",
-      title: "Admin Flashcards",
-    },
+  systemDesignDetail: {
+    name: "systemDesign.detail",
+    path: "/system-design/:slug",
+    title: "System Design Detail",
+    getPath: (slug: string) => `/system-design/${slug}` as const,
   },
-};
+  articles: {
+    name: "articles",
+    path: "/articles",
+    title: "Articles",
+  },
+  articleDetail: {
+    name: "articles.detail",
+    path: "/articles/:slug",
+    title: "Article",
+    getPath: (slug: string) => `/articles/${slug}` as const,
+  },
+} as const;
 
-export default ROUTES;
+export type RouteName = keyof typeof routes;
+export default routes;

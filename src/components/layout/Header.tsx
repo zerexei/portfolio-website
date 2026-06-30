@@ -3,24 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { Menu, X, Github, Mail } from "lucide-react";
 import { resumeData } from "../../data/resume";
-import { useAuth } from "../../utils/useAuth";
-import { auth } from "../../utils/database";
-import { signOut } from "firebase/auth";
-import ROUTES from "@/routes";
+import routes from "@/routes";
 
 export const Header: React.FC = () => {
-  const { isAuth } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,11 +19,10 @@ export const Header: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: ROUTES.home.title, path: ROUTES.home.path },
-    { name: ROUTES.articles.title, path: ROUTES.articles.path },
-    { name: ROUTES.systemDesign.title, path: ROUTES.systemDesign.path },
-    { name: ROUTES.flashcards.title, path: ROUTES.flashcards.path },
-    ...(!isAuth ? [{ name: ROUTES.login.title, path: ROUTES.login.path }] : []),
+    { name: routes.home.title, path: routes.home.path },
+    { name: routes.services.title, path: routes.services.path },
+    { name: routes.articles.title, path: routes.articles.path },
+    { name: routes.systemDesign.title, path: routes.systemDesign.path },
   ];
 
   return (
@@ -48,7 +35,7 @@ export const Header: React.FC = () => {
       )}
     >
       <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
-        <Link to={ROUTES.home.path} className="text-lg font-bold tracking-tighter">
+        <Link to={routes.home.path} className="text-lg font-bold tracking-tighter">
           AD<span className="text-accent">.</span>
         </Link>
 
@@ -69,17 +56,21 @@ export const Header: React.FC = () => {
             </Link>
           ))}
 
-          {isAuth && (
-            <button
-              onClick={handleLogout}
-              className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-            >
-              Logout
-            </button>
-          )}
-
           <div className="h-4 w-px bg-zinc-800" />
           <div className="flex items-center gap-4">
+            {resumeData.upwork && (
+              <a
+                href={resumeData.upwork}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-400 hover:text-accent transition-colors"
+                aria-label="Upwork"
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M18.561 3.281a3.43 3.43 0 00-3.428 3.428v3.719h-.001c-.968-1.572-2.133-3.606-2.906-5.419H8.56v5.82a2.38 2.38 0 01-2.38 2.38 2.38 2.38 0 01-2.38-2.38V3.282H0v5.82a6.199 6.199 0 006.18 6.18 6.199 6.199 0 006.18-6.18V8.349c.563 1.25 1.488 2.979 2.32 4.195l-1.63 7.625h3.832l1.01-4.718c.203.111.417.211.64.298a6.166 6.166 0 002.329.458 6.199 6.199 0 006.18-6.18v-3.32a3.43 3.43 0 00-3.428-3.429zm-.001 8.761a2.38 2.38 0 01-2.38-2.38V6.708a2.38 2.38 0 014.76 0v2.954a2.38 2.38 0 01-2.38 2.38z"/>
+                </svg>
+              </a>
+            )}
             <a
               href={resumeData.github}
               target="_blank"
@@ -125,7 +116,20 @@ export const Header: React.FC = () => {
                 {link.name}
               </Link>
             ))}
-            <div className="flex items-center gap-6 pt-4 border-t border-zinc-800">
+             <div className="flex items-center gap-6 pt-4 border-t border-zinc-800">
+              {resumeData.upwork && (
+                <a
+                  href={resumeData.upwork}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-400 hover:text-accent transition-colors"
+                  aria-label="Upwork"
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path d="M18.561 3.281a3.43 3.43 0 00-3.428 3.428v3.719h-.001c-.968-1.572-2.133-3.606-2.906-5.419H8.56v5.82a2.38 2.38 0 01-2.38 2.38 2.38 2.38 0 01-2.38-2.38V3.282H0v5.82a6.199 6.199 0 006.18 6.18 6.199 6.199 0 006.18-6.18V8.349c.563 1.25 1.488 2.979 2.32 4.195l-1.63 7.625h3.832l1.01-4.718c.203.111.417.211.64.298a6.166 6.166 0 002.329.458 6.199 6.199 0 006.18-6.18v-3.32a3.43 3.43 0 00-3.428-3.429zm-.001 8.761a2.38 2.38 0 01-2.38-2.38V6.708a2.38 2.38 0 014.76 0v2.954a2.38 2.38 0 01-2.38 2.38z"/>
+                  </svg>
+                </a>
+              )}
               <a
                 href={resumeData.github}
                 target="_blank"

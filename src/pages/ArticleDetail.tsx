@@ -4,7 +4,7 @@ import { articles } from "../data/articles";
 import { Section } from "../components/common/Section";
 import ReactMarkdown from "react-markdown";
 import { ArrowLeft, Clock, Calendar } from "lucide-react";
-import ROUTES from "@/routes";
+import routes from "@/routes";
 
 export const ArticleDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -17,7 +17,7 @@ export const ArticleDetail: React.FC = () => {
           Article not found
         </h1>
         <Link
-          to={ROUTES.articles.path}
+          to={routes.articles.path}
           className="text-accent hover:text-white transition-colors flex items-center justify-center gap-2"
         >
           <ArrowLeft size={20} /> Back to articles
@@ -27,10 +27,10 @@ export const ArticleDetail: React.FC = () => {
   }
 
   return (
-    <Section className="py-20 md:py-32">
-      <div className="max-w-3xl mx-auto space-y-12">
+    <Section>
+      <div className="max-w-3xl mx-auto space-y-12 pt-20">
         <Link
-          to={ROUTES.articles.path}
+          to={routes.articles.path}
           className="text-zinc-500 hover:text-accent transition-colors flex items-center gap-2 text-sm font-medium mb-8 group"
         >
           <ArrowLeft
