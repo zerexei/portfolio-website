@@ -72,6 +72,7 @@ export const projects: Project[] = [
     description:
       "An independent log ingestion and threat telemetry auditing platform that aggregates application events and compiles automated SLA compliance reports.",
     tech: ["React.js", "Python", "FastAPI", "PostgreSQL", "Redis", "Docker"],
+    github: "https://github.com/AD-Technology-Inc/sentry",
     demo: "https://ad-technology-inc.github.io/Sentry",
     featuredDetails: {
       problem:
@@ -127,7 +128,7 @@ export const projects: Project[] = [
     description:
       "A peer-to-peer web tool built with WebRTC and React to enable direct, secure, and serverless file transfers between browsers.",
     tech: ["TypeScript", "React.js", "Peer.js", "WebRTC"],
-    github: "https://github.com/zerexei/p2p-transfer",
+    github: "https://github.com/zerexei/peer-to-peer-file-sharing-app",
   },
   {
     id: "php-core",

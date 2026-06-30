@@ -26,7 +26,7 @@ export const SystemDesign: React.FC = () => {
               <Link
                 key={design.id}
                 to={routes.systemDesignDetail.getPath(design.slug)}
-                className="group relative overflow-hidden flex flex-col md:!flex-row md:items-center justify-between w-full p-8 card hover:!bg-zinc-900 hover:!border-accent/15 transition-all duration-300 !border-zinc-800 text-left"
+                className="group relative overflow-hidden flex flex-col md:!flex-row md:items-center justify-between w-full p-8 card hover:!border-accent/15 transition-all duration-300 !border-zinc-800 text-left"
               >
                 {/* Subtle background glow */}
                 <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[100px] rounded-full -mr-24 -mt-24 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />

@@ -34,9 +34,12 @@ export const TechStack: React.FC = () => {
   return (
     <div className="space-y-8">
       <div className="space-y-2 max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight text-white">Technical Arsenal</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-white">
+          Technical Arsenal
+        </h2>
         <p className="text-zinc-400 text-base">
-          Core technologies and principles I leverage to build dependable SaaS architectures.
+          Core technologies and principles I leverage to build dependable SaaS
+          architectures.
         </p>
       </div>
 

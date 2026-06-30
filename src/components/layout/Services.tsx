@@ -98,7 +98,7 @@ export const Services: React.FC = () => {
         {servicesList.map((service, index) => (
           <div
             key={index}
-            className="card p-6 md:p-8 relative overflow-hidden hover:!bg-zinc-900/40 hover:!border-accent/15 group transition-all duration-300"
+            className="card p-6 md:p-8 relative overflow-hidden hover:!border-accent/15 group transition-all duration-300"
           >
             {/* Subtle background glow */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[100px] rounded-full -mr-24 -mt-24 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
@@ -106,8 +106,11 @@ export const Services: React.FC = () => {
             {/* Top Row: Icon, Title & Price inline */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800/40">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-zinc-800 rounded-lg text-zinc-400 group-hover:text-accent group-hover:bg-accent/10 transition-colors shrink-0">
-                  <service.icon size={20} />
+                <div className="p-2.5 bg-zinc-800 rounded-lg text-zinc-400 group-hover:text-accent group-hover:bg-accent/10 transition-all duration-300 shrink-0">
+                  <service.icon
+                    size={20}
+                    className="transition-colors duration-300"
+                  />
                 </div>
                 <h3 className="font-bold text-lg text-white tracking-tight group-hover:text-accent transition-colors leading-snug">
                   {service.title}
@@ -156,13 +159,13 @@ export const Services: React.FC = () => {
       </div>
 
       {/* Interactive Pricing Estimator */}
-      <div className="card p-6 md:p-8 !border-dashed !border-zinc-800 !bg-zinc-950/20 space-y-8">
-        <div className="flex items-center gap-3 pb-4 border-b border-zinc-900/50">
-          <div className="p-2 bg-zinc-850 rounded-lg text-accent">
+      <div className="pt-12 space-y-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-accent shrink-0">
             <Calculator size={20} />
           </div>
           <div>
-            <h3 className="font-bold text-white tracking-tight">
+            <h3 className="font-bold text-white tracking-tight text-lg">
               Project Cost Estimator
             </h3>
             <p className="text-xs text-zinc-500">
@@ -175,8 +178,8 @@ export const Services: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">
-                1. Select Base Service
+              <label className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+                Core Service
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
@@ -187,10 +190,10 @@ export const Services: React.FC = () => {
                   <button
                     key={s.id}
                     onClick={() => setSelectedService(s.id)}
-                    className={`px-3 py-3 rounded-lg border text-xs font-bold transition-all text-center flex flex-col items-center gap-1 ${
+                    className={`px-3 py-3 rounded-lg border text-xs font-bold transition-all duration-300 text-center flex flex-col items-center gap-1 focus-visible:ring-1 focus-visible:ring-accent/50 focus-visible:outline-none hover:-translate-y-0.5 ${
                       selectedService === s.id
-                        ? "border-accent bg-accent/5 text-accent"
-                        : "border-zinc-800 bg-zinc-900/20 text-zinc-400 hover:border-zinc-700"
+                        ? "border-accent bg-accent/5 text-accent shadow-[0_0_15px_rgba(85,255,255,0.05)]"
+                        : "border-zinc-800 bg-zinc-900/20 text-zinc-400 hover:border-zinc-700 hover:text-zinc-300"
                     }`}
                   >
                     <span>{s.name}</span>
@@ -203,62 +206,78 @@ export const Services: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">
-                2. Add Add-ons / Specifications
+              <label className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+                Project Specifications
               </label>
               <div className="space-y-2">
                 {[
                   {
                     id: "locks",
-                    label:
-                      "Concurrency Locking & Race-Condition Defense (+$300)",
+                    label: "Concurrency Locking & Race-Condition Defense",
+                    price: "+$300",
                     checked: addLocks,
                     set: setAddLocks,
                   },
                   {
                     id: "cicd",
-                    label: "AWS Deployment & Automated CI/CD Pipeline (+$250)",
+                    label: "AWS Deployment & Automated CI/CD Pipeline",
+                    price: "+$250",
                     checked: addCicd,
                     set: setAddCicd,
                   },
                   {
                     id: "testing",
-                    label: "Unit & Integration Test Coverage (+$350)",
+                    label: "Unit & Integration Test Coverage",
+                    price: "+$350",
                     checked: addTesting,
                     set: setAddTesting,
                   },
                 ].map((item) => (
                   <label
                     key={item.id}
-                    className={`flex items-center gap-3 p-3 rounded-lg border text-xs cursor-pointer transition-colors ${
+                    className={`flex items-center justify-between gap-4 p-3.5 rounded-lg border text-xs cursor-pointer transition-all duration-300 focus-within:ring-1 focus-within:ring-accent/50 focus-within:outline-none ${
                       item.checked
-                        ? "border-zinc-700 bg-zinc-900/40 text-zinc-200"
-                        : "border-zinc-800 bg-transparent text-zinc-500 hover:border-zinc-800 hover:text-zinc-400"
+                        ? "border-accent/40 bg-zinc-900/50 text-zinc-100"
+                        : "border-zinc-800 bg-zinc-950/20 text-zinc-400 hover:border-zinc-750 hover:text-zinc-300"
                     }`}
                   >
-                    <input
-                      type="checkbox"
-                      checked={item.checked}
-                      onChange={(e) => item.set(e.target.checked)}
-                      className="accent-accent h-3.5 w-3.5 border-zinc-700 rounded bg-zinc-900 focus:ring-0 shrink-0"
-                    />
-                    <span>{item.label}</span>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={item.checked}
+                        onChange={(e) => item.set(e.target.checked)}
+                        className="accent-accent h-4 w-4 border-zinc-700 rounded bg-zinc-900 focus:ring-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/50 shrink-0"
+                      />
+                      <span className="font-medium text-left">{item.label}</span>
+                    </div>
+                    <span
+                      className={`text-[10px] font-mono px-2 py-0.5 rounded-md shrink-0 transition-colors duration-300 ${
+                        item.checked
+                          ? "text-accent bg-accent/10 border border-accent/20"
+                          : "text-zinc-500 bg-zinc-900 border border-zinc-800"
+                      }`}
+                    >
+                      {item.price}
+                    </span>
                   </label>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="card !bg-zinc-900/40 !border-zinc-800 p-6 flex flex-col items-center justify-center text-center space-y-6 h-full min-h-[220px]">
-            <div className="space-y-1">
+          <div className="card relative overflow-hidden !border-zinc-800 p-8 flex flex-col items-center justify-center text-center space-y-6 h-full min-h-[250px] group transition-all duration-300 hover:!border-accent/15">
+            {/* Subtle background glow */}
+            <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[100px] rounded-full -mr-24 -mt-24 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
+
+            <div className="space-y-2 relative z-10">
               <span className="text-xs font-mono uppercase tracking-widest text-zinc-500">
                 Estimated Budget
               </span>
-              <div className="text-4xl font-extrabold text-white flex items-center justify-center gap-0.5">
-                <DollarSign className="text-accent" size={28} />
+              <div className="text-5xl font-black text-white flex items-center justify-center gap-0.5 tracking-tight font-mono">
+                <DollarSign className="text-accent shrink-0" size={32} />
                 <span>{calculateEstimate().toLocaleString()}</span>
               </div>
-              <p className="text-[10px] text-zinc-500 max-w-[200px] mx-auto mt-2">
+              <p className="text-[10px] text-zinc-500 max-w-[220px] mx-auto mt-2 leading-relaxed">
                 This is a preliminary estimation based on typical workload
                 scope.
               </p>
@@ -268,7 +287,7 @@ export const Services: React.FC = () => {
               href={`${upworkUrl}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5"
+              className="w-full relative z-10 inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5 hover:shadow-[0_0_20px_rgba(85,255,255,0.25)] hover:-translate-y-0.5"
             >
               Request Quote on Upwork
             </a>
