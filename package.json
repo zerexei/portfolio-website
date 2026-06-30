@@ -12,9 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@google/genai": "^1.50.1",
     "clsx": "^2.1.1",
-    "firebase": "^9.23.0",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.460.0",
     "react": "^18.2.0",

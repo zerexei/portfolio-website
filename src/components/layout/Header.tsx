@@ -3,24 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "../../utils/cn";
 import { Menu, X, Github, Mail } from "lucide-react";
 import { resumeData } from "../../data/resume";
-import { useAuth } from "../../utils/useAuth";
-import { auth } from "../../utils/database";
-import { signOut } from "firebase/auth";
 import ROUTES from "@/routes";
 
 export const Header: React.FC = () => {
-  const { isAuth } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,8 +22,6 @@ export const Header: React.FC = () => {
     { name: ROUTES.home.title, path: ROUTES.home.path },
     { name: ROUTES.articles.title, path: ROUTES.articles.path },
     { name: ROUTES.systemDesign.title, path: ROUTES.systemDesign.path },
-    { name: ROUTES.flashcards.title, path: ROUTES.flashcards.path },
-    ...(!isAuth ? [{ name: ROUTES.login.title, path: ROUTES.login.path }] : []),
   ];
 
   return (
@@ -68,15 +54,6 @@ export const Header: React.FC = () => {
               {link.name}
             </Link>
           ))}
-
-          {isAuth && (
-            <button
-              onClick={handleLogout}
-              className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-            >
-              Logout
-            </button>
-          )}
 
           <div className="h-4 w-px bg-zinc-800" />
           <div className="flex items-center gap-4">
