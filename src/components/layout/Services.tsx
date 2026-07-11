@@ -16,7 +16,7 @@ export const Services: React.FC = () => {
 
   const servicesList = [
     {
-      title: "SaaS Feature Development",
+      title: "Feature Development (Laravel / FastAPI)",
       price: "From $1,500",
       description:
         "Build reliable backend features for your existing SaaS platform without compromising maintainability. I develop custom features, modules, and backend systems that prioritize correctness, fault tolerance, and clean architecture.",
@@ -32,7 +32,7 @@ export const Services: React.FC = () => {
     },
     {
       title: "API & Webhook Integration",
-      price: "From $800",
+      price: "From $750",
       description:
         "Connect your applications with integrations you can depend on. I build and integrate APIs and webhooks that deliver data consistently between your services. From payment gateways and CRMs to logistics providers, secure integration is key.",
       icon: Database,
@@ -46,8 +46,8 @@ export const Services: React.FC = () => {
       ],
     },
     {
-      title: "Data Reliability Assessment",
-      price: "Flat $600",
+      title: "Software Reliability Assessment",
+      price: "Flat $1,000",
       description:
         "Find the weak points in your system before they become production incidents. I perform a comprehensive assessment of your application's data flows, integrations, and backend logic to uncover issues that lead to service interruptions.",
       icon: Cpu,
@@ -71,12 +71,12 @@ export const Services: React.FC = () => {
   const calculateEstimate = () => {
     let base = 0;
     if (selectedService === "saas") base = 1500;
-    else if (selectedService === "api") base = 800;
-    else base = 600;
+    else if (selectedService === "api") base = 750;
+    else base = 1000;
 
-    if (addLocks) base += 300;
-    if (addCicd) base += 250;
-    if (addTesting) base += 350;
+    if (addLocks) base += 350;
+    if (addCicd) base += 300;
+    if (addTesting) base += 400;
 
     return base;
   };
@@ -183,9 +183,9 @@ export const Services: React.FC = () => {
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: "saas", name: "SaaS Dev", base: "$1,500+" },
-                  { id: "api", name: "API & Webhook", base: "$800+" },
-                  { id: "audit", name: "Reliability Audit", base: "$600" },
+                  { id: "saas", name: "Feature Dev", base: "$1,500+" },
+                  { id: "api", name: "API & Webhook", base: "$750+" },
+                  { id: "audit", name: "Reliability Audit", base: "$1,000" },
                 ].map((s) => (
                   <button
                     key={s.id}
@@ -214,21 +214,21 @@ export const Services: React.FC = () => {
                   {
                     id: "locks",
                     label: "Concurrency Locking & Race-Condition Defense",
-                    price: "+$300",
+                    price: "+$350",
                     checked: addLocks,
                     set: setAddLocks,
                   },
                   {
                     id: "cicd",
                     label: "AWS Deployment & Automated CI/CD Pipeline",
-                    price: "+$250",
+                    price: "+$300",
                     checked: addCicd,
                     set: setAddCicd,
                   },
                   {
                     id: "testing",
                     label: "Unit & Integration Test Coverage",
-                    price: "+$350",
+                    price: "+$400",
                     checked: addTesting,
                     set: setAddTesting,
                   },
