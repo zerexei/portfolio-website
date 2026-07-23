@@ -10,38 +10,37 @@ import {
 import { resumeData } from "../../data/resume";
 
 export const Services: React.FC = () => {
-  const upworkUrl =
-    resumeData.upwork ||
-    "https://www.upwork.com/freelancers/~01ed41bc95427c452a?mp_source=share";
+  const calendlyUrl =
+    resumeData.calendly || "https://calendly.com/angeloarcillas64";
 
   const servicesList = [
     {
       title: "Feature Development (Laravel / FastAPI)",
       price: "From $1,500",
       description:
-        "Build reliable backend features for your existing SaaS platform without compromising maintainability. I develop custom features, modules, and backend systems that prioritize correctness, fault tolerance, and clean architecture.",
+        "Build reliable backend features for your existing SaaS platform without compromising maintainability. I develop custom modules and backend systems that prioritize correctness, fault tolerance, and clean architecture.",
       icon: Code,
       bullets: [
         "Administrative dashboards & database logic",
-        "Concurrency-safe booking & scheduling workflows",
-        "Multi-tenant isolation & Role-Based Access Control (RBAC)",
-        "Asynchronous queue-based background tasks",
-        "Comprehensive unit & integration testing",
-        "Structured logging & exception instrumentation",
+        "Symmetric schedules & bookings (safe from concurrent clicks)",
+        "Data privacy controls (secure multi-tenant & role access)",
+        "Background worker queues (keeps page loading fast under load)",
+        "Comprehensive regression testing (unit & integration suite)",
+        "Structured logging & error telemetry systems",
       ],
     },
     {
       title: "API & Webhook Integration",
       price: "From $750",
       description:
-        "Connect your applications with integrations you can depend on. I build and integrate APIs and webhooks that deliver data consistently between your services. From payment gateways and CRMs to logistics providers, secure integration is key.",
+        "Connect your applications with integrations you can depend on. I build and integrate APIs and webhooks that deliver data consistently between your services. From payment gateways and CRMs to messaging channels, 100% reliable delivery is key.",
       icon: Database,
       bullets: [
-        "Secure payment gateways & subscription models",
-        "Resilient CRM & social messaging channels (8+ platforms)",
-        "Idempotency controls & double-submit prevention",
+        "Subscription billing setups (Stripe & Paddle syncing)",
+        "CRM & messaging channels (integrated with retry protection)",
+        "Double-submit protection (guarantees payments register once)",
         "Exponential retries & token-bucket rate limiters",
-        "Non-blocking background processors for webhook ingestion",
+        "Webhook queuing (ingests high traffic without timeouts)",
         "Strict payload schema validation",
       ],
     },
@@ -53,10 +52,10 @@ export const Services: React.FC = () => {
       icon: Cpu,
       bullets: [
         "Data flow and dependency analysis",
-        "Identification of single points of failure",
+        "Single points of failure audits (stopping server crashes)",
         "Database schema & constraint review",
         "API and webhook reliability assessment",
-        "Error handling and retry strategy evaluation",
+        "Self-healing flow checks (ensuring API syncs recover from failures)",
         "Recommendations for monitoring, logging, and resilience",
       ],
     },
@@ -85,77 +84,74 @@ export const Services: React.FC = () => {
     <div className="py-20 space-y-16 animate-slide-up">
       <div className="space-y-4 max-w-2xl">
         <h2 className="text-3xl font-bold tracking-tight text-white">
-          Freelance Services
+          Engineering Solutions
         </h2>
         <p className="text-zinc-400 text-lg">
-          Practical, spec-compliant backend engineering services tailored for
-          SaaS stability and operational dependability.
+          Practical, spec-compliant backend solutions tailored for SaaS stability, data flow integrity, and operational dependability.
         </p>
       </div>
 
-      {/* Services List */}
-      <div className="space-y-6">
-        {servicesList.map((service, index) => (
-          <div
-            key={index}
-            className="card p-6 md:p-8 relative overflow-hidden hover:!border-accent/15 group transition-all duration-300"
-          >
-            {/* Subtle background glow */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[100px] rounded-full -mr-24 -mt-24 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
+      {/* Services Grid (3 Columns on Desktop, 1 Column on Mobile) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {servicesList.map((service, index) => {
+          const ServiceIcon = service.icon;
+          return (
+            <div
+              key={index}
+              className="card p-6 flex flex-col justify-between space-y-6 relative overflow-hidden group hover:!border-accent/30 transition-all duration-300 !bg-zinc-950/40"
+            >
+              {/* Subtle background glow */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 blur-[80px] rounded-full -mr-20 -mt-20 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
 
-            {/* Top Row: Icon, Title & Price inline */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800/40">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-zinc-800 rounded-lg text-zinc-400 group-hover:text-accent group-hover:bg-accent/10 transition-all duration-300 shrink-0">
-                  <service.icon
-                    size={20}
-                    className="transition-colors duration-300"
-                  />
+              <div className="space-y-5">
+                {/* Header: Icon, Title & Price */}
+                <div className="space-y-3 pb-4 border-b border-zinc-900">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 group-hover:text-accent group-hover:bg-accent/10 transition-all duration-300 shrink-0">
+                      <ServiceIcon size={20} />
+                    </div>
+                    <span className="text-xs font-mono font-bold text-accent bg-accent/5 border border-accent/25 px-2.5 py-1 rounded-full">
+                      {service.price}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-base text-white tracking-tight group-hover:text-accent transition-colors leading-snug">
+                    {service.title}
+                  </h3>
                 </div>
-                <h3 className="font-bold text-lg text-white tracking-tight group-hover:text-accent transition-colors leading-snug">
-                  {service.title}
-                </h3>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-mono font-semibold text-accent bg-accent/5 border border-accent/25 px-3 py-1 rounded-full">
-                  {service.price}
-                </span>
-              </div>
-            </div>
 
-            {/* Middle: Description & Bullets */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-6 pt-6 items-start">
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                {service.description}
-              </p>
-              <div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
-                  {service.bullets.map((bullet, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start gap-2 text-xs text-zinc-500 font-medium"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent/65 mt-1.5 shrink-0" />
-                      <span>{bullet}</span>
+                {/* Description */}
+                <p className="text-zinc-400 text-sm leading-relaxed">
+                  {service.description}
+                </p>
+
+                {/* Bullet Points */}
+                <div className="space-y-2 pt-2 border-t border-zinc-900/80">
+                  <span className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold block mb-1">
+                    Key Deliverables
+                  </span>
+                  {service.bullets.slice(0, 4).map((bullet, i) => (
+                    <div key={i} className="flex items-start gap-2 text-sm text-zinc-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent/70 mt-2 shrink-0" />
+                      <span className="text-sm leading-snug">{bullet}</span>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
 
-            {/* Bottom Row: CTA Button */}
-            <div className="flex justify-end pt-6 mt-6 border-t border-zinc-800/40">
-              <a
-                href={upworkUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-5 py-2 text-sm font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5 hover:shadow-[0_0_15px_rgba(85,255,255,0.15)]"
-              >
-                Inquire on Upwork <ArrowRight size={14} />
-              </a>
+              {/* Bottom Row: CTA Button */}
+              <div className="pt-4 border-t border-zinc-900/80">
+                <a
+                  href={calendlyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5 shadow-sm hover:shadow-[0_0_15px_rgba(85,255,255,0.2)]"
+                >
+                  Book Solution <ArrowRight size={14} />
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Interactive Pricing Estimator */}
@@ -213,21 +209,21 @@ export const Services: React.FC = () => {
                 {[
                   {
                     id: "locks",
-                    label: "Concurrency Locking & Race-Condition Defense",
+                    label: "Double-Charge & Duplicate Booking Protection (Idempotency Locks)",
                     price: "+$350",
                     checked: addLocks,
                     set: setAddLocks,
                   },
                   {
                     id: "cicd",
-                    label: "AWS Deployment & Automated CI/CD Pipeline",
+                    label: "Zero-Downtime AWS Deployments (Automated CI/CD Pipeline)",
                     price: "+$300",
                     checked: addCicd,
                     set: setAddCicd,
                   },
                   {
                     id: "testing",
-                    label: "Unit & Integration Test Coverage",
+                    label: "Crash Prevention & Regression Testing (Automated Test Suite)",
                     price: "+$400",
                     checked: addTesting,
                     set: setAddTesting,
@@ -278,18 +274,17 @@ export const Services: React.FC = () => {
                 <span>{calculateEstimate().toLocaleString()}</span>
               </div>
               <p className="text-[10px] text-zinc-500 max-w-[220px] mx-auto mt-2 leading-relaxed">
-                This is a preliminary estimation based on typical workload
-                scope.
+                Preliminary estimate based on standard scope.
               </p>
             </div>
 
             <a
-              href={`${upworkUrl}`}
+              href={calendlyUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full relative z-10 inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5 hover:shadow-[0_0_20px_rgba(85,255,255,0.25)] hover:-translate-y-0.5"
             >
-              Request Quote on Upwork
+              Book Call & Confirm Quote
             </a>
           </div>
         </div>

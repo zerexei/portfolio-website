@@ -17,7 +17,9 @@ export interface ResumeData {
   github: string;
   linkedin: string;
   website: string;
+  medium?: string;
   upwork?: string;
+  calendly?: string;
   skills: {
     backend: string[];
     frontend: string[];
@@ -35,16 +37,18 @@ export interface ResumeData {
 
 export const resumeData: ResumeData = {
   name: "Angelo Dave F. Arcillas",
-  title: "Backend Engineer",
+  title: "Backend Engineer | SaaS Platforms, Real-Time & Event-Driven Systems",
   summary:
-    "Backend Engineer with 3.5+ years of experience building and scaling SaaS platforms using Laravel, Vue.js, MySQL, Redis, and AWS. Experienced in real-time systems, API & webhook, cloud infrastructure, and third-party integrations. SaaS product builder focused on translating business requirements into scalable production systems.",
-  location: "Zamboanga City, Philippines",
+    "Product-Minded Backend Engineer with 3.5+ years of experience building SaaS platforms using Laravel, Vue.js, MySQL, Redis, and AWS. Experienced in real-time & event-driven systems, APIs & webhooks, cloud infrastructure, and third-party integrations. Strong technical leader skilled at mentoring junior engineers, improving system reliability, and translating business requirements into scalable production systems.",
+  location: "Zamboanga City, Philippines (Open to Remote / Relocation)",
   email: "angeloarcillas64@gmail.com",
   phone: "+63 936-2547-611",
   github: "https://github.com/zerexei",
   linkedin: "https://linkedin.com/in/angeloarcillas",
   website: "https://angeloarcillas.pages.dev",
+  medium: "https://medium.com/@angeloarcillas64",
   upwork: "https://www.upwork.com/freelancers/~01ed41bc95427c452a?mp_source=share",
+  calendly: "https://calendly.com/angeloarcillas64",
   skills: {
     backend: [
       "PHP (Laravel)",
@@ -65,7 +69,7 @@ export const resumeData: ResumeData = {
       "HTML5",
       "CSS3",
     ],
-    databases: ["MySQL", "PostgreSQL", "Redis", "MongoDB"],
+    databases: ["MySQL", "PostgreSQL", "Redis", "MongoDB", "Supabase"],
     cloudDevops: [
       "AWS (EC2, RDS, S3, IAM)",
       "Docker",
@@ -85,46 +89,41 @@ export const resumeData: ResumeData = {
   },
   experience: [
     {
-      company: "AD. Publish (Independent Project)",
-      role: "Software Engineer",
+      company: "Independent Software Engineer",
+      role: "Independent Software Engineer",
       location: "Remote",
       period: "Jan 2026 - Present",
       achievements: [
-        "Developing a containerized, asynchronous multi-service backend with **fault-tolerant event delivery**, fan-out event distribution, failure recovery, and **transactional correctness under high concurrency**.",
+        "Developing an asynchronous job execution and state coordination engine for publishing workflows that ensures operational correctness under network failures, worker crashes, and downstream API rate limits.",
+        "Designing a telemetry and reliability platform for service log ingestion, building structured data pipelines that aggregate log events to deliver operational insights, compute threat risk scores, and export SLA audits.",
       ],
-      technologies: ["Python", "FastAPI", "Docker", "Redis", "PostgreSQL"],
-    },
-    {
-      company: "AD. Sentry (Independent Project)",
-      role: "Software Engineer",
-      location: "Remote",
-      period: "Jan 2026 - Present",
-      achievements: [
-        "Designing a telemetry and reliability platform for **application log ingestion**, issue grouping, and operational insights, with **scalable log processing** and high-volume event ingestion.",
+      technologies: [
+        "Python",
+        "FastAPI",
+        "React.js",
+        "PostgreSQL",
+        "Redis",
+        "Docker",
       ],
-      technologies: ["Python", "FastAPI", "Docker", "Redis", "PostgreSQL", "React.js"],
     },
     {
       company: "PurpleBug Inc.",
-      role: "Senior Full-Stack Engineer",
+      role: "Mid. Sr. Web Developer",
       location: "Makati City, Philippines - Remote",
       period: "Jun 2022 - Dec 2025",
       achievements: [
-        "**Led the design and development** of an AI customer engagement SaaS platform, building a real-time messaging system, WebSockets supporting **10K+ concurrent connections** and **50K+ daily events** across **8+ CRM and social channel integrations**.",
-        "Built a **fault-tolerant async processing system** with retries and idempotency to ensure **reliable message delivery** and **data consistency** across third-party integrations.",
-        "Eliminated **race conditions** and duplicate bookings in **high-concurrency booking workflows** using transactional locking and concurrency-safe validation to ensure **accurate scheduling data**.",
-        "Designed a **queue-based live-agent routing system** using asynchronous queues, enabling **real-time customer support workflows** with seamless agent transfers and multi-agent communication.",
-        "Architected a **multi-tenant SaaS platform** using usage and feature-based billing models and **Role-Based Access Control (RBAC)** to support subscription-based customer access and permissions.",
-        "Managed **AWS infrastructure** (EC2, RDS, S3, IAM) and **automated CI/CD pipelines**, ensuring high availability and zero-downtime production deployments.",
+        "**Led the design and development** of an AI customer engagement SaaS platform, building real-time WebSockets supporting **10K+ concurrent connections** and **50K+ daily events** across 8+ CRM and social integrations.",
+        "Built **fault-tolerant async processing systems** with retries, idempotency, and transactional locking to ensure data consistency and eliminate race conditions in high-concurrency workflows.",
+        "Architected a **multi-tenant SaaS platform** using usage/feature-based billing models and **Role-Based Access Control (RBAC)** to govern customer permissions.",
+        "Managed **AWS infrastructure (EC2, RDS, S3, IAM)** and automated zero-downtime CI/CD pipelines while providing technical leadership and code-review mentorship.",
       ],
       technologies: [
+        "PHP",
         "Laravel",
         "Vue.js",
         "MySQL",
-        "Redis",
-        "AWS",
         "WebSockets",
-        "Docker",
+        "AWS",
       ],
     },
   ],

@@ -4,11 +4,28 @@ import { Layout } from "@/components/layout/Layout";
 import routes from "@/routes";
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (hash) {
+      const elementId = hash.replace("#", "");
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      } else {
+        // Fallback for lazy loaded content: wait a tiny bit and try again
+        const timer = setTimeout(() => {
+          const retryElement = document.getElementById(elementId);
+          if (retryElement) {
+            retryElement.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
 
   return null;
 };
@@ -67,6 +84,13 @@ const router = createBrowserRouter([
         lazy: async () => {
           const { ArticleDetail } = await import("@/pages/ArticleDetail");
           return { Component: ArticleDetail };
+        },
+      },
+      {
+        path: routes.resume.path,
+        lazy: async () => {
+          const { ResumePage } = await import("@/pages/ResumePage");
+          return { Component: ResumePage };
         },
       },
       {
