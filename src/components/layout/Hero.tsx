@@ -13,7 +13,7 @@ export const Hero: React.FC = () => {
       <div className="flex-1 space-y-8 text-center md:text-left">
         <div className="space-y-4">
           <div className="text-accent font-mono text-sm tracking-wider uppercase font-semibold">
-            {resumeData.name} • Backend Architect
+            {resumeData.name} • Product Engineer
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
             Scale Your <span className="text-accent">SaaS Backend</span> Without Server Crashes or Revenue Leaks.
