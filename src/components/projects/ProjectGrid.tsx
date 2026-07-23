@@ -1,6 +1,6 @@
 import React from "react";
 import { Project } from "../../data/projects";
-import { Github, ExternalLink } from "lucide-react";
+import { Github, ExternalLink, Flag } from "lucide-react";
 
 interface ProjectRowProps {
   project: Project;
@@ -10,7 +10,7 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({ project }) => {
   return (
     <div className="group relative flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-xl border border-zinc-900 bg-zinc-950/20 hover:border-accent/15 hover:bg-zinc-900/10 transition-all duration-300">
       {/* Title & Tech */}
-      <div className="space-y-2 md:w-[240px] shrink-0">
+      <div className="space-y-2 md:w-60 shrink-0">
         <h3 className="text-base font-bold text-white group-hover:text-accent transition-colors duration-300">
           {project.title}
         </h3>
@@ -24,6 +24,20 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({ project }) => {
             </span>
           ))}
         </div>
+        {project.hackathon && project.hackathon.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+            <span className="text-[8px] font-mono text-zinc-500 uppercase tracking-widest shrink-0">Competed in</span>
+            {project.hackathon.map((name) => (
+              <span
+                key={name}
+                className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-mono text-sky-300 bg-sky-400/10 border border-sky-400/20 rounded-full"
+              >
+                <Flag size={8} className="shrink-0 text-sky-400" />
+                {name}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Description */}
@@ -32,7 +46,7 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({ project }) => {
       </p>
 
       {/* Links */}
-      <div className="flex items-center gap-2 shrink-0 justify-start md:justify-end md:w-[100px]">
+      <div className="flex items-center gap-2 shrink-0 justify-start md:justify-end md:w-25">
         {project.github && (
           <a
             href={project.github}

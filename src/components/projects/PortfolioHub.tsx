@@ -1,0 +1,230 @@
+import React, { useState } from "react";
+import { Project } from "../../data/projects";
+import { systemDesigns, SystemDesignItem } from "../../data/systemDesigns";
+import { FeaturedProject } from "./FeaturedProject";
+import { ProjectGrid } from "./ProjectGrid";
+import { Mermaid } from "../common/Mermaid";
+import { Trophy, Cpu, Code2, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
+import routes from "@/routes";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface PortfolioHubProps {
+  caseStudies: Project[];
+  otherProjects: Project[];
+}
+
+interface ArchitectureSpecCardProps {
+  design: SystemDesignItem;
+}
+
+const ArchitectureSpecCard: React.FC<ArchitectureSpecCardProps> = ({ design }) => {
+  return (
+    <div className="card p-6 md:p-8 space-y-6 border border-zinc-800/80 !bg-zinc-950/40 relative overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[120px] rounded-full -mr-32 -mt-32 pointer-events-none" />
+
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-900 relative z-10">
+        <div>
+          <h3 className="text-xl font-bold text-white tracking-tight">
+            {design.title}
+          </h3>
+          <p className="text-zinc-400 text-xs mt-1">
+            {design.description}
+          </p>
+        </div>
+        <Link
+          to={routes.systemDesignDetail.getPath(design.slug)}
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:underline shrink-0"
+        >
+          Full Specification Spec <ExternalLink size={13} />
+        </Link>
+      </div>
+
+      {/* Mermaid Diagram Container */}
+      <div className="w-full bg-zinc-950/80 border border-zinc-900 rounded-xl p-4 md:p-6 overflow-x-auto relative z-10">
+        <Mermaid chart={design.chart} />
+      </div>
+
+      {/* Architectural Trade-offs List */}
+      <div className="space-y-3 pt-2 relative z-10">
+        <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
+          Key Architectural Trade-offs & Fail-Safes
+        </span>
+        <ul className="space-y-2">
+          {design.tradeoffs.map((item, i) => (
+            <li key={i} className="text-xs text-zinc-400 flex items-start gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
+              <span>{item.replace(/\*\*/g, "")}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export const PortfolioHub: React.FC<PortfolioHubProps> = ({
+  caseStudies,
+  otherProjects,
+}) => {
+  const [activeTab, setActiveTab] = useState<number>(0);
+  const [selectedDesignSlug, setSelectedDesignSlug] = useState<string>("ad-sentinel");
+
+  const tabs = [
+    {
+      id: "case-studies",
+      label: "System Case Studies",
+      icon: Trophy,
+      badge: `${caseStudies.length} Deep Dives`,
+    },
+    {
+      id: "architecture",
+      label: "System Architecture Specs",
+      icon: Cpu,
+      badge: `${systemDesigns.length} Specs`,
+    },
+    {
+      id: "open-source",
+      label: "Open-Source & Repos",
+      icon: Code2,
+      badge: `${otherProjects.length} Repos`,
+    },
+  ];
+
+  const currentDesign =
+    systemDesigns.find((d) => d.slug === selectedDesignSlug) || systemDesigns[0];
+
+  return (
+    <div className="space-y-8">
+      {/* Header Info */}
+      <div className="space-y-3 max-w-2xl">
+        <div className="text-accent font-mono text-xs uppercase tracking-widest font-semibold">
+          Engineering Proof & Portfolio
+        </div>
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
+          Technical Proof & System Architecture
+        </h2>
+        <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+          Filter below to inspect production case studies, interactive system design blueprints, or open-source tooling.
+        </p>
+      </div>
+
+      {/* Tab Controls */}
+      <div className="flex flex-wrap gap-2 p-1.5 bg-zinc-950/80 border border-zinc-900 rounded-xl w-fit relative z-10">
+        {tabs.map((tab, idx) => {
+          const TabIcon = tab.icon;
+          const isActive = activeTab === idx;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(idx)}
+              className={`relative flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-colors duration-300 cursor-pointer z-10 ${
+                isActive
+                  ? "text-white"
+                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30"
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="activePortfolioTab"
+                  className="absolute inset-0 bg-zinc-800 border border-zinc-700/80 rounded-lg z-0"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              <TabIcon
+                size={14}
+                className={`relative z-10 ${isActive ? "text-accent" : "text-zinc-500"}`}
+              />
+              <span className="relative z-10">{tab.label}</span>
+              <span
+                className={`text-[9px] font-mono px-1.5 py-0.5 rounded relative z-10 transition-colors duration-300 ${
+                  isActive
+                    ? "bg-accent/15 text-accent border border-accent/20"
+                    : "bg-zinc-900 text-zinc-500"
+                }`}
+              >
+                {tab.badge}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Tab Content Display with Smooth Transitions */}
+      <div className="min-h-100">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
+            {activeTab === 0 && (
+              <div className="space-y-8">
+                {caseStudies.map((project, index) => (
+                  <FeaturedProject
+                    key={project.id}
+                    project={project}
+                    defaultExpanded={index === 0 || project.id === "ad-sentinel"}
+                  />
+                ))}
+              </div>
+            )}
+
+            {activeTab === 1 && (
+              <div className="space-y-6">
+                {/* Spec selector buttons */}
+                <div className="flex flex-wrap gap-2 pb-2 border-b border-zinc-900/60">
+                  {systemDesigns.map((design) => {
+                    const isSelected = selectedDesignSlug === design.slug;
+                    return (
+                      <button
+                        key={design.slug}
+                        onClick={() => setSelectedDesignSlug(design.slug)}
+                        className={`relative px-3.5 py-2 rounded-lg text-xs font-mono transition-colors duration-300 cursor-pointer z-10 ${
+                          isSelected
+                            ? "text-accent font-bold"
+                            : "text-zinc-400 hover:text-zinc-200"
+                        }`}
+                      >
+                        {isSelected && (
+                          <motion.div
+                            layoutId="activeSpecTab"
+                            className="absolute inset-0 bg-accent/10 border border-accent/40 rounded-lg z-0"
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                        <span className="relative z-10">{design.title.split(":")[0]}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Spec Card with Mermaid Diagram */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={selectedDesignSlug}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ArchitectureSpecCard design={currentDesign} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            )}
+
+            {activeTab === 2 && (
+              <div>
+                <ProjectGrid projects={otherProjects} />
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};

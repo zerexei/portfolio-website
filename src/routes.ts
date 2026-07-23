@@ -7,7 +7,7 @@ export const routes = {
   services: {
     name: "services",
     path: "/services",
-    title: "Services",
+    title: "Solutions",
   },
   systemDesign: {
     name: "systemDesign",
@@ -30,6 +30,11 @@ export const routes = {
     path: "/articles/:slug",
     title: "Article",
     getPath: (slug: string) => `/articles/${slug}` as const,
+  },
+  resume: {
+    name: "resume",
+    path: "/resume",
+    title: "Resume",
   },
 } as const;
 

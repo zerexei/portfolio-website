@@ -118,7 +118,7 @@
 
 @layer components {
   .section-container {
-    @apply max-w-5xl mx-auto px-6 py-12 md:py-20;
+    @apply max-w-5xl mx-auto px-6 py-8 md:py-12;
   }
 
   .tag {
@@ -145,4 +145,16 @@
 
 ::-webkit-scrollbar-thumb {
   @apply bg-zinc-800 rounded-full hover:bg-zinc-700 transition-colors;
+}
+
+/* Custom Ingress Request Animation for Concurrency Visualizer */
+@keyframes marquee {
+  0% { left: 0%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 72%; opacity: 1; }
+}
+
+.animate-marquee {
+  animation: marquee 1.2s ease-in-out forwards;
 }

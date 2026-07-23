@@ -1,4 +1,4 @@
-import { Server, ShieldAlert, CalendarRange, LucideIcon } from "lucide-react";
+import { Server, ShieldAlert, Activity, LucideIcon } from "lucide-react";
 
 export interface SystemDesignItem {
   id: string;
@@ -51,21 +51,23 @@ export const systemDesigns: SystemDesignItem[] = [
     ]
   },
   {
-    id: "ad-routine",
-    slug: "ad-routine",
-    title: "AD. Routine: Deterministic Scheduling & Coordination Engine",
-    description: "A scheduling coordinator prioritizing state-machine correctness and preventing overlapping task execution.",
-    icon: CalendarRange,
+    id: "ad-sentinel",
+    slug: "ad-sentinel",
+    title: "AD. Sentinel: Telemetry, Audit & Job Execution Engine",
+    description: "An asynchronous telemetry and reliability platform for service log ingestion, threat risk score computation, SLA audit exports, and async job state coordination.",
+    icon: Activity,
     chart: `graph TD
-    Trigger[Cron Trigger / User Req] -->|Launch Execution| LaravelScheduler[Laravel Scheduling Layer]
-    LaravelScheduler -->|Acquire Lock: SET NX| RedisLock[(Redis Sync Locks)]
-    LaravelScheduler -->|Write Schedule State| RelationalDB[(Relational DB: mysql/postgres)]
-    RelationalDB -->|Composite Unique Key Constraint| DatabaseIntegrity[Unique Constraint: routine_id, date]
-    RelationalDB -->|Calculate Workload| KnapsackAlgorithm[Greedy Knapsack Packing]`,
+    Client[Telemetry Sources / Ingress API] -->|Log Event / Job Exec| Gateway[FastAPI Ingress]
+    Gateway -->|Rate-Limiter: Token Bucket| RedisCache[(Redis State & Rate Limiter)]
+    Gateway -->|Async Ingest Pipeline| Services[Audit & Telemetry Services]
+    Services -->|State Coordination & Leases| JobEngine[Job Execution Engine]
+    Services -->|Structured Data Ingestion| PostgreSQL[(PostgreSQL Audit Store)]
+    PostgreSQL -->|Threat Risk Computation| Copilot[AI Copilot & SLA Audit Compiler]
+    Copilot -->|Operational Insights & SLA Reports| Dashboard[Live Dashboard / Render Demo]`,
     tradeoffs: [
-      "**Concurrency Locking:** Integrated Redis-backed synchronization locks to serialize job processing. This guarantees that if a task takes longer than the schedule period, a duplicate instance is not triggered.",
-      "**Storage Layer Constraints:** Configured composite unique database constraints (`routine_id`, `date`) at the storage layer as a second line of defense to reject duplicate cron writes under any application-level failures.",
-      "**Workload Optimizer:** Utilized a greedy knapsack packing algorithm to allocate task queues, ensuring routine coordinator execution fits within predefined time budgets."
+      "**Structured Log Aggregation & Threat Scoring:** Implemented structured data ingestion pipelines that aggregate log events to compute dynamic threat risk scores without causing database write saturation.",
+      "**Async Job Execution & State Coordination:** Built a state coordination engine with worker lease management and Redis heartbeat pings to ensure operational correctness under network blips, worker crashes, and rate limits.",
+      "**Out-of-Band AI Copilot & Audit Decoupling:** Decoupled AI Copilot telemetry analysis and PDF SLA audit exports from the ingress path to maintain low API latency during high-throughput log surges."
     ]
   }
 ];
