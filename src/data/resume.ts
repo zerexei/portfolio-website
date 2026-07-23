@@ -48,7 +48,7 @@ export const resumeData: ResumeData = {
   website: "https://angeloarcillas.pages.dev",
   medium: "https://medium.com/@angeloarcillas64",
   upwork: "https://www.upwork.com/freelancers/~01ed41bc95427c452a?mp_source=share",
-  calendly: "https://calendly.com/angeloarcillas64",
+  calendly: "https://calendly.com/angeloarcillas64/discovery-call",
   skills: {
     backend: [
       "PHP (Laravel)",
