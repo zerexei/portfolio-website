@@ -37,7 +37,7 @@ export const Home: React.FC = () => {
       </Section>
       
       {/* 4. Portfolio (Interactive Engineering Proof & Portfolio Hub) */}
-      <Section id="portfolio" className="border-b border-zinc-900/50 bg-zinc-900/10">
+      <Section id="case-studies" className="border-b border-zinc-900/50 bg-zinc-900/10">
         <PortfolioHub caseStudies={caseStudies} otherProjects={otherProjects} />
       </Section>
 

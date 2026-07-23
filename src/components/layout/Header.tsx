@@ -21,7 +21,7 @@ export const Header: React.FC = () => {
   const navLinks = [
     { name: "Solutions", path: "/#services" },
     { name: "Process", path: "/#workflow" },
-    { name: "Portfolio", path: "/#portfolio" },
+    { name: "Portfolio", path: "/#case-studies" },
     { name: routes.systemDesign.title, path: routes.systemDesign.path },
     { name: routes.articles.title, path: routes.articles.path },
     { name: routes.resume.title, path: routes.resume.path },
