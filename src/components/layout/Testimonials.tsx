@@ -89,12 +89,12 @@ export const Testimonials: React.FC = () => {
               </div>
 
               {/* Metric Badge */}
-              <div className="inline-block px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300 font-semibold tracking-wide">
+              <div className="inline-block px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300 font-semibold tracking-wide">
                 🚀 {review.metric}
               </div>
 
               {/* Testimonial Quote */}
-              <p className="text-zinc-300 text-xs md:text-sm leading-relaxed italic">
+              <p className="text-zinc-300 text-sm md:text-base leading-relaxed italic">
                 "{review.quote}"
               </p>
             </div>
@@ -107,10 +107,10 @@ export const Testimonials: React.FC = () => {
                 {review.avatarInitials}
               </div>
               <div className="min-w-0">
-                <h4 className="text-white text-xs font-bold truncate leading-tight">
+                <h4 className="text-white text-sm font-bold truncate leading-tight">
                   {review.name}
                 </h4>
-                <p className="text-[10px] text-zinc-500 font-medium leading-normal">
+                <p className="text-sm text-zinc-500 font-medium leading-normal">
                   {review.role}, <span className="text-zinc-400">{review.company}</span>
                 </p>
               </div>

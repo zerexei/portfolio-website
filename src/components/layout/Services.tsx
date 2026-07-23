@@ -120,19 +120,19 @@ export const Services: React.FC = () => {
                 </div>
 
                 {/* Description */}
-                <p className="text-zinc-400 text-xs leading-relaxed">
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   {service.description}
                 </p>
 
                 {/* Bullet Points */}
                 <div className="space-y-2 pt-2 border-t border-zinc-900/80">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-semibold block mb-1">
+                  <span className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold block mb-1">
                     Key Deliverables
                   </span>
                   {service.bullets.slice(0, 4).map((bullet, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs text-zinc-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent/70 mt-1.5 shrink-0" />
-                      <span className="text-[11px] leading-tight">{bullet}</span>
+                    <div key={i} className="flex items-start gap-2 text-sm text-zinc-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent/70 mt-2 shrink-0" />
+                      <span className="text-sm leading-snug">{bullet}</span>
                     </div>
                   ))}
                 </div>

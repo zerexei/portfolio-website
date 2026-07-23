@@ -216,13 +216,13 @@ export const Workflow: React.FC = () => {
             </div>
 
             {/* Description */}
-            <p className="text-zinc-300 text-sm leading-relaxed">
+            <p className="text-zinc-300 text-base leading-relaxed">
               {current.description}
             </p>
 
             {/* Subtle spec guarantee note */}
-            <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-500 pt-1">
-              <ShieldCheck size={13} className="text-zinc-400 shrink-0" />
+            <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 pt-1">
+              <ShieldCheck size={14} className="text-zinc-400 shrink-0" />
               <span>
                 Spec Guarantee: Up to 3 revision rounds included if code deviates from agreed architecture.
               </span>
@@ -230,13 +230,13 @@ export const Workflow: React.FC = () => {
 
             {/* Footer row: scope + next CTA */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
-              <div className="flex items-center gap-2 px-3 py-2 bg-zinc-900/80 border border-zinc-800 rounded-xl max-w-xl">
+              <div className="flex items-center gap-2.5 px-3.5 py-2.5 bg-zinc-900/80 border border-zinc-800 rounded-xl max-w-xl">
                 <span className="w-2 h-2 rounded-full bg-accent shrink-0" />
                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                  <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest shrink-0">
+                  <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest shrink-0">
                     Deliverable:
                   </span>
-                  <span className="text-zinc-300 text-xs font-medium leading-snug">
+                  <span className="text-zinc-200 text-sm font-medium leading-snug">
                     {current.scope}
                   </span>
                 </div>

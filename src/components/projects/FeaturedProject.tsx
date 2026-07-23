@@ -100,20 +100,20 @@ export const FeaturedProject: React.FC<FeaturedProjectProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-2 animate-fade-in">
           {/* Column 1: Friction */}
           <div className="space-y-4 lg:pr-8 lg:border-r lg:border-zinc-900/60">
-            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-zinc-500">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
               01 / Operational Friction
             </div>
             <div className="space-y-4">
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-zinc-300">The Problem</h4>
-                <p className="text-zinc-400 text-[11px] leading-relaxed">
+                <h4 className="text-sm font-bold text-zinc-300">The Problem</h4>
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   {project.featuredDetails.problem}
                 </p>
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-zinc-300">Key Challenges</h4>
-                <p className="text-zinc-400 text-[11px] leading-relaxed">
+                <h4 className="text-sm font-bold text-zinc-300">Key Challenges</h4>
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   {project.featuredDetails.challenges}
                 </p>
               </div>
@@ -122,20 +122,20 @@ export const FeaturedProject: React.FC<FeaturedProjectProps> = ({
 
           {/* Column 2: Resolution */}
           <div className="space-y-4 lg:px-4 lg:border-r lg:border-zinc-900/60">
-            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-zinc-500">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-500/60" />
               02 / System Engineering
             </div>
             <div className="space-y-4">
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-zinc-300">Architecture</h4>
-                <p className="text-zinc-400 text-[11px] leading-relaxed">
+                <h4 className="text-sm font-bold text-zinc-300">Architecture</h4>
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   {project.featuredDetails.architecture}
                 </p>
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-bold text-zinc-300">Implemented Solutions</h4>
-                <p className="text-zinc-400 text-[11px] leading-relaxed">
+                <h4 className="text-sm font-bold text-zinc-300">Implemented Solutions</h4>
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   {project.featuredDetails.solutions}
                 </p>
               </div>
@@ -147,13 +147,13 @@ export const FeaturedProject: React.FC<FeaturedProjectProps> = ({
             {/* Soft inner glow */}
             <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 blur-xl rounded-full pointer-events-none" />
             
-            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-emerald-400 relative z-10">
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-emerald-400 relative z-10">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               03 / Business Outcome
             </div>
             <div className="space-y-2 relative z-10">
-              <h4 className="text-xs font-bold text-emerald-300">Measurable Impact</h4>
-              <p className="text-zinc-300 text-[11px] leading-relaxed">
+              <h4 className="text-sm font-bold text-emerald-300">Measurable Impact</h4>
+              <p className="text-zinc-300 text-sm leading-relaxed">
                 {project.featuredDetails.impact}
               </p>
             </div>
