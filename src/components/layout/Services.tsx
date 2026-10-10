@@ -186,7 +186,7 @@ export const Services: React.FC = () => {
                     className={`px-3 py-3 rounded-lg border text-xs font-bold transition-all duration-300 text-center flex flex-col items-center gap-1 focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none cursor-pointer ${
                       selectedService === s.id
                         ? "border-primary bg-primary/10 text-primary"
-                        : "border-border bg-card-nested text-neutral-foreground hover:border-neutral hover:text-foreground"
+                        : "border-border bg-card text-neutral-foreground hover:border-neutral hover:text-foreground"
                     }`}
                   >
                     <span>{s.name}</span>
@@ -231,7 +231,7 @@ export const Services: React.FC = () => {
                     className={`flex items-center justify-between gap-4 p-3.5 rounded-lg border text-xs cursor-pointer transition-all duration-300 focus-within:ring-1 focus-within:ring-primary focus-within:outline-none ${
                       item.checked
                         ? "border-primary/40 bg-primary/5 text-foreground"
-                        : "border-border bg-card-nested text-neutral-foreground hover:border-neutral hover:text-foreground"
+                        : "border-border bg-card text-neutral-foreground hover:border-neutral hover:text-foreground"
                     }`}
                   >
                     <div className="flex items-center gap-3">
