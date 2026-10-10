@@ -39,7 +39,7 @@ export const resumeData: ResumeData = {
   name: "Angelo Dave F. Arcillas",
   title: "Backend Engineer | SaaS Platforms, Real-Time & Event-Driven Systems",
   summary:
-    "Product-Minded Backend Engineer with 3.5+ years of experience building SaaS platforms using Laravel, Vue.js, MySQL, Redis, and AWS. Experienced in real-time & event-driven systems, APIs & webhooks, cloud infrastructure, and third-party integrations. Strong technical leader skilled at mentoring junior engineers, improving system reliability, and translating business requirements into scalable production systems.",
+    "Product-minded Backend Engineer with 4+ years of experience building scalable SaaS platforms using Laravel, FastAPI, PostgreSQL, Redis, and AWS. Experienced in real-time & event-driven architectures, resilient APIs, and distributed backend workflows. Collaborative technical leader skilled at mentoring fellow engineers, unblocking cross-functional goals, and translating business requirements into reliable production software.",
   location: "Zamboanga City, Philippines (Open to Remote / Relocation)",
   email: "angeloarcillas64@gmail.com",
   phone: "+63 936-2547-611",
@@ -94,8 +94,8 @@ export const resumeData: ResumeData = {
       location: "Remote",
       period: "Jan 2026 - Present",
       achievements: [
-        "Developing an asynchronous job execution and state coordination engine for publishing workflows that ensures operational correctness under network failures, worker crashes, and downstream API rate limits.",
-        "Designing a telemetry and reliability platform for service log ingestion, building structured data pipelines that aggregate log events to deliver operational insights, compute threat risk scores, and export SLA audits.",
+        "Developing a fault-tolerant distributed job engine using the Transactional Outbox Pattern (PostgreSQL + Redis Streams), implementing worker heartbeat leases, DLQ routing, and idempotency keys to guarantee at-least-once task execution across worker crashes and network failures.",
+        "Designing a high-throughput log ingestion and telemetry platform, aggregating structured service logs to generate operational insights, calculate SLA metrics, and track error trends.",
       ],
       technologies: [
         "Python",
@@ -112,7 +112,7 @@ export const resumeData: ResumeData = {
       location: "Makati City, Philippines - Remote",
       period: "Jun 2022 - Dec 2025",
       achievements: [
-        "**Led the design and development** of an AI customer engagement SaaS platform, building real-time WebSockets supporting **10K+ concurrent connections** and **50K+ daily events** across 8+ CRM and social integrations.",
+        "**Led the design and development** of an AI customer engagement SaaS platform, building a real-time messaging system via WebSockets supporting **10K+ concurrent connections** and **50K+ daily events** across **8+ CRM and social channel integrations**.",
         "Built **fault-tolerant async processing systems** with retries, idempotency, and transactional locking to ensure data consistency and eliminate race conditions in high-concurrency workflows.",
         "Architected a **multi-tenant SaaS platform** using usage/feature-based billing models and **Role-Based Access Control (RBAC)** to govern customer permissions.",
         "Managed **AWS infrastructure (EC2, RDS, S3, IAM)** and automated zero-downtime CI/CD pipelines while providing technical leadership and code-review mentorship.",

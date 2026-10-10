@@ -17,14 +17,24 @@ export const systemDesigns: SystemDesignItem[] = [
     title: "AD. Publish: At-Least-Once Task Worker Engine",
     description: "An event-driven task worker engine designed to execute high-reliability publishing workflows with at-least-once delivery guarantees under network instability.",
     icon: Server,
-    chart: `graph TD
+    chart: `flowchart TD
     Client[Client / Ingress API] -->|HTTP POST Payload| Gateway[FastAPI Gateway]
-    Gateway -->|Deduplicate: SETNX 24h| RedisCache[(Redis Cache)]
-    Gateway -->|Publish Event| RedisStream[(Redis Streams: Consumer Group)]
-    RedisStream -->|Acknowledge / Consume| Workers[Stateless Worker Pool]
-    Workers -->|Process & Send| Channels[Downstream Pub Channels]
-    Workers -->|Failed Events| DLQ[(Dead Letter Queue)]
-    Workers -->|Update State| PostgreSQL[(PostgreSQL State Tracking)]`,
+    
+    Gateway -->|1. Idempotency Check: SETNX / Unique Key| Redis[(Redis Cache)]
+    Gateway -->|2. Transactional Write| DB[(PostgreSQL State & Outbox Table)]
+    
+    DB -->|3. Outbox Relay Poller| Stream[Redis Streams / Queue]
+    
+    Stream -->|4. Consumer Group Dispatch| Workers[Stateless Worker Pool]
+    
+    Workers -->|5. Execute Step & Checkpoint State| DB
+    Workers -->|6. Retry & Backoff on Failure| Stream
+    Workers -->|7. Max Retries Exhausted| DLQ[(Dead Letter Queue / DLQ)]
+
+    classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+    classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    class Redis,DB,DLQ storage;`,
     tradeoffs: [
       "**Redis Streams vs. Standard Queues:** Selected Redis Streams over standard list queues to leverage consumer groups, enabling load balancing across multiple workers with native acknowledgment states (`ACK`).",
       "**At-Least-Once Guarantee:** Workers do not acknowledge the stream event until downstream calls return success. If a worker crashes mid-task, the event is re-delivered via lease-expiration listeners.",
@@ -37,13 +47,23 @@ export const systemDesigns: SystemDesignItem[] = [
     title: "AD. Sentry: High-Throughput Log Ingestion & Threat Telemetry",
     description: "An out-of-band log auditing platform designed to aggregate error logs and compile automated SLA compliance reports without degrading hot paths.",
     icon: ShieldAlert,
-    chart: `graph TD
-    AppLogs[Application Error Logs] -->|Stream Logs| Gateway[FastAPI Ingress]
-    Gateway -->|Rate-Limiter: Token Bucket| RedisLimiter[(Redis Limiter)]
-    Gateway -->|Log Normalization MD5| Deduplicator[Deduplication Layer]
-    Deduplicator -->|Async Batch Writes| PostgreSQL[(PostgreSQL Store)]
-    PostgreSQL -->|Out-of-band Compilation| PDFCompiler[Analytical PDF Compiler]
-    PDFCompiler -->|Generate SLA Report| Admin[SLA Dashboard]`,
+    chart: `flowchart TD
+    Apps[App Services] -->|Tenant Logs| Gateway[FastAPI Ingress]
+    Gateway -->|Rate Limit & Validate| Redis[(Redis Cluster)]
+    Gateway -->|Buffer Logs| Queue[Redis Streams / Kafka]
+    
+    Queue -->|Async Consumption| Worker[Processing Workers]
+    Worker -->|Deduplicate| Redis
+    Worker -->|Batch Insert| DB[(PostgreSQL)]
+    Worker -->|Archival Parquet| S3[(S3 Storage)]
+    
+    DB --> Dashboard[React Dashboard & Alerts]
+    S3 --> Reports[PDF Audit Engine]
+
+    classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+    classDef database fill:#f5f5f5,stroke:#000000,stroke-width:1.5px,color:#000000,stroke-dasharray: 0;
+
+    class Redis,DB,S3 database;`,
     tradeoffs: [
       "**Log Signature Deduplication:** Used MD5 pattern signatures to normalize dynamic logs (e.g. stripping specific IDs). This groups identical errors into a single entity, reducing DB insert pressure by up to 90% during outage cascades.",
       "**Backpressure Enforcement:** The API gateway uses a Redis-backed token bucket rate-limiter. If log volume exceeds thresholds, it rejects logs with `HTTP 429` (Too Many Requests) to safeguard database storage.",
@@ -56,14 +76,21 @@ export const systemDesigns: SystemDesignItem[] = [
     title: "AD. Sentinel: Telemetry, Audit & Job Execution Engine",
     description: "An asynchronous telemetry and reliability platform for service log ingestion, threat risk score computation, SLA audit exports, and async job state coordination.",
     icon: Activity,
-    chart: `graph TD
-    Client[Telemetry Sources / Ingress API] -->|Log Event / Job Exec| Gateway[FastAPI Ingress]
-    Gateway -->|Rate-Limiter: Token Bucket| RedisCache[(Redis State & Rate Limiter)]
-    Gateway -->|Async Ingest Pipeline| Services[Audit & Telemetry Services]
-    Services -->|State Coordination & Leases| JobEngine[Job Execution Engine]
-    Services -->|Structured Data Ingestion| PostgreSQL[(PostgreSQL Audit Store)]
-    PostgreSQL -->|Threat Risk Computation| Copilot[AI Copilot & SLA Audit Compiler]
-    Copilot -->|Operational Insights & SLA Reports| Dashboard[Live Dashboard / Render Demo]`,
+    chart: `flowchart TD
+    Sources[Telemetry Sources & Ingress API] -->|Log Event / Job Exec| Gateway[FastAPI Backend Service]
+    
+    Gateway -->|Rate-Limiter & State| Redis[(Redis State & Cache)]
+    Gateway -->|Cortex SOP Search & AI Complete| Snowflake[(Snowflake DB & Cortex AI)]
+    
+    Snowflake -->|Threat Risk & SOP RAG Context| Copilot[AI Copilot & SLA Audit Compiler]
+    Copilot -->|Directives & Alerts| Engine[Multi-Channel Job Execution Engine]
+    
+    Engine --> Dashboard[Live EOC Dashboard & Map]
+
+    classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+    classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    class Redis,Snowflake storage;`,
     tradeoffs: [
       "**Structured Log Aggregation & Threat Scoring:** Implemented structured data ingestion pipelines that aggregate log events to compute dynamic threat risk scores without causing database write saturation.",
       "**Async Job Execution & State Coordination:** Built a state coordination engine with worker lease management and Redis heartbeat pings to ensure operational correctness under network blips, worker crashes, and rate limits.",
