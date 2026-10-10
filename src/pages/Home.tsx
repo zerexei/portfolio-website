@@ -1,9 +1,9 @@
 import React from 'react';
 import { Hero } from '../components/layout/Hero';
-import { ProblemSolutions } from '../components/services/ProblemSolutions';
-import { Services } from '../components/layout/Services';
-import { Workflow } from '../components/layout/Workflow';
 import { PortfolioHub } from '../components/projects/PortfolioHub';
+import { Services } from '../components/layout/Services';
+import { ProblemSolutions } from '../components/services/ProblemSolutions';
+import { Workflow } from '../components/layout/Workflow';
 import { Section } from '../components/common/Section';
 import { projects } from '../data/projects';
 import { resumeData } from '../data/resume';
@@ -17,28 +17,28 @@ export const Home: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* 1. Hero Section */}
-      <Section id="hero" className="border-b border-border">
+      <Section id="hero" className="border-b border-border bg-card/40">
         <Hero />
       </Section>
 
-      {/* 2. Problem -> Solutions */}
-      <Section id="problems-solved" className="border-b border-border">
+      {/* 2. Technical Proof & Portfolio (Proof first: Smicos, Sentinel, Sentry) */}
+      <Section id="case-studies" className="border-b border-border">
+        <PortfolioHub caseStudies={caseStudies} otherProjects={otherProjects} />
+      </Section>
+
+      {/* 3. Problem -> Solution Architecture (Backend pain points resolved) */}
+      <Section id="problems-solved" className="border-b border-border bg-card/40">
         <ProblemSolutions />
       </Section>
 
-      {/* 3. Services & Solutions */}
+      {/* 4. Engineering Solutions & Pricing Estimator */}
       <Section id="services" className="border-b border-border">
         <Services />
       </Section>
 
-      {/* 4. Collaboration Blueprint */}
-      <Section id="workflow" className="border-b border-border">
+      {/* 5. Collaboration Blueprint */}
+      <Section id="workflow" className="border-b border-border bg-card/40">
         <Workflow />
-      </Section>
-
-      {/* 5. Portfolio */}
-      <Section id="case-studies" className="border-b border-border bg-card/50">
-        <PortfolioHub caseStudies={caseStudies} otherProjects={otherProjects} />
       </Section>
 
       {/* 6. Final CTA */}
@@ -47,7 +47,7 @@ export const Home: React.FC = () => {
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
             Let's build something durable.
           </h2>
-          <p className="text-[var(--neutral-foreground)] text-base md:text-lg leading-relaxed">
+          <p className="text-(--neutral-foreground) text-base md:text-lg leading-relaxed">
             Whether you need to secure your SaaS backend against race conditions, integrate complex third-party APIs, or perform a reliability audit, I deliver production-ready, spec-compliant code.
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-4">

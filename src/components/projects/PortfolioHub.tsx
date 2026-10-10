@@ -77,13 +77,13 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
     },
     {
       id: "architecture",
-      label: "System Architecture Specs",
+      label: "Architecture Specs",
       icon: Cpu,
       badge: `${systemDesigns.length} Specs`,
     },
     {
       id: "open-source",
-      label: "Open-Source & Repos",
+      label: "Other Projects & Repos",
       icon: Code2,
       badge: `${otherProjects.length} Repos`,
     },
@@ -93,22 +93,22 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
     systemDesigns.find((d) => d.slug === selectedDesignSlug) || systemDesigns[0];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header Info */}
-      <div className="space-y-3 max-w-2xl">
+      <div className="space-y-2 max-w-2xl">
         <div className="text-primary font-mono text-xs uppercase tracking-widest font-semibold">
           Engineering Proof & Portfolio
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
           Technical Proof & System Architecture
         </h2>
-        <p className="text-neutral-foreground text-sm md:text-base leading-relaxed">
-          Filter below to inspect production case studies, interactive system design blueprints, or open-source tooling.
+        <p className="text-neutral-foreground text-sm leading-relaxed">
+          Explore production case studies with visual product previews, interactive system blueprints, or other shipped products and tooling.
         </p>
       </div>
 
       {/* Tab Controls */}
-      <div className="flex flex-wrap gap-2 p-1.5 bg-card-nested border border-border rounded-xl w-fit relative z-10">
+      <div className="flex flex-wrap gap-2 p-1 bg-card-nested border border-border rounded-xl w-fit relative z-10">
         {tabs.map((tab, idx) => {
           const TabIcon = tab.icon;
           const isActive = activeTab === idx;
@@ -116,7 +116,7 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(idx)}
-              className={`relative flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-colors duration-300 cursor-pointer z-10 ${
+              className={`relative flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors duration-200 cursor-pointer z-10 ${
                 isActive
                   ? "text-foreground"
                   : "text-neutral-foreground hover:text-foreground hover:bg-neutral"
@@ -130,12 +130,12 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
                 />
               )}
               <TabIcon
-                size={14}
+                size={13}
                 className={`relative z-10 ${isActive ? "text-primary" : "text-neutral-foreground"}`}
               />
               <span className="relative z-10">{tab.label}</span>
               <span
-                className={`text-[9px] font-mono px-1.5 py-0.5 rounded relative z-10 transition-colors duration-300 ${
+                className={`text-[9px] font-mono px-1.5 py-0.5 rounded relative z-10 transition-colors duration-200 ${
                   isActive
                     ? "bg-primary-tint text-primary border border-primary-border"
                     : "bg-neutral text-neutral-foreground"
@@ -148,39 +148,41 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
         })}
       </div>
 
-      {/* Tab Content Display with Smooth Transitions */}
-      <div className="min-h-100">
+      {/* Tab Content Display */}
+      <div className="min-h-80">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
+            {/* Tab 0: System Case Studies */}
             {activeTab === 0 && (
-              <div className="space-y-8">
-                {caseStudies.map((project, index) => (
+              <div className="space-y-4">
+                {caseStudies.map((project) => (
                   <FeaturedProject
                     key={project.id}
                     project={project}
-                    defaultExpanded={index === 0 || project.id === "ad-sentinel"}
+                    defaultExpanded={project.id === "smicos" || project.id === "ad-sentinel"}
                   />
                 ))}
               </div>
             )}
 
+            {/* Tab 1: System Architecture Specs */}
             {activeTab === 1 && (
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {/* Spec selector buttons */}
-                <div className="flex flex-wrap gap-2 pb-2 border-b border-border">
+                <div className="flex flex-wrap gap-1.5 pb-2 border-b border-border">
                   {systemDesigns.map((design) => {
                     const isSelected = selectedDesignSlug === design.slug;
                     return (
                       <button
                         key={design.slug}
                         onClick={() => setSelectedDesignSlug(design.slug)}
-                        className={`relative px-3.5 py-2 rounded-lg text-xs font-mono transition-colors duration-300 cursor-pointer z-10 ${
+                        className={`relative px-3 py-1.5 rounded-lg text-xs font-mono transition-colors duration-200 cursor-pointer z-10 ${
                           isSelected
                             ? "text-primary font-bold"
                             : "text-neutral-foreground hover:text-foreground"
@@ -214,6 +216,7 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
               </div>
             )}
 
+            {/* Tab 2: Other Projects & Repos */}
             {activeTab === 2 && (
               <div>
                 <ProjectGrid projects={otherProjects} />

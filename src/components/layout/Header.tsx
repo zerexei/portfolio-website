@@ -44,9 +44,9 @@ export const Header: React.FC = () => {
   };
 
   const navLinks = [
+    { name: "Portfolio", path: "/#case-studies" },
     { name: "Solutions", path: "/#services" },
     { name: "Process", path: "/#workflow" },
-    { name: "Portfolio", path: "/#case-studies" },
     { name: routes.systemDesign.title, path: routes.systemDesign.path },
     { name: routes.articles.title, path: routes.articles.path },
     { name: routes.resume.title, path: routes.resume.path },
@@ -57,7 +57,7 @@ export const Header: React.FC = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ",
         isScrolled
           ? "bg-card/90 backdrop-blur-md border-border py-4"
           : "bg-transparent border-transparent py-6",

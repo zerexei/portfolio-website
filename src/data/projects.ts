@@ -7,6 +7,10 @@ export interface Project {
   demo?: string;
   featured?: boolean;
   hackathon?: string[];
+  screenshots?: {
+    thumbnail: string;
+    caption: string;
+  }[];
   featuredDetails?: {
     problem: string;
     architecture: string;
@@ -17,6 +21,7 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  // ─── Featured System Case Studies (Original Order) ───
   {
     id: "smicos",
     title: "Smicos",
@@ -75,6 +80,13 @@ export const projects: Project[] = [
     tech: ["React.js", "Python", "FastAPI", "PostgreSQL", "Redis", "ReportLab", "Traefik", "Docker"],
     github: "https://github.com/AD-Technology-Inc/sentry",
     demo: "https://ad-technology-inc.github.io/Sentry",
+    screenshots: [
+      { thumbnail: "/portfolio/sentry/4. dashboard.png", caption: "Threat Severity & Uptime Dashboard" },
+      { thumbnail: "/portfolio/sentry/5. log explorer.png", caption: "High-Speed Log Explorer" },
+      { thumbnail: "/portfolio/sentry/6. issues.png", caption: "Fingerprinted Incident Clusters" },
+      { thumbnail: "/portfolio/sentry/7. alerts.png", caption: "Telemetry Alert Rule Triggers" },
+      { thumbnail: "/portfolio/sentry/8. reports.png", caption: "Executive SLA Audit Reports" },
+    ],
     featuredDetails: {
       problem:
         "Logs scattered across services, threat severity is guesswork, and SLA reports are built manually after incidents instead of continuously.",
@@ -96,6 +108,13 @@ export const projects: Project[] = [
     tech: ["Python", "FastAPI", "React.js", "Snowflake", "Celery", "Redis", "WebSockets"],
     github: "https://github.com/AD-Technology-Inc/sentinel",
     demo: "https://sentinel-ai-24ck.onrender.com",
+    screenshots: [
+      { thumbnail: "/portfolio/sentinel/1. app.png", caption: "Emergency Operations Command Console" },
+      { thumbnail: "/portfolio/sentinel/2. problem - solution.png", caption: "Risk Telemetry & Sensor Models" },
+      { thumbnail: "/portfolio/sentinel/3. flood incident walkthrough.png", caption: "Tactical Response Wizard" },
+      { thumbnail: "/portfolio/sentinel/4. architecture.png", caption: "Audit Pipeline Architecture" },
+      { thumbnail: "/portfolio/sentinel/5. agent skills specifications.png", caption: "Agent Function Calling Specs" },
+    ],
     hackathon: [
       "Snowflake CoCo CLI Hackathon 2026",
       "Gen AI Academy APAC Edition",
@@ -112,6 +131,36 @@ export const projects: Project[] = [
       impact:
         "Live sensor telemetry flows into an AI risk engine that identified 28,000 affected residents in a single assessment — turning hours of manual collation into a commander-approved dispatch of 1,200+ public warnings with a full Snowflake audit trail.",
     },
+  },
+
+  // ─── Other Shipped Products & Repos ───
+  {
+    id: "centro",
+    title: "Centro Workspace",
+    description:
+      "All-in-one multi-tenant operations ERP and client management platform centralizing attendance tracking, sprint Kanban pipelines, billing workflows, and client self-service portals.",
+    tech: ["Laravel", "PostgreSQL", "Vue.js", "Redis", "Stripe API", "Tailwind CSS"],
+    screenshots: [
+      { thumbnail: "/portfolio/centro/1. OperationsDashboard.png", caption: "Executive Operations & Revenue Dashboard" },
+      { thumbnail: "/portfolio/centro/2. AttendanceWidget.png", caption: "Biometric Attendance & Shift Tracking" },
+      { thumbnail: "/portfolio/centro/3. ClientsAndCrmHub.png", caption: "Multi-Tenant CRM & Account Ledger" },
+      { thumbnail: "/portfolio/centro/4. ProjectKanbanBoard.png", caption: "Interactive Sprint Kanban Pipeline" },
+      { thumbnail: "/portfolio/centro/5. InvoiceBuilderModal.png", caption: "Automated Invoice & Billing Engine" },
+      { thumbnail: "/portfolio/centro/6. ClientPortalProjectView.png", caption: "Client Self-Service Project Portal" },
+    ],
+  },
+  {
+    id: "kape-calle",
+    title: "Kape Calle",
+    description:
+      "E-commerce storefront and digital brand platform featuring an interactive product catalog, direct order ingestion, customer reviews, and branch navigation.",
+    tech: ["React.js", "Tailwind CSS", "TypeScript", "Responsive UI"],
+    screenshots: [
+      { thumbnail: "/portfolio/kape-calle/2. hero.png", caption: "Brand Hero & Order Experience" },
+      { thumbnail: "/portfolio/kape-calle/4.1. product-service catalog.png", caption: "Artisan Coffee & Pastry Catalog" },
+      { thumbnail: "/portfolio/kape-calle/6. lead capture - direct order form.png", caption: "Direct Checkout & Order Ingestion" },
+      { thumbnail: "/portfolio/kape-calle/7. location.png", caption: "Store Branch Locator & Transit Info" },
+    ],
   },
   {
     id: "resilient-http-client",

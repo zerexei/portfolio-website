@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
   const calendlyUrl = resumeData.calendly || "https://calendly.com/angeloarcillas64";
 
   return (
-    <footer className="w-full border-t border-border py-12 md:py-16">
+    <footer className="w-full border-border py-12 md:py-16">
       <div className="max-w-5xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-3">

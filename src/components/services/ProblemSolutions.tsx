@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { resumeData } from "../../data/resume";
 import { Zap, RefreshCw, ShieldAlert, ArrowRight, CheckCircle2, AlertTriangle, Layers, Key, Lock, DollarSign, Cloud, Mail } from "lucide-react";
-import { RaceConditionDemo } from "./RaceConditionDemo";
 
 export const ProblemSolutions: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -233,9 +232,6 @@ export const ProblemSolutions: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Interactive Concurrency Visualizer */}
-      <RaceConditionDemo />
     </div>
   );
 };
