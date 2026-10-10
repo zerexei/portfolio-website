@@ -6,14 +6,14 @@ mermaid.initialize({
   theme: 'dark',
   securityLevel: 'loose',
   themeVariables: {
-    background: '#18181b', // zinc-900
-    primaryColor: '#27272a', // zinc-800
-    primaryTextColor: '#f4f4f5', // zinc-100
-    lineColor: '#55ffff', // accent cyan
-    actorBorder: '#3f3f46',
-    nodeBorder: '#3f3f46',
-    signalColor: '#55ffff',
-    signalLineColor: '#55ffff',
+    background: '#0f172a', // slate-900 / card
+    primaryColor: '#1e293b', // slate-800
+    primaryTextColor: '#f8fafc', // slate-50
+    lineColor: '#1976d2', // primary brand blue
+    actorBorder: '#334155', // slate-700
+    nodeBorder: '#334155',
+    signalColor: '#1976d2',
+    signalLineColor: '#1976d2',
   }
 });
 
@@ -33,7 +33,7 @@ export const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
 
   return (
     <div 
-      className="mermaid bg-zinc-950/40 p-6 rounded-xl border border-zinc-800/80 overflow-x-auto flex justify-center w-full" 
+      className="mermaid bg-card p-6 rounded-xl border border-border overflow-x-auto flex justify-center w-full" 
       ref={containerRef}
     >
       {chart}

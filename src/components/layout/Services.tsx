@@ -83,10 +83,10 @@ export const Services: React.FC = () => {
   return (
     <div className="py-20 space-y-16 animate-slide-up">
       <div className="space-y-4 max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight text-white">
+        <h2 className="text-3xl font-bold tracking-tight text-foreground">
           Engineering Solutions
         </h2>
-        <p className="text-zinc-400 text-lg">
+        <p className="text-neutral-foreground text-lg">
           Practical, spec-compliant backend solutions tailored for SaaS stability, data flow integrity, and operational dependability.
         </p>
       </div>
@@ -98,40 +98,37 @@ export const Services: React.FC = () => {
           return (
             <div
               key={index}
-              className="card p-6 flex flex-col justify-between space-y-6 relative overflow-hidden group hover:!border-accent/30 transition-all duration-300 !bg-zinc-950/40"
+              className="card p-6 flex flex-col justify-between space-y-6 relative group transition-all duration-300"
             >
-              {/* Subtle background glow */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 blur-[80px] rounded-full -mr-20 -mt-20 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
-
               <div className="space-y-5">
                 {/* Header: Icon, Title & Price */}
-                <div className="space-y-3 pb-4 border-b border-zinc-900">
+                <div className="space-y-3 pb-4 border-b border-border">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400 group-hover:text-accent group-hover:bg-accent/10 transition-all duration-300 shrink-0">
+                    <div className="icon-box shrink-0">
                       <ServiceIcon size={20} />
                     </div>
-                    <span className="text-xs font-mono font-bold text-accent bg-accent/5 border border-accent/25 px-2.5 py-1 rounded-full">
+                    <span className="badge badge-mono">
                       {service.price}
                     </span>
                   </div>
-                  <h3 className="font-bold text-base text-white tracking-tight group-hover:text-accent transition-colors leading-snug">
+                  <h3 className="font-bold text-base text-foreground tracking-tight group-hover:text-primary transition-colors leading-snug">
                     {service.title}
                   </h3>
                 </div>
 
                 {/* Description */}
-                <p className="text-zinc-400 text-sm leading-relaxed">
+                <p className="text-neutral-foreground text-sm leading-relaxed">
                   {service.description}
                 </p>
 
                 {/* Bullet Points */}
-                <div className="space-y-2 pt-2 border-t border-zinc-900/80">
-                  <span className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold block mb-1">
+                <div className="space-y-2 pt-2 border-t border-border">
+                  <span className="text-xs font-mono uppercase tracking-wider text-neutral-foreground font-semibold block mb-1">
                     Key Deliverables
                   </span>
                   {service.bullets.slice(0, 4).map((bullet, i) => (
-                    <div key={i} className="flex items-start gap-2 text-sm text-zinc-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent/70 mt-2 shrink-0" />
+                    <div key={i} className="flex items-start gap-2 text-sm text-neutral-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
                       <span className="text-sm leading-snug">{bullet}</span>
                     </div>
                   ))}
@@ -139,12 +136,12 @@ export const Services: React.FC = () => {
               </div>
 
               {/* Bottom Row: CTA Button */}
-              <div className="pt-4 border-t border-zinc-900/80">
+              <div className="pt-4 border-t border-border">
                 <a
                   href={calendlyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5 shadow-sm hover:shadow-[0_0_15px_rgba(85,255,255,0.2)]"
+                  className="button button-primary w-full text-xs gap-1.5"
                 >
                   Book Solution <ArrowRight size={14} />
                 </a>
@@ -157,14 +154,14 @@ export const Services: React.FC = () => {
       {/* Interactive Pricing Estimator */}
       <div className="pt-12 space-y-8">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-accent shrink-0">
+          <div className="icon-box text-primary shrink-0">
             <Calculator size={20} />
           </div>
           <div>
-            <h3 className="font-bold text-white tracking-tight text-lg">
+            <h3 className="font-bold text-foreground tracking-tight text-lg">
               Project Cost Estimator
             </h3>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-neutral-foreground">
               Get an instant, transparent estimate for your backend
               requirements.
             </p>
@@ -174,7 +171,7 @@ export const Services: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+              <label className="text-xs font-mono uppercase tracking-wider text-neutral-foreground font-semibold">
                 Core Service
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -186,10 +183,10 @@ export const Services: React.FC = () => {
                   <button
                     key={s.id}
                     onClick={() => setSelectedService(s.id)}
-                    className={`px-3 py-3 rounded-lg border text-xs font-bold transition-all duration-300 text-center flex flex-col items-center gap-1 focus-visible:ring-1 focus-visible:ring-accent/50 focus-visible:outline-none hover:-translate-y-0.5 ${
+                    className={`px-3 py-3 rounded-lg border text-xs font-bold transition-all duration-300 text-center flex flex-col items-center gap-1 focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none cursor-pointer ${
                       selectedService === s.id
-                        ? "border-accent bg-accent/5 text-accent shadow-[0_0_15px_rgba(85,255,255,0.05)]"
-                        : "border-zinc-800 bg-zinc-900/20 text-zinc-400 hover:border-zinc-700 hover:text-zinc-300"
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border bg-card-nested text-neutral-foreground hover:border-neutral hover:text-foreground"
                     }`}
                   >
                     <span>{s.name}</span>
@@ -202,7 +199,7 @@ export const Services: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+              <label className="text-xs font-mono uppercase tracking-wider text-neutral-foreground font-semibold">
                 Project Specifications
               </label>
               <div className="space-y-2">
@@ -231,10 +228,10 @@ export const Services: React.FC = () => {
                 ].map((item) => (
                   <label
                     key={item.id}
-                    className={`flex items-center justify-between gap-4 p-3.5 rounded-lg border text-xs cursor-pointer transition-all duration-300 focus-within:ring-1 focus-within:ring-accent/50 focus-within:outline-none ${
+                    className={`flex items-center justify-between gap-4 p-3.5 rounded-lg border text-xs cursor-pointer transition-all duration-300 focus-within:ring-1 focus-within:ring-primary focus-within:outline-none ${
                       item.checked
-                        ? "border-accent/40 bg-zinc-900/50 text-zinc-100"
-                        : "border-zinc-800 bg-zinc-950/20 text-zinc-400 hover:border-zinc-750 hover:text-zinc-300"
+                        ? "border-primary/40 bg-primary/5 text-foreground"
+                        : "border-border bg-card-nested text-neutral-foreground hover:border-neutral hover:text-foreground"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -242,15 +239,15 @@ export const Services: React.FC = () => {
                         type="checkbox"
                         checked={item.checked}
                         onChange={(e) => item.set(e.target.checked)}
-                        className="accent-accent h-4 w-4 border-zinc-700 rounded bg-zinc-900 focus:ring-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-accent/50 shrink-0"
+                        className="form-checkbox accent-primary h-4 w-4 rounded shrink-0 cursor-pointer"
                       />
                       <span className="font-medium text-left">{item.label}</span>
                     </div>
                     <span
                       className={`text-[10px] font-mono px-2 py-0.5 rounded-md shrink-0 transition-colors duration-300 ${
                         item.checked
-                          ? "text-accent bg-accent/10 border border-accent/20"
-                          : "text-zinc-500 bg-zinc-900 border border-zinc-800"
+                          ? "text-primary bg-primary-tint border border-primary-border"
+                          : "text-neutral-foreground bg-neutral border border-border"
                       }`}
                     >
                       {item.price}
@@ -261,19 +258,16 @@ export const Services: React.FC = () => {
             </div>
           </div>
 
-          <div className="card relative overflow-hidden !border-zinc-800 p-8 flex flex-col items-center justify-center text-center space-y-6 h-full min-h-[250px] group transition-all duration-300 hover:!border-accent/15">
-            {/* Subtle background glow */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[100px] rounded-full -mr-24 -mt-24 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
-
+          <div className="card p-8 flex flex-col items-center justify-center text-center space-y-6 h-full min-h-[250px] transition-all duration-300">
             <div className="space-y-2 relative z-10">
-              <span className="text-xs font-mono uppercase tracking-widest text-zinc-500">
+              <span className="text-xs font-mono uppercase tracking-widest text-neutral-foreground">
                 Estimated Budget
               </span>
-              <div className="text-5xl font-black text-white flex items-center justify-center gap-0.5 tracking-tight font-mono">
-                <DollarSign className="text-accent shrink-0" size={32} />
+              <div className="text-5xl font-black text-foreground flex items-center justify-center gap-0.5 tracking-tight font-mono">
+                <DollarSign className="text-primary shrink-0" size={32} />
                 <span>{calculateEstimate().toLocaleString()}</span>
               </div>
-              <p className="text-[10px] text-zinc-500 max-w-[220px] mx-auto mt-2 leading-relaxed">
+              <p className="text-[10px] text-neutral-foreground max-w-[220px] mx-auto mt-2 leading-relaxed">
                 Preliminary estimate based on standard scope.
               </p>
             </div>
@@ -282,7 +276,7 @@ export const Services: React.FC = () => {
               href={calendlyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full relative z-10 inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5 hover:shadow-[0_0_20px_rgba(85,255,255,0.25)] hover:-translate-y-0.5"
+              className="button button-primary w-full text-sm font-bold"
             >
               Book Call & Confirm Quote
             </a>

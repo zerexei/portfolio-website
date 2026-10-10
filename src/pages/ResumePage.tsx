@@ -3,7 +3,7 @@ import { Section } from "../components/common/Section";
 import { About } from "../components/layout/About";
 import { TechStack } from "../components/layout/TechStack";
 import { resumeData } from "../data/resume";
-import { Download, Mail, Github, Linkedin } from "lucide-react";
+import { Download, Mail, Github, Linkedin, MapPin } from "lucide-react";
 import { Button } from "../components/common/Button";
 
 export const ResumePage: React.FC = () => {
@@ -13,14 +13,14 @@ export const ResumePage: React.FC = () => {
   return (
     <div className="flex flex-col space-y-12">
       {/* Header Banner for Recruiters */}
-      <Section className="pt-24 pb-8 border-b border-zinc-900">
+      <Section className="pt-24 pb-8 border-b border-border">
         <div className="space-y-6 max-w-3xl">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div className="text-accent font-mono text-xs uppercase tracking-widest font-semibold mb-1">
+              <div className="text-primary font-mono text-xs uppercase tracking-widest font-semibold mb-1">
                 Engineering Resume
               </div>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+              <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
                 {resumeData.name}
               </h1>
             </div>
@@ -34,11 +34,11 @@ export const ResumePage: React.FC = () => {
             </Button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-xs text-zinc-400 font-mono py-3 border-y border-zinc-900">
-            <span>📍 {resumeData.location}</span>
+          <div className="flex flex-wrap items-center gap-6 text-xs text-[var(--neutral-foreground)] font-mono py-3 border-y border-border">
+            <span className="flex items-center gap-1"><MapPin size={14} /> {resumeData.location}</span>
             <a
               href={`mailto:${resumeData.email}`}
-              className="hover:text-accent transition-colors flex items-center gap-1"
+              className="hover:text-primary transition-colors flex items-center gap-1"
             >
               <Mail size={14} /> {resumeData.email}
             </a>
@@ -46,7 +46,7 @@ export const ResumePage: React.FC = () => {
               href={resumeData.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-accent transition-colors flex items-center gap-1"
+              className="hover:text-primary transition-colors flex items-center gap-1"
             >
               <Linkedin size={14} /> LinkedIn
             </a>
@@ -54,13 +54,13 @@ export const ResumePage: React.FC = () => {
               href={resumeData.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-accent transition-colors flex items-center gap-1"
+              className="hover:text-primary transition-colors flex items-center gap-1"
             >
               <Github size={14} /> GitHub
             </a>
           </div>
 
-          <p className="text-zinc-400 text-base leading-relaxed">
+          <p className="text-[var(--neutral-foreground)] text-base leading-relaxed">
             {resumeData.summary}
           </p>
         </div>
@@ -72,7 +72,7 @@ export const ResumePage: React.FC = () => {
       </Section>
 
       {/* Complete Skill Arsenal */}
-      <Section id="skills" className="bg-zinc-900/20 py-16">
+      <Section id="skills" className="bg-card/50 py-16">
         <TechStack />
       </Section>
     </div>

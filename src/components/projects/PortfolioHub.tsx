@@ -20,41 +20,38 @@ interface ArchitectureSpecCardProps {
 
 const ArchitectureSpecCard: React.FC<ArchitectureSpecCardProps> = ({ design }) => {
   return (
-    <div className="card p-6 md:p-8 space-y-6 border border-zinc-800/80 !bg-zinc-950/40 relative overflow-hidden">
-      {/* Ambient glow */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[120px] rounded-full -mr-32 -mt-32 pointer-events-none" />
-
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-900 relative z-10">
+    <div className="card p-6 md:p-8 space-y-6 relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border relative z-10">
         <div>
-          <h3 className="text-xl font-bold text-white tracking-tight">
+          <h3 className="text-xl font-bold text-foreground tracking-tight">
             {design.title}
           </h3>
-          <p className="text-zinc-400 text-xs mt-1">
+          <p className="text-neutral-foreground text-xs mt-1">
             {design.description}
           </p>
         </div>
         <Link
           to={routes.systemDesignDetail.getPath(design.slug)}
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:underline shrink-0"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline shrink-0"
         >
           Full Specification Spec <ExternalLink size={13} />
         </Link>
       </div>
 
       {/* Mermaid Diagram Container */}
-      <div className="w-full bg-zinc-950/80 border border-zinc-900 rounded-xl p-4 md:p-6 overflow-x-auto relative z-10">
+      <div className="w-full bg-card-nested border border-border rounded-xl p-4 md:p-6 overflow-x-auto relative z-10">
         <Mermaid chart={design.chart} />
       </div>
 
       {/* Architectural Trade-offs List */}
       <div className="space-y-3 pt-2 relative z-10">
-        <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
+        <span className="text-xs font-mono uppercase tracking-wider text-neutral-foreground font-semibold block">
           Key Architectural Trade-offs & Fail-Safes
         </span>
         <ul className="space-y-2">
           {design.tradeoffs.map((item, i) => (
-            <li key={i} className="text-xs text-zinc-400 flex items-start gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
+            <li key={i} className="text-xs text-neutral-foreground flex items-start gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
               <span>{item.replace(/\*\*/g, "")}</span>
             </li>
           ))}
@@ -99,19 +96,19 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
     <div className="space-y-8">
       {/* Header Info */}
       <div className="space-y-3 max-w-2xl">
-        <div className="text-accent font-mono text-xs uppercase tracking-widest font-semibold">
+        <div className="text-primary font-mono text-xs uppercase tracking-widest font-semibold">
           Engineering Proof & Portfolio
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
           Technical Proof & System Architecture
         </h2>
-        <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+        <p className="text-neutral-foreground text-sm md:text-base leading-relaxed">
           Filter below to inspect production case studies, interactive system design blueprints, or open-source tooling.
         </p>
       </div>
 
       {/* Tab Controls */}
-      <div className="flex flex-wrap gap-2 p-1.5 bg-zinc-950/80 border border-zinc-900 rounded-xl w-fit relative z-10">
+      <div className="flex flex-wrap gap-2 p-1.5 bg-card-nested border border-border rounded-xl w-fit relative z-10">
         {tabs.map((tab, idx) => {
           const TabIcon = tab.icon;
           const isActive = activeTab === idx;
@@ -121,27 +118,27 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
               onClick={() => setActiveTab(idx)}
               className={`relative flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-colors duration-300 cursor-pointer z-10 ${
                 isActive
-                  ? "text-white"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30"
+                  ? "text-foreground"
+                  : "text-neutral-foreground hover:text-foreground hover:bg-neutral"
               }`}
             >
               {isActive && (
                 <motion.div
                   layoutId="activePortfolioTab"
-                  className="absolute inset-0 bg-zinc-800 border border-zinc-700/80 rounded-lg z-0"
+                  className="absolute inset-0 bg-card border border-border rounded-lg z-0 shadow-xs"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}
               <TabIcon
                 size={14}
-                className={`relative z-10 ${isActive ? "text-accent" : "text-zinc-500"}`}
+                className={`relative z-10 ${isActive ? "text-primary" : "text-neutral-foreground"}`}
               />
               <span className="relative z-10">{tab.label}</span>
               <span
                 className={`text-[9px] font-mono px-1.5 py-0.5 rounded relative z-10 transition-colors duration-300 ${
                   isActive
-                    ? "bg-accent/15 text-accent border border-accent/20"
-                    : "bg-zinc-900 text-zinc-500"
+                    ? "bg-primary-tint text-primary border border-primary-border"
+                    : "bg-neutral text-neutral-foreground"
                 }`}
               >
                 {tab.badge}
@@ -176,7 +173,7 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
             {activeTab === 1 && (
               <div className="space-y-6">
                 {/* Spec selector buttons */}
-                <div className="flex flex-wrap gap-2 pb-2 border-b border-zinc-900/60">
+                <div className="flex flex-wrap gap-2 pb-2 border-b border-border">
                   {systemDesigns.map((design) => {
                     const isSelected = selectedDesignSlug === design.slug;
                     return (
@@ -185,14 +182,14 @@ export const PortfolioHub: React.FC<PortfolioHubProps> = ({
                         onClick={() => setSelectedDesignSlug(design.slug)}
                         className={`relative px-3.5 py-2 rounded-lg text-xs font-mono transition-colors duration-300 cursor-pointer z-10 ${
                           isSelected
-                            ? "text-accent font-bold"
-                            : "text-zinc-400 hover:text-zinc-200"
+                            ? "text-primary font-bold"
+                            : "text-neutral-foreground hover:text-foreground"
                         }`}
                       >
                         {isSelected && (
                           <motion.div
                             layoutId="activeSpecTab"
-                            className="absolute inset-0 bg-accent/10 border border-accent/40 rounded-lg z-0"
+                            className="absolute inset-0 bg-primary-tint border border-primary-border rounded-lg z-0"
                             transition={{ type: "spring", stiffness: 380, damping: 30 }}
                           />
                         )}

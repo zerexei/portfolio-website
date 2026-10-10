@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@ad-technology-inc/design-system": "^3.0.0",
     "@tailwindcss/vite": "^4.3.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",

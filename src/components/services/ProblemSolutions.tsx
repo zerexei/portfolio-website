@@ -21,7 +21,6 @@ export const ProblemSolutions: React.FC = () => {
         "I build dynamic request validation locks that detect repeat checkouts in milliseconds. This guarantees your customers are only charged once and no sales leads ever slip through the cracks.",
       proofCase:
         "Smicos System: Saved thousands in transaction refund disputes by handling 50K+ daily sales events with 0 lost leads and 0 double-billing errors.",
-      badgeColor: "text-amber-400 border-amber-400/30 bg-amber-400/10",
     },
     {
       id: "workers",
@@ -36,7 +35,6 @@ export const ProblemSolutions: React.FC = () => {
         "I engineer fail-safe queue monitors. If an external service fails, your app buffers the requests safely and retries them automatically when the system recovers—without crashing your main site.",
       proofCase:
         "AD. Publish: Guaranteed 100% website uptime and zero data loss during high-traffic surges and third-party service outages.",
-      badgeColor: "text-cyan-400 border-cyan-400/30 bg-cyan-400/10",
     },
     {
       id: "database",
@@ -51,7 +49,6 @@ export const ProblemSolutions: React.FC = () => {
         "I audit your database, optimize heavy search queries, and move slow operations out of the main page-loading path. This cuts server hosting fees and makes pages load instantly.",
       proofCase:
         "AD. Sentry: Accelerated report compilation times, reduced server CPU load, and eliminated error warning noise by 90%.",
-      badgeColor: "text-emerald-400 border-emerald-400/30 bg-emerald-400/10",
     },
     {
       id: "rate-limits",
@@ -66,7 +63,6 @@ export const ProblemSolutions: React.FC = () => {
         "I implement smart client queues and credential rotators that buffer sudden outbound requests and schedule them dynamically, keeping your third-party integrations active and stable.",
       proofCase:
         "AD. Sentinel: Provided uninterrupted AI queries and system sync pipelines under heavy usage spikes and vendor rate thresholds.",
-      badgeColor: "text-purple-400 border-purple-400/30 bg-purple-400/10",
     },
     {
       id: "race-conditions",
@@ -81,7 +77,6 @@ export const ProblemSolutions: React.FC = () => {
         "I build atomic database locks and transaction checks that block concurrent checkouts from claiming the same resource, protecting your billing catalog and catalog margins.",
       proofCase:
         "Smicos System: Protected critical promo catalogs and ticket stock with 0 duplicate checkouts or resource collisions under heavy launch traffic.",
-      badgeColor: "text-rose-400 border-rose-400/30 bg-rose-400/10",
     },
     {
       id: "billing-sync",
@@ -96,7 +91,6 @@ export const ProblemSolutions: React.FC = () => {
         "I build self-healing webhook listeners and fallback background sync engines. If Stripe experiences a network blip, the system catches up automatically, keeping billing statuses perfectly unified.",
       proofCase:
         "Billing Sync Engine: Secured subscription upgrades and cancellations for over 10K+ users with 0 access delays or double-billing conflicts.",
-      badgeColor: "text-green-400 border-green-400/30 bg-green-400/10",
     },
     {
       id: "media-uploads",
@@ -111,7 +105,6 @@ export const ProblemSolutions: React.FC = () => {
         "I implement secure, client-side pre-signed uploads straight to cloud bucket storage (S3/Cloudflare R2). Large files bypass your server entirely, saving CPU and bandwidth bills.",
       proofCase:
         "Presigned Storage Module: Migrated media ingest streams out-of-band, reducing main web server bandwidth and CPU usage by 60%.",
-      badgeColor: "text-blue-400 border-blue-400/30 bg-blue-400/10",
     },
     {
       id: "email-deliverability",
@@ -126,7 +119,6 @@ export const ProblemSolutions: React.FC = () => {
         "I configure DMARC/DKIM/SPF domain policies, transition email alerts to background workers (so user threads never wait), and setup feedback handlers to bounce dead mail addresses.",
       proofCase:
         "Transactional Mail Module: Maintained a 99.9% inbox delivery rate with under 3-second delivery speeds for critical verification alerts.",
-      badgeColor: "text-orange-400 border-orange-400/30 bg-orange-400/10",
     },
   ];
 
@@ -137,19 +129,19 @@ export const ProblemSolutions: React.FC = () => {
     <div className="space-y-8 animate-slide-up">
       {/* Section Header */}
       <div className="space-y-3 max-w-2xl">
-        <div className="text-accent font-mono text-xs uppercase tracking-widest font-semibold flex items-center gap-2">
+        <div className="text-primary font-mono text-xs uppercase tracking-widest font-semibold flex items-center gap-2">
           <Layers size={14} /> Problem → Solution Architecture
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
           Real SaaS Problems Solved By Service
         </h2>
-        <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+        <p className="text-neutral-foreground text-sm md:text-base leading-relaxed">
           Select an operational pain point below to see how targeted backend engineering resolves it.
         </p>
       </div>
 
-      {/* Symmetrical Grid Tab Navigation (2x4 on Mobile, 4x2 on Desktop) */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-1.5 bg-zinc-950/60 border border-zinc-900 rounded-xl">
+      {/* Symmetrical Grid Tab Navigation */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-1.5 bg-card-nested border border-border rounded-xl">
         {tabs.map((tab, idx) => {
           const TabIcon = tab.icon;
           const isActive = activeTab === idx;
@@ -157,13 +149,13 @@ export const ProblemSolutions: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(idx)}
-              className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-semibold transition-all duration-300 border text-left justify-start ${
+              className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[11px] font-semibold transition-all duration-300 border text-left justify-start cursor-pointer ${
                 isActive
-                  ? "bg-zinc-900 border-zinc-800 text-white shadow-sm shadow-accent/5"
-                  : "bg-transparent border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/30"
+                  ? "bg-card border-border text-foreground shadow-xs"
+                  : "bg-transparent border-transparent text-neutral-foreground hover:text-foreground hover:bg-neutral"
               }`}
             >
-              <TabIcon size={14} className={isActive ? "text-accent shrink-0" : "text-zinc-500 shrink-0"} />
+              <TabIcon size={14} className={isActive ? "text-primary shrink-0" : "text-neutral-foreground shrink-0"} />
               <span className="truncate">{tab.label}</span>
             </button>
           );
@@ -171,29 +163,26 @@ export const ProblemSolutions: React.FC = () => {
       </div>
 
       {/* Content Card display */}
-      <div className="card p-6 md:p-8 relative overflow-hidden bg-zinc-950/40! border border-zinc-800/80 rounded-2xl min-h-90 flex flex-col justify-between">
-        {/* Ambient background glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[120px] rounded-full -mr-32 -mt-32 pointer-events-none" />
-
+      <div className="card p-6 md:p-8 relative overflow-hidden min-h-90 flex flex-col justify-between">
         <div className="space-y-6 relative z-10 animate-fade-in flex-1 flex flex-col justify-between" key={activeTab}>
           <div className="space-y-6">
             {/* Header Row */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-900">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-accent shrink-0">
+                <div className="icon-box text-primary shrink-0">
                   <CurrentIcon size={18} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white tracking-tight leading-snug">
+                  <h3 className="text-lg font-bold text-foreground tracking-tight leading-snug">
                     {current.problemTitle}
                   </h3>
-                  <span className="text-[11px] text-zinc-500 font-mono">
-                    Solves: <strong className="text-zinc-300 font-semibold">{current.solvedByService}</strong>
+                  <span className="text-[11px] text-neutral-foreground font-mono">
+                    Solves: <strong className="text-foreground font-semibold">{current.solvedByService}</strong>
                   </span>
                 </div>
               </div>
 
-              <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border self-start sm:self-auto ${current.badgeColor}`}>
+              <span className="badge badge-mono self-start sm:self-auto">
                 {current.servicePrice}
               </span>
             </div>
@@ -201,21 +190,21 @@ export const ProblemSolutions: React.FC = () => {
             {/* Grid Layout: Pain vs Solution */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left: Operational Pain Point */}
-              <div className="space-y-2 p-5 bg-red-950/10 border border-red-900/20 rounded-xl">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-red-400 font-semibold flex items-center gap-1.5 leading-none">
+              <div className="space-y-2 p-5 bg-rose-500/5 border border-rose-500/20 rounded-xl">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-rose-400 font-semibold flex items-center gap-1.5 leading-none">
                   <AlertTriangle size={12} /> Operational Pain
                 </div>
-                <p className="text-zinc-300 text-xs leading-relaxed">
+                <p className="text-foreground/90 text-xs leading-relaxed">
                   {current.painPoint}
                 </p>
               </div>
 
               {/* Right: Solution Strategy */}
-              <div className="space-y-2 p-5 bg-emerald-950/10 border border-emerald-900/20 rounded-xl">
+              <div className="space-y-2 p-5 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
                 <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-semibold flex items-center gap-1.5 leading-none">
                   <CheckCircle2 size={12} /> Solution Strategy
                 </div>
-                <p className="text-zinc-300 text-xs leading-relaxed">
+                <p className="text-foreground/90 text-xs leading-relaxed">
                   {current.solutionHighlight}
                 </p>
               </div>
@@ -223,12 +212,12 @@ export const ProblemSolutions: React.FC = () => {
           </div>
 
           {/* Footer: Proven Case Proof & Booking CTA */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-zinc-900/20 border-t border-zinc-900 rounded-b-2xl -mx-6 -mb-6 mt-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-card-nested border-t border-border rounded-b-2xl -mx-6 -mb-6 mt-6">
             <div className="space-y-1 flex-1">
-              <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest block leading-none">
+              <span className="text-[9px] font-mono text-neutral-foreground uppercase tracking-widest block leading-none">
                 Validated Case Proof
               </span>
-              <p className="text-zinc-200 text-xs font-medium max-w-xl leading-normal">
+              <p className="text-foreground/90 text-xs font-medium max-w-xl leading-normal">
                 {current.proofCase}
               </p>
             </div>
@@ -237,7 +226,7 @@ export const ProblemSolutions: React.FC = () => {
               href={calendlyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold text-black bg-accent rounded-lg hover:bg-accent-hover transition-all duration-300 gap-1.5 shrink-0 shadow-sm"
+              className="button button-primary button-sm shrink-0 gap-1.5"
             >
               Book Solution <ArrowRight size={14} />
             </a>
