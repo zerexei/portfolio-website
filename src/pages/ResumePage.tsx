@@ -11,10 +11,10 @@ export const ResumePage: React.FC = () => {
     "https://docs.google.com/document/d/1ntE36TFH7bNb9cD55czwiqYrgiu4jTjfyip4PqRO4qA";
 
   return (
-    <div className="flex flex-col space-y-12">
+    <div className="flex flex-col">
       {/* Header Banner for Recruiters */}
-      <Section className="pt-24 pb-8 border-b border-border">
-        <div className="space-y-6 max-w-3xl">
+      <Section className="border-b border-border">
+        <div className="space-y-6 max-w-3xl animate-fade-in pt-20">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <div className="text-primary font-mono text-xs uppercase tracking-widest font-semibold mb-1">
@@ -67,12 +67,12 @@ export const ResumePage: React.FC = () => {
       </Section>
 
       {/* Experience Timeline */}
-      <Section id="experience">
+      <Section id="experience" className="bg-card/40">
         <About />
       </Section>
 
       {/* Complete Skill Arsenal */}
-      <Section id="skills" className="bg-card/50 py-16">
+      <Section id="skills" className="">
         <TechStack />
       </Section>
     </div>

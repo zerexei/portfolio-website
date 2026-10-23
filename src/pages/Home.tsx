@@ -17,32 +17,32 @@ export const Home: React.FC = () => {
   return (
     <div className="flex flex-col">
       {/* 1. Hero Section */}
-      <Section id="hero" className="border-b border-border bg-card/40">
+      <Section id="hero" className="border-b border-border">
         <Hero />
       </Section>
 
-      {/* 2. Technical Proof & Portfolio (Proof first: Smicos, Sentinel, Sentry) */}
-      <Section id="case-studies" className="border-b border-border">
+      {/* 2. Technical Proof & Portfolio */}
+      <Section id="case-studies" className="border-b border-border bg-card/40">
         <PortfolioHub caseStudies={caseStudies} otherProjects={otherProjects} />
       </Section>
 
       {/* 3. Problem -> Solution Architecture (Backend pain points resolved) */}
-      <Section id="problems-solved" className="border-b border-border bg-card/40">
+      <Section id="problems-solved" className="border-b border-border">
         <ProblemSolutions />
       </Section>
 
       {/* 4. Engineering Solutions & Pricing Estimator */}
-      <Section id="services" className="border-b border-border">
+      <Section id="services" className="border-b border-border bg-card/40">
         <Services />
       </Section>
 
       {/* 5. Collaboration Blueprint */}
-      <Section id="workflow" className="border-b border-border bg-card/40">
+      <Section id="workflow" className="border-b border-border">
         <Workflow />
       </Section>
 
       {/* 6. Final CTA */}
-      <Section id="contact" className="text-center">
+      <Section id="contact" className="bg-card text-center pt-16 md:pt-24">
         <div className="max-w-xl mx-auto space-y-8">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
             Let's build something durable.
