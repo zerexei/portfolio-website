@@ -1,6 +1,6 @@
 # SOURCE-AVAILABLE LICENSE
 
-Copyright (c) 2022 Angelo Arcillas
+Copyright (c) 2023 Angelo Arcillas
 
 This software and its source code are provided for viewing purposes only.
 
@@ -9,20 +9,26 @@ This software and its source code are provided for viewing purposes only.
 You are permitted to:
 
 - View the source code for educational and reference purposes only
+- Download and create copies of the source code solely for personal viewing and inspection.
 
 ## Restrictions
 
 You are NOT permitted to:
 
-- Copy, redistribute, or republish this software or its source code
-- Modify, adapt, or create derivative works based on this software
-- Use the software or source code in any other project or product
-- Sublicense, sell, or commercialize the software in any form
+- Redistribute, republish, or share copies of this software or its source code.
+- Modify, adapt, or create derivative works based on this software.
+- Use or incorporate the software or source code into any other project or product.
+- Sublicense, sell, or commercially exploit the software in any form.
+- Claim the software or any portion of its source code as your own.
 
 ## Ownership
 
-All rights, title, and ownership remain with the copyright holder.
+All rights, title, and ownership remain with the copyright holder. No rights are granted except those explicitly stated in this license.
 
 ## Termination
 
-Any violation of these terms immediately terminates all permissions.
+Any violation of these terms terminates the permissions granted under this license, subject to applicable law.
+
+## Disclaimer
+
+This software is provided "AS IS", without warranties of any kind, to the extent permitted by applicable law.
