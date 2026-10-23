@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
               AD<span className="text-primary">.</span>
             </h3>
             <p className="text-[var(--neutral-foreground)] text-sm max-w-sm">
-              Backend engineer building dependable, spec-compliant SaaS products, event-driven architectures, and API integrations.
+              Engineered for reliability. Designed for scale. Built to evolve.
             </p>
             <div className="pt-1">
               <Link
@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
               </a>
             </div>
             <p className="text-[var(--neutral-foreground)] text-xs font-mono">
-              © {new Date().getFullYear()} Angelo Dave Arcillas. Built with React & Tailwind.
+              © 2023 Angelo Dave Arcillas.
             </p>
           </div>
         </div>
