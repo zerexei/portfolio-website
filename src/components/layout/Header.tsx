@@ -98,7 +98,7 @@ export const Header: React.FC = () => {
               title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               aria-label="Toggle color theme"
             >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              {theme === "dark" ? <Moon size={18} /> : <Sun size={18} />}
             </button>
             <a
               href={calendlyUrl}
