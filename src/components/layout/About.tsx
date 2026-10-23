@@ -11,8 +11,8 @@ export const About: React.FC = () => {
           <Briefcase className="text-primary" size={24} /> Experience
         </h2>
         <p className="text-[var(--neutral-foreground)] text-lg">
-          I build and scale reliable SaaS platforms, focusing on real-time
-          systems, event-driven systems, secure API integrations, and scalable
+          I build and scale reliable SaaS platforms, specializing in real-time
+          and event-driven architectures, resilient API integrations, and scalable
           backend solutions that deliver business impact.
         </p>
       </div>
