@@ -7,7 +7,7 @@ Source code for my personal portfolio and technical blog, showcasing backend eng
 ## 🛠️ Tech Stack
 
 - **Framework:** React 18, TypeScript, Vite
-- **Styling:** Tailwind CSS v4, `@ad-technology-inc/design-system`
+- **Styling:** Tailwind CSS v4, `@adrelle/design-system`
 - **Content & Visuals:** `react-markdown` (articles), `mermaid` (architecture diagrams), `lucide-react` (icons)
 
 ---

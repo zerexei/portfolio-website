@@ -1,0 +1,36 @@
+---
+id: "ad-sentry"
+slug: "ad-sentry"
+title: "AD. Sentry: High-Throughput Log Ingestion & Threat Telemetry"
+description: "An out-of-band log auditing platform designed to aggregate error logs and compile automated SLA compliance reports without degrading hot paths."
+icon: "ShieldAlert"
+chart: |
+  flowchart TD
+      Apps[App Services] -->|Tenant Logs| Gateway[FastAPI Ingress]
+      Gateway -->|Rate Limit & Validate| Redis[(Redis Cluster)]
+      Gateway -->|Buffer Logs| Queue[Redis Streams / Kafka]
+      
+      Queue -->|Async Consumption| Worker[Processing Workers]
+      Worker -->|Deduplicate| Redis
+      Worker -->|Batch Insert| DB[(PostgreSQL)]
+      Worker -->|Archival Parquet| S3[(S3 Storage)]
+      
+      DB --> Dashboard[React Dashboard & Alerts]
+      S3 --> Reports[PDF Audit Engine]
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef database fill:#f5f5f5,stroke:#000000,stroke-width:1.5px,color:#000000,stroke-dasharray: 0;
+
+      class Redis,DB,S3 database;
+tradeoffs:
+  - "**Log Signature Deduplication:** Used MD5 pattern signatures to normalize dynamic logs (e.g. stripping specific IDs). This groups identical errors into a single entity, reducing DB insert pressure by up to 90% during outage cascades."
+  - "**Backpressure Enforcement:** The API gateway uses a Redis-backed token bucket rate-limiter. If log volume exceeds thresholds, it rejects logs with `HTTP 429` (Too Many Requests) to safeguard database storage."
+  - "**Out-of-Band Compilers:** SLA analytical reports (PDF compilation) are decoupled from the ingest path entirely. Report generation executes asynchronously to avoid CPU starvation on the web server."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+

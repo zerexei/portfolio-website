@@ -1,0 +1,62 @@
+---
+id: "18"
+slug: "scaling-realtime-message-counts-hot-cold-tables"
+title: "Scaling Real-Time Message Counts with Hot and Cold Database Tables"
+description: "How partitioning conversation data into hot active tables and cold historical archives eliminates database contention and accelerates query performance."
+date: "2026-06-01"
+readTime: "5 min read"
+category: "Databases"
+---
+
+In real-time messaging and customer engagement platforms, unread badge counts and conversation lists represent the highest-frequency query path in the system. Every time a user opens the web application or receives a notification, the backend must answer: *How many unread messages does this user have across their active conversations?*
+
+Running naive relational queries against a single massive `messages` table quickly causes production databases to grind to a halt.
+
+## The Scaling Wall of Single-Table Architectures
+
+A single-table approach typically looks like this:
+
+```sql
+SELECT conversation_id, COUNT(*) 
+FROM messages 
+WHERE user_id = 42 AND is_read = false 
+GROUP BY conversation_id;
+```
+
+As the `messages` table surpasses tens of millions of rows, write operations lock indexes, vacuum operations cause CPU spikes, and query latency degrades from 15ms to over 800ms during peak chat volume.
+
+## The Hot/Cold Table Pattern
+
+To solve write contention, we partition conversation data by access recency and query profile:
+
+```text
+[Incoming Message]
+        │
+        ▼
+[Hot Table: active_threads] ──(TTL / Inactivity)──> [Cold Table: message_archive]
+  - In-memory or indexed SSD                          - Cost-effective object/disk storage
+  - Last 30 days of active chats                     - Historical records & search
+  - High concurrency, low latency                    - Append-only, partitioned by date
+```
+
+### 1. The Hot Tier (`active_threads` / `thread_summaries`)
+The hot tier stores only active conversation metadata and pre-aggregated counters:
+- `thread_id` (Primary Key)
+- `tenant_id`
+- `last_message_at`
+- `unread_count` (Atomic integer counter)
+
+When an incoming message arrives, the worker executes a fast, indexed atomic increment:
+```sql
+UPDATE active_threads 
+SET unread_count = unread_count + 1, last_message_at = NOW() 
+WHERE thread_id = :thread_id;
+```
+
+This reduces badge count lookups to an $O(1)$ point query instead of a heavy table scan.
+
+### 2. The Cold Tier (`message_archive`)
+Historical messages that have aged beyond 30 days without activity are offloaded into partitioned archive tables. Archive tables use columnar or date-partitioned storage optimized for cold retrieval and analytical reporting rather than live transaction processing.
+
+Separating high-velocity transactional state from long-term archival storage keeps chat feeds blazing fast regardless of total message volume.
+

@@ -1,0 +1,34 @@
+---
+id: "3"
+slug: "live-agent-routing-redis"
+title: "Designing a Real-Time Live-Agent Routing Engine"
+description: "A deep dive into building concurrent ticket-to-agent routing engines with priority queues, agent state machines, and heartbeat listeners."
+date: "2026-04-12"
+readTime: "7 min read"
+category: "Backend Engineering"
+---
+
+In customer support platforms, routing conversations to available agents efficiently and fairly requires a sophisticated matching system. If two agents are assigned the same conversation, or if an agent goes offline while a ticket is leased to them, customer experience breaks down.
+
+Here is the architecture behind our live-agent routing engine.
+
+## 1. Agent State Machine
+An agent's state is dynamic, transitioning between `Online`, `Busy`, `Away`, and `Offline`. We represent agent availability using a Redis Hash:
+- **`agent:active_count`**: Tracks how many active conversations are currently assigned to the agent.
+- **`agent:max_capacity`**: The maximum concurrent tickets an agent can handle.
+
+## 2. Queue-Based Assignment with Redis
+When a new conversation requires routing, it is added to a Redis sorted set (`routing_queue`) where the score represents priority (based on customer wait time and tier).
+
+A worker constantly processes the queue:
+1. Fetch the highest priority ticket.
+2. Query available online agents whose current active count is less than their max capacity.
+3. Acquire an atomic lock on the selected agent using Redis `SETNX` to prevent double-assignment.
+4. Update the ticket's status and assign it to the agent.
+
+## 3. Handling Agent Disconnections (Heartbeats)
+If an agent loses connection or closes their browser tab, tickets assigned to them could get stuck. 
+- Agents send a periodic ping (heartbeat) every 10 seconds via WebSockets.
+- Redis stores this ping with a TTL.
+- If a heartbeat expires, a background scheduler releases the agent's active tickets back into the `routing_queue` for other agents to claim, guaranteeing zero lost conversations.
+

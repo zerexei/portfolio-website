@@ -1,0 +1,111 @@
+---
+id: "20"
+slug: "multi-tab-websocket-dilemma-sharedworkers"
+title: "The Multi-Tab WebSocket Dilemma: Centering a Single Connection via SharedWorkers"
+description: "Eliminating redundant socket connections and memory bloat across browser tabs by routing real-time traffic through a single SharedWorker."
+date: "2026-05-15"
+readTime: "6 min read"
+category: "Frontend Engineering"
+---
+
+In modern web applications with rich real-time functionality (chat, collaborative dashboards, notification badges), a subtle client-side scalability issue emerges: **the multi-tab dilemma**.
+
+By default, browser tabs operate as isolated sandboxes. When a user opens 5 or 10 tabs of your dashboard across different windows, each tab independently instantiates its own `new WebSocket()` connection.
+
+```text
+Tab 1 ──(WebSocket 1)──┐
+Tab 2 ──(WebSocket 2)──┼──> [WebSocket Server] ❌ 5x Connections, Memory, & Bandwidth
+Tab 3 ──(WebSocket 3)──┘
+```
+
+This causes significant drawbacks:
+- **Server Connection Bloat**: A platform with 10,000 active users suddenly sustains 50,000 persistent socket connections.
+- **Redundant Broadcasts**: The server pushes identical event payloads 5 times to the same client machine.
+- **State De-synchronization**: Tabs process incoming socket messages at slightly different intervals, causing flickering UI inconsistencies.
+
+## The Solution: A SharedWorker as the Hub
+
+A **`SharedWorker`** is a background script shared across all tabs and windows originating from the same domain. Multiple browser tabs can connect to a single SharedWorker instance via bidirectional `MessagePort` channels.
+
+```text
+┌──────────────┐         ┌────────────────────────┐         ┌──────────────┐
+│ Browser Tab  │◄───────►│      SharedWorker      │◄───────►│  WebSocket   │
+│  (Client A)  │  Port   │                        │ Socket  │    Server    │
+├──────────────┤         │  - 1 WebSocket         │         └──────────────┘
+│ Browser Tab  │◄───────►│  - Heartbeat Manager   │
+│  (Client B)  │  Port   │  - Broadcast Hub       │
+└──────────────┘         └────────────────────────┘
+```
+
+### 1. The SharedWorker Script (`worker.ts`)
+
+The worker manages the single WebSocket connection and broadcasts inbound server messages to all connected client ports:
+
+```typescript
+// SharedWorker scope
+const ports = new Set<MessagePort>();
+let socket: WebSocket | null = null;
+
+function getSocket() {
+  if (!socket || socket.readyState === WebSocket.CLOSED) {
+    socket = new WebSocket("wss://api.example.com/live");
+
+    socket.onmessage = (event) => {
+      // Fan out server messages to every open tab
+      for (const port of ports) {
+        port.postMessage({ type: "SOCKET_DATA", payload: JSON.parse(event.data) });
+      }
+    };
+
+    socket.onclose = () => {
+      socket = null;
+    };
+  }
+  return socket;
+}
+
+self.onconnect = (event: MessageEvent) => {
+  const port = event.ports[0];
+  ports.add(port);
+  getSocket(); // Ensure socket connection is alive
+
+  port.onmessage = (e) => {
+    // Route messages originating from tabs outbound to the server
+    const { action, payload } = e.data;
+    if (socket?.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ action, payload }));
+    }
+  };
+
+  port.start();
+};
+```
+
+### 2. Client Tab Integration
+
+In your React or Vue application, wrap the worker communication inside a centralized custom hook:
+
+```typescript
+export function useSharedSocket(onMessage: (data: any) => void) {
+  useEffect(() => {
+    const worker = new SharedWorker(new URL("./worker.ts", import.meta.url), {
+      type: "module"
+    });
+
+    worker.port.onmessage = (event) => {
+      if (event.data.type === "SOCKET_DATA") {
+        onMessage(event.data.payload);
+      }
+    };
+
+    worker.port.start();
+
+    return () => {
+      worker.port.close();
+    };
+  }, [onMessage]);
+}
+```
+
+By centralizing connection management inside a SharedWorker, 10 open tabs collapse into a single persistent socket, drastically reducing server connection density and synchronizing state effortlessly.
+

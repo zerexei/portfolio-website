@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Project } from "../../data/projects";
-import { systemDesigns, SystemDesignItem } from "../../data/systemDesigns";
+import { systemDesigns, SystemDesignFrontmatter } from "@/content";
 import { FeaturedProject } from "./FeaturedProject";
 import { ProjectGrid } from "./ProjectGrid";
 import { Mermaid } from "../common/Mermaid";
 import { Trophy, Cpu, Code2, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import routes from "@/routes";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface PortfolioHubProps {
   caseStudies: Project[];
@@ -15,7 +15,7 @@ interface PortfolioHubProps {
 }
 
 interface ArchitectureSpecCardProps {
-  design: SystemDesignItem;
+  design: SystemDesignFrontmatter;
 }
 
 const ArchitectureSpecCard: React.FC<ArchitectureSpecCardProps> = ({ design }) => {

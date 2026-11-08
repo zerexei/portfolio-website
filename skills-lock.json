@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "adrelle-design-system": {
+      "source": "adrelle-invent/design-system",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/adrelle-design-system/SKILL.md",
+      "computedHash": "21651988fa7037305172348c64778e188ccd75b823c4bcbc1e46fe9c6a54ac39"
+    },
+    "frontend-core": {
+      "source": "adrelle-invent/design-system",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/frontend-core/SKILL.md",
+      "computedHash": "b469da1832f4b5d33bb88f7c9613728a044bda71631fe1e590db16206b42eb1a"
+    },
+    "react": {
+      "source": "adrelle-invent/design-system",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/react/SKILL.md",
+      "computedHash": "38b0552ce1d616766194ca1c88b4e6a6e617f4635d4f344531df7a942eca7452"
+    }
+  }
+}

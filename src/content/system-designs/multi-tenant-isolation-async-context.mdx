@@ -1,0 +1,184 @@
+---
+id: "multi-tenant-isolation-async-context"
+slug: "multi-tenant-isolation-async-context"
+title: "Designing Multi-Tenant Isolation with Async Context Propagation in a Shared SaaS System"
+description: "How to enforce bulletproof multi-tenant isolation across asynchronous event loops, background worker pools, and database queries without leaky abstractions."
+icon: "Users"
+chart: |
+  flowchart TD
+      subgraph Inbound HTTP Layer
+          Req[Inbound HTTP Request] -->|Header: X-Tenant-ID / JWT| Gate[Auth & Tenant Middleware]
+          Gate -->|1. Validate Tenant & Initialize Scope| Scope[Async Context Store: AsyncLocalStorage / contextvars]
+      end
+
+      subgraph Asynchronous Execution Plane
+          Scope -->|2. Propagates Scope Automatically across Await| Handler[Domain Business Service]
+          Handler -->|3. Query Invocation| ORM[ORM / Database Query Middleware]
+          Scope -.->|Implicit Context Injection| ORM
+          ORM -->|4. Enforced Clause: WHERE tenant_id = ?| DB[(Shared Multi-Tenant Database)]
+      end
+
+      subgraph Background Job Pipeline
+          Handler -->|5. Enqueue Async Task| Queue[(Task Queue: Redis / RabbitMQ / SQS)]
+          Scope -.->|Serialize Tenant Envelope: tenant_id, correlation_id| Queue
+          Queue -->|6. Worker Ingests Task| Worker[Background Job Consumer]
+          Worker -->|7. Reconstructs Context Scope via run()| WorkerScope[Worker Async Context Store]
+          WorkerScope -->|8. Isolated Execution| WorkerHandler[Job Execution Logic]
+      end
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+      class DB,Queue storage;
+tradeoffs:
+  - "**Automatic ORM Interception vs. Manual Filtering:** Enforcing `tenant_id` at the database middleware layer eliminates developer cognitive load and prevents catastrophic cross-tenant data leaks."
+  - "**Async Context Propagation over Parameter Drilling:** Leverages native asynchronous runtime storage (`AsyncLocalStorage` or `contextvars`), avoiding invasive `tenant_id` parameter passing across dozens of internal function calls."
+  - "**Serialized Metadata Envelopes:** Mandates that every background job payload includes explicit tenant metadata, ensuring asynchronous worker pools maintain strict isolation boundaries."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+
+In multi-tenant SaaS architectures, shared infrastructure (pooled compute instances and shared database clusters) provides superior cost efficiency and operational simplicity over maintaining isolated infrastructure per customer.
+
+However, shared infrastructure introduces the single most dangerous architectural risk in SaaS: **cross-tenant data leakage**. If an engineer writes a database query and forgets to append `AND tenant_id = :current_tenant`, one customer's private data is instantly exposed to another.
+
+Relying on code reviews or developer discipline to prevent data leaks is an anti-pattern. Multi-tenant isolation must be **structurally enforced** at the framework and database driver boundaries.
+
+---
+
+## 1. The Breakdown of Traditional Thread-Local Storage in Async Systems
+
+In classic synchronous application servers (e.g., standard thread-per-request models), tenant context is extracted from the HTTP header and stored in **Thread-Local Storage (TLS)**. Any function executing on that worker thread can access the tenant ID without explicit parameter passing.
+
+In modern asynchronous runtimes (Node.js event loops, Python `asyncio`, or Go goroutines), this model completely breaks down:
+1. A single thread or event loop handles thousands of concurrent requests interleaved across non-blocking I/O pauses.
+2. When an asynchronous operation pauses at an `await` boundary, control yields to other operations. Traditional thread-local variables become shared or corrupted across different customers' requests.
+3. When operations dispatch background tasks to message brokers, the execution context is completely severed.
+
+---
+
+## 2. Solution: Native Async Context Propagation
+
+Modern asynchronous runtimes provide primitives designed to track execution context across asynchronous boundaries (`AsyncLocalStorage` in Node.js, `contextvars` in Python):
+
+```typescript
+import { AsyncLocalStorage } from "node:async_hooks";
+
+export interface TenantContext {
+  tenantId: string;
+  userId: string;
+  correlationId: string;
+}
+
+export const tenantStorage = new AsyncLocalStorage<TenantContext>();
+
+// Inbound Express/Fastify Middleware
+export function tenantMiddleware(req: Request, res: Response, next: NextFunction) {
+  const tenantId = req.headers["x-tenant-id"] as string;
+  const userId = req.headers["x-user-id"] as string;
+
+  if (!tenantId) {
+    return res.status(401).json({ error: "Missing required tenant scope" });
+  }
+
+  // Wrap the entire request lifecycle inside an isolated async scope
+  tenantStorage.run({
+    tenantId,
+    userId,
+    correlationId: (req.headers["x-correlation-id"] as string) || crypto.randomUUID()
+  }, () => {
+    next();
+  });
+}
+```
+
+---
+
+## 3. Automatic Scope Enforcement at the Database Layer
+
+Once tenant context is bound to the async execution scope, database query builders and ORM clients automatically inject `tenant_id` constraints into every generated query. Developers never write manual tenant filters:
+
+```typescript
+// Prisma / Knex / Drizzle Query Extension
+prisma.$extends({
+  query: {
+    $allModels: {
+      async findMany({ model, args, query }) {
+        const context = tenantStorage.getStore();
+        if (!context?.tenantId) {
+          throw new Error(`Attempted read on ${model} without active tenant context`);
+        }
+
+        // Automatically inject tenant filter into WHERE clause
+        args.where = {
+          ...args.where,
+          tenantId: context.tenantId
+        };
+
+        return query(args);
+      },
+
+      async create({ model, args, query }) {
+        const context = tenantStorage.getStore();
+        if (!context?.tenantId) {
+          throw new Error(`Attempted write on ${model} without active tenant context`);
+        }
+
+        // Automatically bind tenant_id on write
+        args.data = {
+          ...args.data,
+          tenantId: context.tenantId
+        };
+
+        return query(args);
+      }
+    }
+  }
+});
+```
+
+---
+
+## 4. Preserving Context Across Asynchronous Queues
+
+When a request triggers a background task (e.g., generating an invoice, sending an email, or syncing CRM records), the async context is lost unless explicitly serialized into the event envelope:
+
+```json
+{
+  "event": "INVOICE_GENERATION_REQUESTED",
+  "payload": {
+    "order_id": 9042
+  },
+  "metadata": {
+    "tenant_id": "tenant_enterprise_77",
+    "user_id": "usr_401",
+    "correlation_id": "corr_88f912a"
+  }
+}
+```
+
+### The Worker Consumer Handler
+When the worker pops the job from Redis or SQS, it reconstitutes the context before executing any domain logic:
+
+```typescript
+async function processQueueJob(rawJob: string) {
+  const job = JSON.parse(rawJob);
+  const { tenant_id, user_id, correlation_id } = job.metadata;
+
+  // Re-establish the async context scope for the background worker
+  await tenantStorage.run({ tenantId: tenant_id, userId: user_id, correlationId: correlation_id }, async () => {
+    await invoiceService.generate(job.payload.order_id);
+  });
+}
+```
+
+---
+
+## 5. Architectural Guarantees
+
+- **Zero Accidental Leaks**: Queries executed without an active tenant scope fail fast with fatal exceptions before reaching the database socket.
+- **Clean Developer Ergonomics**: Domain services focus strictly on business logic without cumbersome context-drilling.
+- **End-to-End Tracing**: Tenant IDs and correlation IDs propagate seamlessly across HTTP handlers, async promises, and distributed worker queues.

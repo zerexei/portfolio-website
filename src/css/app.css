@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* Design system: theme tokens + all component classes */
-@import "@ad-technology-inc/design-system/app.css";
+@import "@adrelle/design-system/app.css";
 
 /* ─── Custom scrollbar (uses DS tokens) ─── */
 ::-webkit-scrollbar       { width: 6px; }

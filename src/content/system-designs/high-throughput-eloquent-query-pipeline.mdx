@@ -1,0 +1,44 @@
+---
+id: "high-throughput-eloquent-query-pipeline"
+slug: "high-throughput-eloquent-query-pipeline"
+title: "High-Throughput Relational Query Pipeline: Laravel Eloquent Optimization"
+description: "Optimizing relational queries in high-scale backends: multi-hop join relationships, subquery aggregations, and cursor streaming."
+icon: "Database"
+chart: |
+  flowchart TD
+      Query[Application Query Request] -->|Filter / Aggregation Request| Engine[Eloquent Query Engine]
+      
+      Engine -->|Multi-Hop Association| Through[hasManyThrough Single SQL JOIN]
+      Engine -->|Subquery Aggregation| SubQuery[selectRaw & Conditional when]
+      Engine -->|Large Dataset Iteration| Stream[chunkById / cursor Stream]
+      
+      Through --> DirectSQL[(PostgreSQL / MySQL Engine)]
+      SubQuery --> DirectSQL
+      Stream --> DirectSQL
+      
+      DirectSQL -->|Single Round-Trip Result| Hydration[Memory-Safe Model Hydration]
+      Hydration --> API[API Response Payload]
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+      class DirectSQL storage;
+tradeoffs:
+  - "**Database-Level Computation over PHP Memory:** Aggregations (`selectRaw`, `hasManyThrough`) execute directly in the SQL engine, preventing catastrophic N+1 query patterns."
+  - "**Cursor Streaming vs. all():** Replaces monolithic collection hydration with cursor streaming (`chunkById`), preserving a flat memory footprint across millions of rows."
+  - "**Conditional Query Construction:** Leverages dynamic `when()` builders to generate strictly optimized queries without string concatenation."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+
+In high-throughput relational backends, naive ORM usage quickly leads to excessive memory consumption and database CPU exhaustion.
+
+## High-Performance Relational Strategies
+
+- **Multi-Hop Relationships**: `hasManyThrough` compiles complex domain relationships into a single `INNER JOIN`, eliminating intermediate entity hydration.
+- **SQL Aggregations via `selectRaw`**: Computes dynamic metrics inside the database rather than hydrating PHP objects into server RAM.
+- **Memory-Safe Streaming**: `chunkById()` and `cursor()` process large datasets in indexed batches, ensuring predictable memory usage under heavy query loads.
+

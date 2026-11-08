@@ -1,0 +1,50 @@
+---
+id: "multi-module-saas-cross-service-events"
+slug: "multi-module-saas-cross-service-events"
+title: "Designing Multi-Module SaaS Systems with Event-Based Cross-Service Communication"
+description: "How to decouple monolithic SaaS domains (chat, booking, analytics) into isolated modules using asynchronous events and consumer contracts."
+icon: "GitBranch"
+chart: |
+  flowchart TD
+      subgraph Ingress & Domain Modules
+          Booking[Booking Module] -->|1. Mutate State & Commit Event| Outbox[(Outbox Table)]
+          Chat[Chat / Support Module]
+          Billing[Billing Module]
+      end
+
+      subgraph Event Bus & Broker
+          Outbox -->|2. Outbox Relay Poller| EventBus[Event Bus / Kafka / Redis Streams]
+      end
+
+      subgraph Downstream Consumers
+          EventBus -->|3. Partition-Scoped Fan-out| ChatConsumer[Chat Event Consumer]
+          EventBus -->|3. Partition-Scoped Fan-out| BillingConsumer[Billing Consumer]
+          EventBus -->|3. Partition-Scoped Fan-out| Analytics[Analytics & Audit Worker]
+          
+          ChatConsumer -->|4. Idempotent Processing| ChatDB[(Chat Database)]
+          BillingConsumer -->|4. Generate Invoice| BillingDB[(Billing Database)]
+      end
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+      class Outbox,ChatDB,BillingDB storage;
+tradeoffs:
+  - "**Asynchronous Event Bus vs. Direct Module Coupling:** Decoupling internal modules via events prevents circular dependencies and allows services to deploy and scale independently."
+  - "**Partition-Scoped Ordering:** Events carry a consistent partitioning key (`tenant_id` or `user_id`) to ensure sequential execution within an entity without global serialization locks."
+  - "**Consumer-Side Idempotency:** Every consumer checks event IDs before execution, ensuring at-least-once delivery semantics never generate duplicate invoices or notifications."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+
+As monolithic SaaS architectures expand, tight coupling between features (booking, payments, chat, analytics) slows velocity and causes cascading failures. 
+
+## Architectural Foundations
+
+1. **Transactional Outbox Boundary**: When a domain service (such as Booking) commits a change, it inserts a domain event into an outbox table within the same ACID transaction.
+2. **Partitioned Asynchronous Delivery**: Events are dispatched to an event stream where messages are partitioned by aggregate root (`tenant_id` / `account_id`), preserving chronological order for each customer.
+3. **Autonomous Consumer Handlers**: Independent modules subscribe to events and mutate their private domain models with guaranteed idempotency.
+

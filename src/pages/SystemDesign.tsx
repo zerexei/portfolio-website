@@ -1,9 +1,45 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Section } from "../components/common/Section";
-import { systemDesigns } from "../data/systemDesigns";
-import { ArrowRight, Cpu } from "lucide-react";
+import { systemDesigns } from "@/content";
+import {
+  ArrowRight,
+  Cpu,
+  Server,
+  ShieldAlert,
+  Activity,
+  Calendar,
+  Lock,
+  GitBranch,
+  Repeat,
+  Radio,
+  Users,
+  Compass,
+  Database,
+  Eye,
+  GitMerge,
+  Workflow,
+  LucideIcon
+} from "lucide-react";
 import routes from "@/routes";
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Server,
+  ShieldAlert,
+  Activity,
+  Calendar,
+  Lock,
+  GitBranch,
+  Repeat,
+  Radio,
+  Users,
+  Compass,
+  Database,
+  Eye,
+  GitMerge,
+  Workflow,
+  Cpu,
+};
 
 export const SystemDesign: React.FC = () => {
   return (
@@ -21,7 +57,7 @@ export const SystemDesign: React.FC = () => {
 
         <div className="grid grid-cols-1 gap-6">
           {systemDesigns.map((design) => {
-            const Icon = design.icon;
+            const Icon = ICON_MAP[design.icon] || Cpu;
             return (
               <Link
                 key={design.id}

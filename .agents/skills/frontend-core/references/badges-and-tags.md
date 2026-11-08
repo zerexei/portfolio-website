@@ -22,27 +22,27 @@ export interface BadgeProps {
 const badgeVariantStyles: Record<BadgeVariant, { container: string; dot: string }> = {
  success: {
     container:
-      'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
+      'bg-success-tint text-success border-success-border',
     dot: 'bg-emerald-500',
  },
  warning: {
     container:
-      'bg-amber-50 dark:bg-amber-950/60 text-[#ED6C02] dark:text-amber-300 border-amber-200 dark:border-amber-800',
+      'bg-warning-tint text-warning border-warning-border',
     dot: 'bg-amber-500',
  },
  destructive: {
     container:
-      'bg-rose-50 dark:bg-rose-950/60 text-[#D32F2F] dark:text-rose-300 border-rose-200 dark:border-rose-900',
+      'bg-danger-tint text-danger border-danger-border',
     dot: 'bg-rose-500',
  },
  info: {
     container:
-      'bg-blue-50 dark:bg-blue-950/60 text-[#1976D2] dark:text-blue-300 border-blue-200 dark:border-blue-800',
-    dot: 'bg-blue-500',
+      'bg-accent text-primary border-primary-border',
+    dot: 'bg-sky-500',
  },
  neutral: {
     container:
-      'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700',
+      'bg-neutral text-neutral-foreground border-border',
     dot: 'bg-slate-400',
  },
 };
@@ -76,7 +76,7 @@ export const Badge: FC<BadgeProps> = ({
 
 // Telemetry Monospace Elapsed Chip
 export const ElapsedChip: FC<{ elapsed: string }> = ({ elapsed }) => (
- <span className="px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-mono font-bold text-xs inline-flex items-center shadow-xs">
+ <span className="px-2.5 py-1 rounded-md bg-success-tint text-success border border-success-border font-mono font-bold text-xs inline-flex items-center shadow-xs">
     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse mr-1.5" />
     {elapsed}
  </span>

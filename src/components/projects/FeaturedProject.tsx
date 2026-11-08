@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Project } from "../../data/projects";
 import { ExternalLink, Github, ChevronDown, ChevronUp, Flag, Eye, Maximize2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Tag } from "../common/Tag";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface FeaturedProjectProps {
   project: Project;

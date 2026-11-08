@@ -1,0 +1,44 @@
+---
+id: "trunk-based-delivery-feature-flags"
+slug: "trunk-based-delivery-feature-flags"
+title: "Continuous Delivery Pipeline: Trunk-Based Development & Feature Flags"
+description: "Why traditional Git Flow bottlenecks modern SaaS teams, and how trunk-based development with feature flags enables zero-downtime daily releases."
+icon: "GitMerge"
+chart: |
+  flowchart TD
+      Dev[Developer Commit] -->|Short-Lived Branch < 24h| PR[Atomic Pull Request < 300 Lines]
+      
+      PR -->|Automated Trigger| CI[Continuous Integration Pipeline]
+      CI -->|Static Analysis: tsc / linters| Gate1{Static Gate}
+      Gate1 -->|Pass| Tests[Automated Test Suite: Unit & Integration]
+      Tests -->|Pass| Merge[Fast Merge to Main Branch]
+      
+      Merge -->|Continuous Deployment| Prod[Production Environment]
+      
+      Prod -->|Feature Disabled by Default| FlagEngine[(Feature Flag System)]
+      FlagEngine -->|Gradual Percentage Rollout| BetaTenants[Beta Tenant Cohort]
+      FlagEngine -->|100% Rollout upon Health Verification| AllUsers[General Availability]
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+      class FlagEngine storage;
+tradeoffs:
+  - "**Trunk-Based Delivery vs. Git Flow:** Replaced long-lived branches with small, atomic daily PRs, eliminating painful merge conflicts and release freezes."
+  - "**Decoupled Deployment from Release:** Using feature flags allows incomplete or high-risk features to be deployed safely behind dynamic toggles."
+  - "**Strict Automated Gates:** Every PR is gated by static type-checking and automated test suites, preventing regressions from reaching mainline branches."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+
+Traditional Git Flow with long-lived branches creates merge conflicts and high-friction release cycles. Modern high-velocity teams rely on Trunk-Based Development backed by dynamic feature flags.
+
+## Pipeline Architecture
+
+- **Short-Lived Branches**: Branches merge into `main` within 24 to 48 hours, keeping integration continuous and diffs manageable (< 300 lines).
+- **Automated CI Gates**: Every commit undergoes automated static typing, linting, and integration testing before merge eligibility.
+- **Feature Flag Rollouts**: Code reaches production continuously. Feature flags decouple deployment from business release, enabling targeted rollouts with zero downtime.
+

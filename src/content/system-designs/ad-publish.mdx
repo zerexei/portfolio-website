@@ -1,0 +1,37 @@
+---
+id: "ad-publish"
+slug: "ad-publish"
+title: "AD. Publish: At-Least-Once Task Worker Engine"
+description: "An event-driven task worker engine designed to execute high-reliability publishing workflows with at-least-once delivery guarantees under network instability."
+icon: "Server"
+chart: |
+  flowchart TD
+      Client[Client / Ingress API] -->|HTTP POST Payload| Gateway[FastAPI Gateway]
+      
+      Gateway -->|1. Idempotency Check: SETNX / Unique Key| Redis[(Redis Cache)]
+      Gateway -->|2. Transactional Write| DB[(PostgreSQL State & Outbox Table)]
+      
+      DB -->|3. Outbox Relay Poller| Stream[Redis Streams / Queue]
+      
+      Stream -->|4. Consumer Group Dispatch| Workers[Stateless Worker Pool]
+      
+      Workers -->|5. Execute Step & Checkpoint State| DB
+      Workers -->|6. Retry & Backoff on Failure| Stream
+      Workers -->|7. Max Retries Exhausted| DLQ[(Dead Letter Queue / DLQ)]
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+      class Redis,DB,DLQ storage;
+tradeoffs:
+  - "**Redis Streams vs. Standard Queues:** Selected Redis Streams over standard list queues to leverage consumer groups, enabling load balancing across multiple workers with native acknowledgment states (`ACK`)."
+  - "**At-Least-Once Guarantee:** Workers do not acknowledge the stream event until downstream calls return success. If a worker crashes mid-task, the event is re-delivered via lease-expiration listeners."
+  - "**Deduplication Strategy:** Implemented a Redis-based signature check (`SETNX` with a 24-hour TTL) at the ingress gateway to drop duplicate payloads during network retry storms."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+

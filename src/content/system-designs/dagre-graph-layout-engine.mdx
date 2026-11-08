@@ -1,0 +1,41 @@
+---
+id: "dagre-graph-layout-engine"
+slug: "dagre-graph-layout-engine"
+title: "Hierarchical Graph Layout Architecture: Dagre & Network-Simplex"
+description: "Demystifying directed graph layout engines: Sugiyama framework stages, layer assignment, crossing reduction, and network-simplex coordinate optimization."
+icon: "Workflow"
+chart: |
+  flowchart TD
+      Input[Directed Graph: Nodes & Edges] -->|Raw Graph Structure| P1[Phase 1: Cycle Removal]
+      
+      P1 -->|Directed Acyclic Graph DAG| P2[Phase 2: Layer Ranking]
+      P2 -->|Network-Simplex Optimization| Ranks[Rank Assignment per Node]
+      
+      Ranks -->|Ranked Layers| P3[Phase 3: Crossing Minimization]
+      P3 -->|Heuristic Sweeps: Barycenter / Median| Ordered[Ordered Node Sequences]
+      
+      Ordered -->|Layered Ordering| P4[Phase 4: Coordinate Assignment]
+      P4 -->|Pixel Coordinates X, Y| Canvas[Render Canvas / React Flow UI]
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+tradeoffs:
+  - "**Network-Simplex vs. Longest Path:** Network-simplex solves an integer linear programming problem to minimize total edge span, producing compact and visually readable hierarchies."
+  - "**Deterministic Layout Stability:** Preserving consistent node insertion order and assigning edge weights prevents jarring layout recalculations during dynamic canvas updates."
+  - "**Virtual Edge Splitting:** Uses virtual dummy nodes to route long edges across multiple ranks without causing visual overlap."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+
+Dagre implements a variation of the Sugiyama framework to position directed graphs cleanly.
+
+## Sugiyama Layout Pipeline
+
+1. **Cycle Removal**: Temporarily reverses feedback loops to convert arbitrary graphs into DAGs.
+2. **Layer Assignment (`network-simplex`)**: Solves a minimum-cost network flow problem to minimize edge spans:
+   `min sum(w(e) * (rank(v) - rank(u)))`
+3. **Crossing Minimization**: Reorders nodes within layers using heuristic sweeps to minimize edge intersections.
+4. **Coordinate Assignment**: Allocates concrete $(X, Y)$ screen coordinates while honoring padding and separation constraints.

@@ -1,6 +1,6 @@
 import React from "react";
 import { Section } from "../components/common/Section";
-import { articles } from "../data/articles";
+import { articles } from "@/content";
 import { Link } from "react-router-dom";
 import { ArrowRight, Clock } from "lucide-react";
 import routes from "@/routes";

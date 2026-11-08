@@ -1,0 +1,37 @@
+---
+id: "4"
+slug: "optimizing-mysql-indexing"
+title: "Optimizing MySQL Indexes for High-Traffic Query Paths"
+description: "How to analyze query plans, avoid index merge overhead, and design optimal composite indexes for high-throughput SaaS databases."
+date: "2026-03-05"
+readTime: "8 min read"
+category: "Databases"
+---
+
+In high-traffic applications, database query latency is the most common scaling bottleneck. Often, developers add indexes blindly, leading to write performance degradation and unused index bloat. Here is how I approached optimizing query paths to reduce MySQL latency by 40%.
+
+## 1. Demystifying EXPLAIN Plans
+Before writing any index, analyze how MySQL executes the query using `EXPLAIN`:
+
+```sql
+EXPLAIN SELECT id, status, created_at 
+FROM customer_leads 
+WHERE agent_id = 45 AND status = 'active' 
+ORDER BY created_at DESC;
+```
+
+Look for:
+- **`type`**: Avoid `ALL` (full table scan) and aim for `ref` or `range`.
+- **`rows`**: Represents the number of rows MySQL estimates it must examine.
+- **`Extra`**: Watch out for `Using filesort` or `Using temporary`, which indicate inefficient ordering/grouping.
+
+## 2. Designing Optimal Composite Indexes
+When querying on multiple columns, a single composite index is far more efficient than multiple single-column indexes. Order of columns in the composite index matters (Leftmost Prefix Rule):
+1. **Equality columns first**: `agent_id = 45` and `status = 'active'`
+2. **Range / Sort columns last**: `created_at DESC`
+
+For the query above, the optimal index is:
+```sql
+CREATE INDEX idx_agent_status_created ON customer_leads (agent_id, status, created_at);
+```
+This allows MySQL to filter and sort the rows using the index tree directly, eliminating the expensive filesort step entirely.
