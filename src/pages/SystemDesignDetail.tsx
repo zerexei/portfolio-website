@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Section } from "../components/common/Section";
 import { ArrowLeft, Cpu, Server, ShieldAlert, Activity, LucideIcon } from "lucide-react";
 import routes from "@/routes";
-import { getSystemDesignBySlug } from "../data/content";
+import { getSystemDesignBySlug } from "@/content";
 import { mdxComponents } from "../components/mdx/MdxComponents";
 
 const ICON_MAP: Record<string, LucideIcon> = {

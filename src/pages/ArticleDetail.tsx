@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Section } from "../components/common/Section";
 import { ArrowLeft, Clock, Calendar } from "lucide-react";
 import routes from "@/routes";
-import { getArticleBySlug } from "../data/content";
+import { getArticleBySlug } from "@/content";
 import { mdxComponents } from "../components/mdx/MdxComponents";
 
 export const ArticleDetail: React.FC = () => {

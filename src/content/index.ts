@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import type { MDXComponents } from "@/components/mdx/MdxComponents";
 
 export interface ArticleFrontmatter {
   id: string;
@@ -20,7 +21,7 @@ export interface SystemDesignFrontmatter {
 }
 
 export interface MDXModule<T> {
-  default: ComponentType<{ components?: Record<string, ComponentType<unknown>> }>;
+  default: ComponentType<{ components?: MDXComponents }>;
   frontmatter: T;
   [key: string]: unknown;
 }

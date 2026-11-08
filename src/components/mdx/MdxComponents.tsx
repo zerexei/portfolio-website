@@ -77,3 +77,5 @@ export const mdxComponents = {
     </blockquote>
   ),
 };
+
+export type MDXComponents = typeof mdxComponents;
