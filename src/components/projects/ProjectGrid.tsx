@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Project } from "../../data/projects";
 import { Github, ExternalLink, Flag, Eye, Maximize2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Tag } from "../common/Tag";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface ProjectRowProps {
   project: Project;

@@ -7,7 +7,7 @@ import { Mermaid } from "../common/Mermaid";
 import { Trophy, Cpu, Code2, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import routes from "@/routes";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface PortfolioHubProps {
   caseStudies: Project[];

@@ -11,7 +11,7 @@ import {
   Sparkles,
   Github
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 export const PortfolioGalleryShowcase: React.FC = () => {
   const [selectedProductId, setSelectedProductId] = useState<string>("centro");
