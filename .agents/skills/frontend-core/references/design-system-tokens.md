@@ -1,19 +1,20 @@
 ## Core Philosophy & Constraints
 - **Palette Parity**: Enforce dark mode parity using rich slate neutrals (`slate-50` to `slate-950`), completely avoiding pitch black (`#000000`).
 - **Brand Accent Geometry**:
- - Primary Blue: `#1976D2`
- - Hover Blue: `#1565C0`
- - Active Blue: `#0D47A1`
- - Subtle Tint: `bg-blue-50 dark:bg-blue-950/60 text-[#1976D2] dark:text-blue-300 border-blue-200 dark:border-blue-800`
+  - Primary Brand Anchor: Sky / Ocean Blue (`#0284C7`)
+  - Semantic Class / Token: `bg-primary text-primary-foreground` or `var(--primary)`
+  - Light mode: `--sky-700` (`#0369a1`) | Hover: `--sky-800` (`#075985`) | Active: `--sky-900` (`#0c4a6e`)
+  - Dark mode: `--sky-300` (`#7dd3fc`) | Hover: `--sky-400` (`#38bdf8`) | Active: `--sky-200` (`#bae6fd`)
+  - Subtle Tint: `bg-accent text-accent-foreground border-primary-border` (Light: `bg-sky-50 text-sky-700` / Dark: `bg-sky-950/60 text-sky-300 border-sky-800`)
 - **Semantic Feedback Tokens**:
- - Success / Active: Emerald (`bg-emerald-50 dark:bg-emerald-950/60`, `text-emerald-700 dark:text-emerald-300`, `border-emerald-200 dark:border-emerald-800`)
- - Warning / Pending: Amber (`bg-amber-50 dark:bg-amber-950/60`, `text-[#ED6C02] dark:text-amber-300`, `border-amber-200 dark:border-amber-800`)
- - Destructive / Error: Rose (`bg-rose-50 dark:bg-rose-950/60`, `text-[#D32F2F] dark:text-rose-300`, `border-rose-200 dark:border-rose-900`)
+  - Success / Active: Emerald (`bg-success-tint`, `text-success`, `border-success-border`)
+  - Warning / Pending: Amber (`bg-warning-tint`, `text-warning`, `border-warning-border`)
+  - Destructive / Error: Rose (`bg-danger-tint`, `text-danger`, `border-danger-border`)
 - **Corner Radius Scale**:
- - Page containers, cards, modals: `rounded-xl`
- - Action buttons, form inputs, selects: `rounded-lg`
- - Badges, table chips, tags: `rounded-md`
- - Avatars, pulse indicator dots: `rounded-full`
+  - Page containers, cards, modals: `rounded-xl`
+  - Action buttons, form inputs, selects: `rounded-lg`
+  - Badges, table chips, tags: `rounded-md`
+  - Avatars, pulse indicator dots: `rounded-full`
 
 ## Production Boilerplate / Standard Pattern
 
@@ -25,10 +26,12 @@
     --card: #FFFFFF;
     --card-nested: rgba(248, 250, 252, 0.7);
     --border: #E2E8F0;
-    --primary: #1976D2;
-    --primary-hover: #1565C0;
-    --primary-active: #0D47A1;
-    --primary-tint: #EFF6FF;
+    --primary: #0369A1;        /* sky-700 */
+    --primary-hover: #075985;  /* sky-800 */
+    --primary-active: #0C4A6E; /* sky-900 */
+    --primary-foreground: #FFFFFF;
+    --primary-tint: #F0F9FF;   /* sky-50 */
+    --primary-border: #BAE6FD; /* sky-200 */
     --foreground: #0F172A;
     --muted-foreground: #64748B;
     --radius-card: 0.75rem;   /* rounded-xl */
@@ -41,10 +44,12 @@
     --card: #0F172A;
     --card-nested: rgba(30, 41, 59, 0.4);
     --border: #1E293B;
-    --primary: #1976D2;
-    --primary-hover: #1565C0;
-    --primary-active: #0D47A1;
-    --primary-tint: rgba(23, 37, 84, 0.6);
+    --primary: #7DD3FC;        /* sky-300 */
+    --primary-hover: #38BDF8;  /* sky-400 */
+    --primary-active: #BAE6FD; /* sky-200 */
+    --primary-foreground: #020617;
+    --primary-tint: rgba(8, 47, 73, 0.6); /* sky-950/60 */
+    --primary-border: #075985; /* sky-800 */
     --foreground: #F8FAFC;
     --muted-foreground: #94A3B8;
  }
@@ -53,17 +58,17 @@
 
 ```html
 <!-- Component using Slate Design Tokens -->
-<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-xs">
- <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-    <h3 class="text-xs font-semibold text-slate-900 dark:text-white">Workspace Quota</h3>
-    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-xs">
+<div class="bg-card border border-border rounded-xl p-5 shadow-xs">
+ <div class="flex items-center justify-between pb-3 border-b border-border">
+    <h3 class="text-xs font-semibold text-foreground">Workspace Quota</h3>
+    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-success-tint text-success border border-success-border shadow-xs">
       Healthy
     </span>
  </div>
- <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-medium">
+ <p class="text-xs text-neutral-foreground mt-2 font-medium">
     Current production billing cycle telemetry.
  </p>
- <button class="mt-4 px-3.5 py-2 rounded-lg bg-[#1976D2] hover:bg-[#1565C0] active:bg-[#0D47A1] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer">
+ <button class="mt-4 px-3.5 py-2 rounded-lg bg-primary hover:bg-primary-hover active:bg-primary-active text-primary-foreground text-xs font-semibold shadow-xs transition-colors cursor-pointer">
     Adjust Quota
  </button>
 </div>
@@ -76,5 +81,5 @@
 - **Muddy Heavy Shadows**: Applying `shadow-2xl` or unstyled drop shadows instead of `shadow-xs` paired with crisp 1px borders.
 
 ## Verification & Testing
-- **Contrast Ratios**: Check that `#1976D2` on white has sufficient contrast for headlines/buttons, and badge text passes WCAG AA.
+- **Contrast Ratios**: Check that primary button text has sufficient contrast, and badge text passes WCAG AA across light and dark modes.
 - **Theme Switching**: Test toggling `.dark` class on root `<html>` ensuring smooth transition without flash of unstyled theme.

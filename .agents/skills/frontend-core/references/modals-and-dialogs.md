@@ -1,10 +1,10 @@
 ## Core Philosophy & Constraints
 - **Standardized Modal Anatomy**: Every modal consists of five distinct regions:
  1.**Backdrop**: `fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto`
- 2.**Card Container**: `w-full max-w-[size] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-lg overflow-hidden my-8`
- 3.**Header**: `p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between`
+ 2.**Card Container**: `w-full max-w-[size] bg-card border border-border rounded-xl shadow-lg overflow-hidden my-8`
+ 3.**Header**: `p-4 border-b border-border flex items-center justify-between`
  4.**Body**: `p-5 space-y-4 text-xs max-h-[calc(100vh-14rem)] overflow-y-auto`
- 5.**Footer**: `p-4 bg-slate-50/70 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2.5`
+ 5.**Footer**: `p-4 bg-card-nested border-t border-border flex items-center justify-end gap-2.5`
 - **Width Scale**:
  -**Safeguard / Confirmations**: `max-w-sm` (Delete, Revoke, Clock Out)
  -**Standard Forms**: `max-w-md` or `max-w-lg` (Invite Member, Edit Record)
@@ -64,18 +64,18 @@ export const Modal: FC<ModalProps> = ({
       <div
         className={`
           w-full ${sizeClasses[size]}
-          bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800
+          bg-card border border-border
           rounded-xl shadow-lg overflow-hidden my-8
         `.trim()}
       >
         {/* Header */}
-        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="p-4 border-b border-border flex items-center justify-between">
           <div>
-            <h3 id="modal-title" className="text-sm font-bold text-slate-900 dark:text-white">
+            <h3 id="modal-title" className="text-sm font-bold text-foreground">
               {title}
             </h3>
             {description && (
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-[11px] text-neutral-foreground mt-0.5">
                 {description}
               </p>
             )}
@@ -84,7 +84,7 @@ export const Modal: FC<ModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:text-foreground hover:bg-neutral-hover transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -97,7 +97,7 @@ export const Modal: FC<ModalProps> = ({
 
         {/* Footer */}
         {footerActions && (
-          <div className="p-4 bg-slate-50/70 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2.5">
+          <div className="p-4 bg-card-nested border-t border-border flex items-center justify-end gap-2.5">
             {footerActions}
           </div>
         )}
@@ -119,15 +119,15 @@ export const SlideOverDrawer: FC<{
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-xl flex flex-col"
+      className="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-card border-l border-border shadow-xl flex flex-col"
     >
-      <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
-        <h3 className="text-sm font-bold text-slate-900 dark:text-white">{title}</h3>
+      <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
+        <h3 className="text-sm font-bold text-foreground">{title}</h3>
         <button
           type="button"
           onClick={onClose}
           aria-label="Close drawer"
-          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:text-foreground hover:bg-neutral-hover transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -142,7 +142,7 @@ export const SlideOverDrawer: FC<{
 
 ## Forbidden Anti-Patterns
 - **Heavy Muddy Shadows (`shadow-2xl`)**: Applying unfocused dark drop shadows instead of `shadow-lg` with a 1px border.
-- **Floating Unbounded Footers**: Leaving dialog footers without background tint (`bg-slate-50/70 dark:bg-slate-800/40`) and border separation.
+- **Floating Unbounded Footers**: Leaving dialog footers without background tint (`bg-card-nested`) and border separation.
 - **Centered Action Buttons**: Centering footer buttons instead of right-aligning them (`justify-end gap-2.5`).
 - **Missing Close Accessibility**: Dialogs without `Escape` key listeners or `aria-modal="true"`.
 
