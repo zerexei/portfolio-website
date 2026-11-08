@@ -1,0 +1,57 @@
+---
+id: "21"
+slug: "cdns-cache-more-than-just-static-files"
+title: "CDNs Cache More Than Just Static Files: Edge Caching Beyond JS and CSS"
+description: "Why viewing CDNs as whole-response edge caches unlocks massive scalability for dynamic HTML, public APIs, and redirect layers."
+date: "2026-04-14"
+readTime: "4 min read"
+category: "DevOps & Cloud"
+---
+
+Most developers think of Content Delivery Networks (CDNs) exclusively as file hosts: a distributed storage pool for bundling `.js`, `.css`, SVG icons, and JPEG images.
+
+While caching static assets at the edge is standard practice, treating a CDN merely as an "asset bucket" leaves 80% of its potential on the table.
+
+A CDN is fundamentally a **globally distributed HTTP reverse proxy**. It doesn't cache files; it caches **HTTP responses**.
+
+## 1. Full Dynamic HTML Caching
+
+If your application serves server-rendered or static content (marketing homepages, documentation, blog posts, public profiles), there is no reason for requests to hit your origin Node, PHP, or Go runtime.
+
+By setting edge-aware cache control headers, the CDN caches the entire rendered HTML document:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Cache-Control: public, s-maxage=600, stale-while-revalidate=30
+```
+
+- `s-maxage=600`: Tells shared edge caches (CDNs) to cache the rendered HTML response for 10 minutes.
+- `stale-while-revalidate=30`: Serves stale cached pages instantly while asynchronously fetching a fresh render in the background if the cache expires.
+
+This cuts server load by orders of magnitude while providing users with sub-50ms Time-to-First-Byte (TTFB) anywhere in the world.
+
+## 2. Micro-Caching Public API Endpoints
+
+Developers often hesitate to cache API endpoints because data is "dynamic". But in high-traffic scenarios (product catalogs, trending feeds, leaderboard rankings), caching an endpoint for just **10 to 30 seconds** delivers incredible resilience:
+
+```http
+Cache-Control: public, max-age=15, stale-while-revalidate=60
+```
+
+If 10,000 users query the endpoint over a 15-second window, your origin backend only computes the response once. The other 9,999 requests are fulfilled directly from edge nodes in nearest proximity to each user.
+
+## 3. Offloading Redirects and URL Shorteners
+
+Routing migrations, vanity URLs, and short links often consume unnecessary database queries on origin servers. 
+
+Returning HTTP 301 or 308 permanent redirects with explicit cache headers allows edge nodes to terminate redirect lookups instantly:
+
+```http
+HTTP/1.1 301 Moved Permanently
+Location: https://example.com/new-path
+Cache-Control: public, max-age=86400
+```
+
+Shifting your mental model from *caching files* to *caching HTTP responses* transforms the CDN into a high-performance shield for your entire application architecture.
+

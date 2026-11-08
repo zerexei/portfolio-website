@@ -1,0 +1,78 @@
+---
+id: "19"
+slug: "monotonic-high-watermark-read-tracking"
+title: "Replacing Per-Message Read Tracking with a Monotonic High-Watermark Model"
+description: "How shifting from granular message status rows to a monotonic high-watermark reduced database writes by 98% in a real-time chat platform."
+date: "2026-05-25"
+readTime: "5 min read"
+category: "Backend Engineering"
+---
+
+Tracking message read status in group chats and multi-channel support inboxes is notoriously expensive. The naive architectural approach creates a join table recording read receipts for every message and recipient pair:
+
+```sql
+CREATE TABLE message_receipts (
+    message_id BIGINT,
+    user_id BIGINT,
+    read_at TIMESTAMP,
+    PRIMARY KEY (message_id, user_id)
+);
+```
+
+In a channel with 20 participants, sending a batch of 50 messages produces up to 1,000 read receipt writes as users open the thread. Under heavy traffic, this causes severe database write amplification and index lock contention.
+
+## The Flaw: $O(N)$ Granular Status Tracking
+
+Tracking per-message state requires:
+- Inserting a new row for every single message opened by every user.
+- Complex `LEFT JOIN` or `NOT EXISTS` queries to calculate total unread counts.
+- Constant cache invalidation for badge counts.
+
+## The Solution: Monotonic High-Watermark Tracking
+
+In chat systems, messages are naturally append-only and strictly ordered by monotonic auto-incrementing IDs or sequenced timestamps.
+
+Because messages are sequential, you don't need to track whether message 1, 2, and 3 were read individually. If a user has read message 10, they have implicitly read all messages up to 10.
+
+```text
+Message ID:   101   102   103   104   105   106   107   108
+Status:      [-------- Read --------]  │  [---- Unread ----]
+                                       ▲
+                            Watermark: last_read_id = 104
+```
+
+### The $O(1)$ Schema
+
+We replace the multi-million row `message_receipts` table with a single pointer per participant:
+
+```sql
+CREATE TABLE conversation_participants (
+    conversation_id BIGINT,
+    user_id BIGINT,
+    last_read_message_id BIGINT DEFAULT 0,
+    PRIMARY KEY (conversation_id, user_id)
+);
+```
+
+### 1. Atomic Read Updates
+When a user opens or scrolls to the bottom of a conversation, a single $O(1)$ query updates the pointer:
+
+```sql
+UPDATE conversation_participants 
+SET last_read_message_id = GREATEST(last_read_message_id, :latest_visible_message_id)
+WHERE conversation_id = :conversation_id AND user_id = :user_id;
+```
+
+Using `GREATEST()` guarantees monotonic ordering, preventing out-of-order client network packets from regressing the read pointer.
+
+### 2. Calculating Unread Messages
+To fetch unread counts, query messages with IDs greater than the watermark:
+
+```sql
+SELECT COUNT(*) FROM messages 
+WHERE conversation_id = :conversation_id 
+  AND id > :last_read_message_id;
+```
+
+Adopting a monotonic high-watermark collapses read tracking overhead from millions of insert operations down to a single constant-time integer update per session.
+

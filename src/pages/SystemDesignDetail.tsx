@@ -1,7 +1,25 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { Section } from "../components/common/Section";
-import { ArrowLeft, Cpu, Server, ShieldAlert, Activity, LucideIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  Cpu,
+  Server,
+  ShieldAlert,
+  Activity,
+  Calendar,
+  Lock,
+  GitBranch,
+  Repeat,
+  Radio,
+  Users,
+  Compass,
+  Database,
+  Eye,
+  GitMerge,
+  Workflow,
+  LucideIcon
+} from "lucide-react";
 import routes from "@/routes";
 import { getSystemDesignBySlug } from "@/content";
 import { mdxComponents } from "../components/mdx/MdxComponents";
@@ -10,6 +28,18 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Server,
   ShieldAlert,
   Activity,
+  Calendar,
+  Lock,
+  GitBranch,
+  Repeat,
+  Radio,
+  Users,
+  Compass,
+  Database,
+  Eye,
+  GitMerge,
+  Workflow,
+  Cpu,
 };
 
 export const SystemDesignDetail: React.FC = () => {

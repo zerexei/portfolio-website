@@ -1,0 +1,144 @@
+---
+id: "scalable-observability-pipeline"
+slug: "scalable-observability-pipeline"
+title: "Building a Scalable Observability Stack with OpenTelemetry, Prometheus, Grafana, Loki, and Tempo"
+description: "A production-grade telemetry pipeline: unifying push-based metrics, distributed tracing, label-indexed logging, and tiered S3 storage without runaway vendor costs."
+icon: "Eye"
+chart: |
+  flowchart TD
+      subgraph Application Services
+          App1[Microservice A / Backend API] -->|OTLP gRPC: Traces, Logs, Metrics| OTel[OpenTelemetry Collector Cluster]
+          App2[Microservice B / Worker Pool] -->|OTLP gRPC: Traces, Logs, Metrics| OTel
+      end
+
+      subgraph Telemetry Routing & Ingestion Layer
+          OTel -->|1. Batch & Strip PII| OTel
+          OTel -->|2. Route Metrics| Prom[(Prometheus / Mimir Engine)]
+          OTel -->|2. Route Label-Indexed Logs| Loki[(Grafana Loki Engine)]
+          OTel -->|2. Route Distributed Traces| Tempo[(Grafana Tempo Engine)]
+      end
+
+      subgraph Unified Visualization & Alerting
+          Prom -->|PromQL Scrapes| Grafana[Grafana Unified UI & Alertmanager]
+          Loki -->|LogCLI Queries| Grafana
+          Tempo -->|Trace-to-Log Correlations| Grafana
+      end
+
+      subgraph Tiered Storage & Cost Optimization
+          Loki -->|Hot Tier: SSD < 7 Days| FastDisk[(High-Speed SSD Storage)]
+          Loki -->|Cold Tier: Flush Chunks > 7 Days| S3[(Object Storage / AWS S3 / R2)]
+          Tempo -->|Trace Blocks > 48h| S3
+      end
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+      class Prom,Loki,Tempo,FastDisk,S3 storage;
+tradeoffs:
+  - "**Vendor-Agnostic OpenTelemetry Pipeline:** Decoupling instrumentation via OpenTelemetry Collector avoids proprietary agent lock-in and allows swapping storage backends with zero code changes."
+  - "**Metadata Label Indexing (Loki) vs. Full-Text Indexing (Elasticsearch):** Indexing only stream labels rather than full raw text payloads slashes memory consumption and storage requirements by up to 80%."
+  - "**Trace-to-Log Correlation:** Injecting trace and span IDs directly into structured JSON logs allows engineers to jump from a metric error spike to a specific trace span and down to exact log lines in one click."
+  - "**Tiered Hot/Cold Storage Architecture:** Retaining hot telemetry on local SSDs for active incident response while offloading aging blocks to object storage provides predictable cloud cost scaling."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+
+As backend architectures transition from monolithic codebases to distributed microservices and asynchronous worker pools, operational visibility becomes the primary bottleneck in engineering velocity.
+
+When an intermittent error occurs or p99 response times spike, developers without a unified observability stack are forced to grep disparate server logs, guess correlation across asynchronous boundaries, and pay exorbitant monthly bills to commercial SaaS observability vendors.
+
+To solve this, we engineered an **Open, Scalable Observability Stack** built around the three foundational pillars of telemetry: **Metrics, Logs, and Distributed Traces**.
+
+---
+
+## 1. The Three Pillars of Observability
+
+A production monitoring pipeline requires three distinct, correlated telemetry signals:
+
+```text
+       ┌────────────────────────────────────────────────────────┐
+       │                Grafana Unified UI                      │
+       └──────────────────────────┬─────────────────────────────┘
+                                  │
+         ┌────────────────────────┼────────────────────────┐
+         ▼                        ▼                        ▼
+    [Metrics]                  [Traces]                  [Logs]
+  "Something is wrong"    "Where is the problem?"  "Why did it happen?"
+   (Prometheus / Mimir)      (Grafana Tempo)         (Grafana Loki)
+```
+
+1. **Metrics (Prometheus)**: High-frequency numeric time-series data. Answers: *Is the system healthy? What is our p99 latency and error rate?*
+2. **Distributed Traces (Tempo)**: Tracks the full journey of a user request across multiple microservices. Answers: *Which service, database query, or third-party call introduced the 4-second delay?*
+3. **Structured Logs (Loki)**: Detailed diagnostic event records. Answers: *What exact error message, payload, or stack trace caused the failure?*
+
+---
+
+## 2. Universal Telemetry Pipeline via OpenTelemetry (OTel)
+
+Instead of installing fragmented proprietary agents, application microservices export all telemetry using the vendor-neutral **OpenTelemetry Protocol (OTLP)** over high-performance gRPC:
+
+```typescript
+// OpenTelemetry Node.js SDK Instrumentation
+import { NodeSDK } from "@opentelemetry/sdk-node";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
+import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-grpc";
+
+const sdk = new NodeSDK({
+  traceExporter: new OTLPTraceExporter({ url: "grpc://otel-collector:4317" }),
+  metricReader: new PeriodicExportingMetricReader({
+    exporter: new OTLPMetricExporter({ url: "grpc://otel-collector:4317" })
+  }),
+});
+sdk.start();
+```
+
+### The OTel Collector Layer
+The Collector sits between services and storage backends:
+- **Batching & Compression**: Compresses data payloads before network egress, cutting bandwidth costs.
+- **Data Scrubbing**: Strips sensitive customer PII (credit cards, passwords, access tokens) before writing to storage.
+- **Buffer & Resilience**: Can leverage an intermediate **Kafka** buffer to protect downstream storage engines from being overwhelmed during massive traffic spikes.
+
+---
+
+## 3. High-Efficiency Log Aggregation via Grafana Loki
+
+Traditional logging solutions (like Elasticsearch) build full-text inverted indexes of every single word in every log line. Under high traffic, index bloat explodes disk and memory requirements.
+
+**Grafana Loki** inverts this model:
+- Only metadata labels (`service`, `environment`, `tenant_id`, `level`) are indexed.
+- Raw log contents are compressed into immutable chunk streams.
+- Queries stream and filter log streams via `LogQL`, delivering blazing fast log queries with an **80% smaller storage footprint** than Elasticsearch.
+
+---
+
+## 4. Seamless Trace-to-Log Correlation
+
+The real superpower of an integrated stack is **contextual pivoting**.
+
+Every microservice automatically injects the active OpenTelemetry `trace_id` and `span_id` into its structured JSON log output:
+
+```json
+{
+  "timestamp": "2026-02-28T10:14:22.104Z",
+  "level": "error",
+  "service": "checkout-service",
+  "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+  "span_id": "00f067aa0ba902b7",
+  "tenant_id": "tenant_enterprise_42",
+  "message": "Payment gateway timeout after 3 retries"
+}
+```
+
+In Grafana, an on-call engineer inspecting an error rate spike on a dashboard can click directly into the exact distributed trace in Tempo, view the slow span, and click a single button to pull the corresponding Loki logs for that specific trace.
+
+---
+
+## 5. Tiered Storage & Cost Management
+
+To prevent infrastructure storage expenses from scaling linearly with system growth:
+- **Hot Tier (Last 7 Days)**: Fast query response times stored on high-performance local SSDs for active incident triage.
+- **Cold Tier (Up to 90 Days)**: Automated archiving into cost-effective object storage (AWS S3, Cloudflare R2), slashing long-term storage expenses by up to 90%.
+- **Tail-Based Sampling**: Retains 100% of error traces and high-latency requests, while downsampling routine HTTP 200 health check traces to 1%.

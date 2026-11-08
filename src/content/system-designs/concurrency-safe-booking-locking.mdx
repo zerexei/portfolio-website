@@ -1,0 +1,156 @@
+---
+id: "concurrency-safe-booking-locking"
+slug: "concurrency-safe-booking-locking"
+title: "Designing a Concurrency-Safe Booking System with Transactional and Idempotent Workflows"
+description: "Eliminating Time-of-Check to Time-of-Use race conditions and duplicate allocations with client idempotency, row-level pessimistic locking, and database constraints."
+icon: "Lock"
+chart: |
+  flowchart TD
+      subgraph Ingress & Client Idempotency
+          ClientA[Client A Request: Slot 10] -->|POST with Idempotency Key 1| Gateway[Ingress API Gateway]
+          ClientB[Client B Request: Slot 10] -->|POST with Idempotency Key 2| Gateway
+          Gateway -->|SETNX Idempotency Key| Redis[(Redis Lock & Response Cache)]
+      end
+
+      subgraph Transactional Concurrency Serialization
+          Gateway -->|Worker 1: BEGIN TRANSACTION| TX1[TX 1: SELECT FOR UPDATE on Slot 10]
+          Gateway -->|Worker 2: BEGIN TRANSACTION| TX2[TX 2: SELECT FOR UPDATE on Slot 10]
+          
+          TX1 -->|Lock Acquired: Exclusively Holds Slot 10| DB[(PostgreSQL Database)]
+          TX2 -->|Lock Wait: Blocks on Row Lock| DB
+          
+          TX1 -->|Verify Availability: Count == 0| Commit1[INSERT Reservation & Mark Taken]
+          Commit1 -->|COMMIT: Release Lock| DB
+          
+          DB -->|Unblocks TX 2| Read2[TX 2 Reads Updated State: Count == 1]
+          Read2 -->|Conflict Detected: Rollback| Conflict[Rollback TX 2 & Return HTTP 409 Conflict]
+          Commit1 -->|Cache & Return HTTP 201 Created| Success[Return 201 Created to Client A]
+      end
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+      class Redis,DB storage;
+tradeoffs:
+  - "**Pessimistic Locking vs. Optimistic Versioning:** Selected pessimistic row-level locking (`SELECT ... FOR UPDATE`) because reservation write contention spikes sharply around specific popular slots, avoiding wasted retry cycles under load."
+  - "**Exclusion / Unique Constraints as Backstop:** Placed composite unique indexes (`UNIQUE (slot_id, active)`) directly on the database table, ensuring duplicate bookings remain physically impossible even if application code fails."
+  - "**Distributed Ingress Idempotency:** Implemented Redis-backed idempotency tokens to absorb client-side double-clicks and network retry storms before queries touch relational transaction pools."
+---
+
+import { Mermaid } from "@/components/common/Mermaid";
+
+<div className="card p-6 md:p-8">
+  <Mermaid chart={frontmatter.chart} />
+</div>
+
+In high-concurrency reservation systems (consultations, meeting spaces, or healthcare appointments), the "double booking" problem is a classic **Time-of-Check to Time-of-Use (TOCTOU)** race condition.
+
+When two clients request the exact same slot at the same millisecond, naive implementations read availability concurrently, observe that the slot is open, and write two conflicting reservations—overselling inventory and breaking system integrity.
+
+---
+
+## 1. The Flawed Check-then-Write Pattern
+
+The intuitive but broken implementation looks like this:
+
+```text
+Request A: SELECT availability (returns 0 reservations) ──┐
+Request B: SELECT availability (returns 0 reservations) ──┼──> Both see open slot
+Request A: INSERT INTO reservations (slot_id, user_id)   ──┤
+Request B: INSERT INTO reservations (slot_id, user_id)   ──┘──> Both write ❌ Double Booking!
+```
+
+### Why Application-Level Checks Fail
+Under high concurrent traffic, both requests execute the availability check within the same database snapshot. Because neither transaction has modified state yet, both checks succeed, and both commits write conflicting rows.
+
+---
+
+## 2. Multi-Layered Concurrency Safety Architecture
+
+To guarantee zero double-bookings with sub-100ms response times, the architecture enforces three complementary layers of defense:
+
+### Layer 1: Ingress Idempotency (Absorbing Client Retries)
+When a user double-clicks the "Confirm Booking" button or a mobile connection drops and retries, the backend must not process a second reservation.
+
+1. The client sends a header: `Idempotency-Key: uuid-v4`.
+2. The API gateway attempts an atomic lock in Redis:
+   ```typescript
+   const key = `idempotency:booking:${idempotencyKey}`;
+   const acquired = await redis.set(key, JSON.stringify({ status: "IN_FLIGHT" }), "NX", "EX", 120);
+   
+   if (!acquired) {
+     const cached = await redis.get(key);
+     if (cached && JSON.parse(cached).status === "COMPLETED") {
+       return res.status(200).json(JSON.parse(cached).response);
+     }
+     return res.status(409).json({ error: "Operation currently in progress" });
+   }
+   ```
+3. Once the database transaction commits, the Redis key stores the completed result payload for 24 hours.
+
+---
+
+### Layer 2: Transactional Row-Level Locking (`SELECT FOR UPDATE`)
+Inside the database boundary, availability checks and allocation writes are bound into an isolated ACID transaction serialized with a row lock:
+
+```sql
+BEGIN;
+
+-- 1. Exclusively lock the slot row; concurrent requests block here
+SELECT id, status, provider_id 
+FROM schedule_slots 
+WHERE id = :slot_id 
+FOR UPDATE;
+
+-- 2. Verify that the slot is currently available under lock
+SELECT COUNT(*) 
+FROM bookings 
+WHERE slot_id = :slot_id AND status = 'confirmed';
+
+-- 3. If count == 0, insert reservation
+INSERT INTO bookings (slot_id, user_id, status, created_at)
+VALUES (:slot_id, :user_id, 'confirmed', NOW());
+
+-- 4. Mark slot inventory as booked
+UPDATE schedule_slots 
+SET status = 'booked' 
+WHERE id = :slot_id;
+
+COMMIT;
+```
+
+With `FOR UPDATE`:
+- Transaction 1 acquires the exclusive lock on slot 10.
+- Transaction 2 blocks at `SELECT ... FOR UPDATE` until Transaction 1 commits or rolls back.
+- When Transaction 2 unblocks, it reads the freshly committed state (`status = 'booked'`), detects the conflict, rolls back cleanly, and returns an immediate `409 Conflict`.
+
+---
+
+### Layer 3: Database Unique Exclusion Constraints (The Ironclad Backstop)
+Application code changes, developers make mistakes, and distributed locks can expire. The final and non-negotiable safeguard is an explicit database engine constraint:
+
+```sql
+ALTER TABLE bookings 
+ADD CONSTRAINT unique_active_slot_booking 
+UNIQUE (slot_id, status);
+```
+
+For systems supporting flexible interval durations, use PostgreSQL temporal exclusion constraints:
+
+```sql
+ALTER TABLE appointments 
+ADD CONSTRAINT exclude_overlapping_appointments
+EXCLUDE USING gist (
+    provider_id WITH =,
+    tstzrange(start_time, end_time, '[)') WITH &&
+) WHERE (status = 'confirmed');
+```
+
+Even if application-level locking is somehow bypassed, the database engine aborts conflicting writes with a unique violation code (`23505`), which the backend catches and translates to a graceful error.
+
+---
+
+## 3. Key Takeaways & Guarantees
+
+- **Guaranteed Concurrency Isolation**: Serialized row locks eliminate race windows without distributed lock complexity.
+- **Fail-Safe Invariants**: Database-level unique exclusion constraints guarantee that physical inventory can never be oversold.
+- **Idempotent Ingestion**: Absorbs network retries and duplicate user actions at the edge, returning cached responses with zero extra database queries.

@@ -1,0 +1,48 @@
+---
+id: "23"
+slug: "disagreeing-with-teammate-questions-not-answers"
+title: "When I Disagree With a Teammate, I Start With Questions, Not Answers"
+description: "Why technical alignment fails when we lead with solutions, and how leading with curiosity bridges architectural disagreements."
+date: "2026-02-22"
+readTime: "4 min read"
+category: "Career & Leadership"
+---
+
+Technical disagreements are inevitable on engineering teams. Whether debating microservices versus modular monoliths, ORMs versus raw SQL queries, or state management libraries in React, engineers hold deeply passionate opinions.
+
+Early in my career, when I saw a technical proposal I believed was flawed, I responded with immediate pushback:
+- *"We shouldn't use that library because it doesn't handle backpressure."*
+- *"That schema design is going to bottleneck our writes."*
+- *"This microservice separation is premature and introduces network latency."*
+
+The result? The other engineer became defensive, discussions turned into ideological battles, and meetings dragged on without resolution.
+
+Eventually, I learned a fundamental communication principle: **When you disagree, never start with your conclusion. Start with questions.**
+
+## The Problem with Leading with Answers
+
+Leading with an answer or critique triggers an immediate adversarial posture:
+1. **You Assume Full Context**: You assume the author designed the solution with the same mental constraints, timeline pressures, and business assumptions you have. Most of the time, they have context you don't.
+2. **Defensive Anchoring**: Critiquing an approach directly makes the author defend their original idea rather than explore optimal alternatives.
+3. **Missed Root Causes**: You debate the surface implementation rather than uncovering the underlying trade-off that led to that design.
+
+## The Curiosity Framework: Four Essential Questions
+
+Instead of declaring what is wrong, I guide the discussion using exploratory questions that reveal the underlying design trade-offs:
+
+### 1. "What specific failure mode or bottleneck are we optimizing against here?"
+This clarifies whether you are both solving the same problem. Often, one engineer is optimizing for developer velocity, while the other is optimizing for p99 query latency.
+
+### 2. "What constraints led you to choose this approach over alternatives?"
+This uncovers hidden context: tight delivery deadlines, existing team familiarity, or third-party API limitations that you were unaware of.
+
+### 3. "How will this design behave if our traffic volume grows by 10x or if this external service times out?"
+Instead of saying *"this won't scale"*, asking this question invites the author to walk through the failure scenario alongside you. They often spot the edge case on their own.
+
+### 4. "What would have to be true for us to choose an alternative approach?"
+This shifts the conversation from subjective opinions to objective criteria and empirical benchmarks.
+
+---
+
+> Engineering excellence isn't about winning technical arguments. It's about collaboratively exploring trade-offs to build resilient software together.
+
