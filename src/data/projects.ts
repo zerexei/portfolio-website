@@ -348,8 +348,8 @@ export const projects: Project[] = [
     github: "https://github.com/adrelle-invent/Observability",
   },
   {
-    id: "software-engineering",
-    title: "Software Engineering Second Brain",
+    id: "second-brain",
+    title: "Second Brain",
     description:
       "A backend engineering knowledge base covering distributed system architecture, failure recovery patterns, system design, and technical decision-making.",
     tech: ["System Design", "Architecture", "Engineering Notes", "Documentation"],
