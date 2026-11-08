@@ -57,8 +57,8 @@ export const projects: Project[] = [
     description:
       "Distributed asynchronous job execution and state coordination engine built to guarantee operational correctness under worker node crashes, network failures, and downstream API rate limiting.",
     tech: ["Python", "FastAPI", "Redis", "PostgreSQL", "OpenTelemetry", "Grafana", "Traefik", "Docker"],
-    github: "https://github.com/AD-Technology-Inc/publish",
-    demo: "https://ad-technology-inc.github.io/publish",
+    github: "https://github.com/adrelle-invent/publish",
+    demo: "https://adrelle-invent.github.io/publish",
     featuredDetails: {
       problem:
         "Worker crashes, queue redelivery, and downstream 429s cause silent data loss and duplicate posts in distributed publishing pipelines.",
@@ -78,8 +78,8 @@ export const projects: Project[] = [
     description:
       "An independent log ingestion and threat telemetry auditing platform that aggregates application events and compiles automated SLA compliance reports.",
     tech: ["React.js", "Python", "FastAPI", "PostgreSQL", "Redis", "ReportLab", "Traefik", "Docker"],
-    github: "https://github.com/AD-Technology-Inc/sentry",
-    demo: "https://ad-technology-inc.github.io/Sentry",
+    github: "https://github.com/adrelle-invent/sentry",
+    demo: "https://adrelle-invent.github.io/Sentry",
     screenshots: [
       { thumbnail: "/portfolio/sentry/4. dashboard.png", caption: "Threat Severity & Uptime Dashboard" },
       { thumbnail: "/portfolio/sentry/5. log explorer.png", caption: "High-Speed Log Explorer" },
@@ -106,7 +106,7 @@ export const projects: Project[] = [
     description:
       "An AI-powered Emergency Operations Copilot built with Snowflake CoCo CLI that assists disaster response agencies in assessing flood risks, recommending tactical directives, and dispatching audited multi-channel public warnings.",
     tech: ["Python", "FastAPI", "React.js", "Snowflake", "Celery", "Redis", "WebSockets"],
-    github: "https://github.com/AD-Technology-Inc/sentinel",
+    github: "https://github.com/adrelle-invent/sentinel",
     demo: "https://sentinel-ai-24ck.onrender.com",
     screenshots: [
       { thumbnail: "/portfolio/sentinel/1. app.png", caption: "Emergency Operations Command Console" },
@@ -168,7 +168,7 @@ export const projects: Project[] = [
     description:
       "An asynchronous Python HTTP client built for resilient service-to-service communication, using Circuit Breakers, Retry Policies, Fallbacks, and a Redis Failure Store.",
     tech: ["Python", "FastAPI", "AsyncIO", "Redis", "HTTPX"],
-    github: "https://github.com/AD-Technology-Inc/resilient-http-client",
+    github: "https://github.com/adrelle-invent/resilient-http-client",
   },
   {
     id: "ad-routine",
@@ -176,7 +176,7 @@ export const projects: Project[] = [
     description:
       "A deterministic scheduling engine and routine coordinator with capacity-aware planning, state-machine synchronization, and Redis concurrency locking.",
     tech: ["Laravel", "Vue.js", "Redis", "PostgreSQL", "TypeScript"],
-    github: "https://github.com/AD-Technology-Inc/routine",
+    github: "https://github.com/adrelle-invent/routine",
   },
   {
     id: "observability",
@@ -191,7 +191,7 @@ export const projects: Project[] = [
       "Loki",
       "Tempo",
     ],
-    github: "https://github.com/AD-Technology-Inc/Observability",
+    github: "https://github.com/adrelle-invent/Observability",
   },
   {
     id: "software-engineering",

@@ -69,7 +69,7 @@ export const productGalleries: ProductGallery[] = [
     badge: "AI & Telemetry",
     tech: ["Python", "FastAPI", "React.js", "Snowflake CoCo", "Celery", "Redis"],
     demoUrl: "https://sentinel-ai-24ck.onrender.com",
-    githubUrl: "https://github.com/AD-Technology-Inc/sentinel",
+    githubUrl: "https://github.com/adrelle-invent/sentinel",
     items: [
       {
         id: "sentinel-1",
@@ -109,8 +109,8 @@ export const productGalleries: ProductGallery[] = [
     tagline: "Log Ingestion Engine & Out-of-Band SLA Threat Auditing Platform",
     badge: "Infrastructure",
     tech: ["React.js", "FastAPI", "PostgreSQL", "Redis", "ReportLab", "Docker"],
-    demoUrl: "https://ad-technology-inc.github.io/Sentry",
-    githubUrl: "https://github.com/AD-Technology-Inc/sentry",
+    demoUrl: "https://adrelle-invent.github.io/Sentry",
+    githubUrl: "https://github.com/adrelle-invent/sentry",
     items: [
       {
         id: "sentry-4",
