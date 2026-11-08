@@ -21,11 +21,10 @@ export interface ResumeData {
   upwork?: string;
   calendly?: string;
   skills: {
-    backend: string[];
-    frontend: string[];
+    languages: string[];
     databases: string[];
     cloudDevops: string[];
-    engineeringFocus: string[];
+    engineering: string[];
   };
   experience: Experience[];
   education: {
@@ -37,9 +36,9 @@ export interface ResumeData {
 
 export const resumeData: ResumeData = {
   name: "Angelo Dave F. Arcillas",
-  title: "Backend Engineer | SaaS Platforms, Real-Time & Event-Driven Systems",
+  title: "Software Engineer | Full-Stack, Backend & Systems",
   summary:
-    "Product-minded Backend Engineer with 4+ years of experience building scalable SaaS platforms using Laravel, FastAPI, PostgreSQL, Redis, and AWS/Azure. Specializing in real-time and event-driven architectures, resilient APIs, and distributed backend workflows. Collaborative technical leader skilled at mentoring engineers, unblocking cross-functional goals, and translating business requirements into reliable production software.",
+    "Product-minded Software Engineer with 4+ years of experience building scalable SaaS platforms using Laravel, FastAPI, PostgreSQL, Redis, and AWS/Azure. Specializing in real-time and event-driven architectures, resilient APIs, and distributed backend workflows. Collaborative technical leader skilled at mentoring engineers, unblocking cross-functional goals, and translating business challenges into innovative, resilient solutions.",
   location: "Zamboanga City, Philippines (Open to Remote / Relocation)",
   email: "angeloarcillas64@gmail.com",
   phone: "+63 936-2547-611",
@@ -47,46 +46,48 @@ export const resumeData: ResumeData = {
   linkedin: "https://linkedin.com/in/angeloarcillas",
   website: "https://angeloarcillas.pages.dev",
   medium: "https://medium.com/@angeloarcillas64",
-  upwork: "https://www.upwork.com/freelancers/~01ed41bc95427c452a?mp_source=share",
+  upwork:
+    "https://www.upwork.com/freelancers/~01ed41bc95427c452a?mp_source=share",
   calendly: "https://calendly.com/angeloarcillas64/discovery-call",
   skills: {
-    backend: [
+    languages: [
       "PHP (Laravel)",
       "Python (FastAPI)",
-      "REST APIs",
-      "WebSockets",
-      "async processing",
-      "event-driven systems",
-      "authentication & authorization",
-      "third-party integrations",
-    ],
-    frontend: [
-      "JavaScript",
+      "JavaScript (ES6+)",
       "TypeScript",
       "Vue.js",
       "React.js",
       "Inertia.js",
-      "Tailwind CSS",
       "HTML5",
       "CSS3",
     ],
-    databases: ["MySQL", "PostgreSQL", "Redis", "MongoDB", "Supabase", "Azure Cosmos DB", "Azure Managed Redis"],
+    databases: [
+      "MySQL",
+      "PostgreSQL",
+      "Redis (Streams, Caching, Pub/Sub)",
+      "MongoDB",
+      "Supabase",
+      "Azure Cosmos DB",
+    ],
     cloudDevops: [
       "AWS (EC2, RDS, S3, IAM)",
       "Azure (AKS, Container Apps, Functions)",
       "Docker",
       "Kubernetes",
       "Linux",
-      "CI/CD pipelines",
+      "CI/CD",
     ],
-    engineeringFocus: [
-      "system reliability",
-      "structured logging",
-      "distributed tracing (OTel/LGTM)",
-      "unit/integration testing",
-      "Git workflows",
-      "code reviews",
-      "technical leadership",
+    engineering: [
+      "Unit / Integration / E2E Testing",
+      "Authentication & Authorization",
+      "REST APIs",
+      "WebSockets",
+      "System Reliability",
+      "Structured Logging",
+      "Distributed Tracing (OTel/LGTM)",
+      "Git Workflows",
+      "Code Reviews",
+      "Technical Leadership",
     ],
   },
   experience: [
@@ -99,7 +100,7 @@ export const resumeData: ResumeData = {
         "Developing a fault-tolerant distributed job engine using the Transactional Outbox Pattern (PostgreSQL + Redis Streams), implementing worker heartbeat leases, DLQ routing, and idempotency keys to guarantee at-least-once task execution across worker crashes and network failures.",
         "Designing a high-throughput log ingestion and telemetry platform, aggregating structured service logs to generate operational insights, calculate SLA metrics, and track error trends.",
         "Prototyping RAG retrieval pipelines in Python, implementing chunking strategies, high-dimensional vector embeddings, and hybrid semantic search to improve query retrieval performance and context accuracy.",
-        "Developed a fault-tolerant Python HTTP client package implementing circuit breaker patterns, exponential backoff retries, and failure isolation to prevent cascading outages across third-party service boundaries."
+        "Developed a fault-tolerant Python HTTP client package implementing circuit breaker patterns, exponential backoff retries, and failure isolation to prevent cascading outages across third-party service boundaries.",
       ],
       technologies: [
         "Python",
@@ -124,14 +125,7 @@ export const resumeData: ResumeData = {
         "Managed AWS infrastructure (EC2, RDS, S3, IAM) and automated CI/CD pipelines, ensuring high availability and zero-downtime production deployments.",
         "Provided technical leadership for a small team and drove cross-department alignment, mentoring junior engineers through strict code reviews and unified standards that optimize development and product quality.",
       ],
-      technologies: [
-        "PHP",
-        "Laravel",
-        "Vue.js",
-        "MySQL",
-        "WebSockets",
-        "AWS",
-      ],
+      technologies: ["PHP", "Laravel", "Vue.js", "MySQL", "WebSockets", "AWS"],
     },
   ],
   education: {

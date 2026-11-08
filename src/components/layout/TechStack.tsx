@@ -1,15 +1,14 @@
 import React from "react";
 import { resumeData } from "../../data/resume";
-import { Server, Layout, Database, Cloud, Target } from "lucide-react";
+import { Server, Database, Cloud, Target } from "lucide-react";
 
 export const TechStack: React.FC = () => {
   const categories = [
-    { name: "Backend",            icon: Server,   skills: resumeData.skills.backend },
-    { name: "Frontend",           icon: Layout,   skills: resumeData.skills.frontend },
-    { name: "Databases",          icon: Database, skills: resumeData.skills.databases },
-    { name: "Cloud & DevOps",     icon: Cloud,    skills: resumeData.skills.cloudDevops },
-    { name: "Engineering Focus",  icon: Target,   skills: resumeData.skills.engineeringFocus },
-  ];
+    { name: "Languages & Core", icon: Server, skills: resumeData.skills.languages },
+    { name: "Databases", icon: Database, skills: resumeData.skills.databases },
+    { name: "Cloud & DevOps", icon: Cloud, skills: resumeData.skills.cloudDevops },
+    { name: "Engineering", icon: Target, skills: resumeData.skills.engineering },
+];
 
   return (
     <div className="space-y-8">
