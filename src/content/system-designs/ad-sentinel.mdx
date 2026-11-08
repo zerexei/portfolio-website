@@ -4,6 +4,22 @@ slug: "ad-sentinel"
 title: "AD. Sentinel: Telemetry, Audit & Job Execution Engine"
 description: "An asynchronous telemetry and reliability platform for service log ingestion, threat risk score computation, SLA audit exports, and async job state coordination."
 icon: "Activity"
+chart: |
+  flowchart TD
+      Sources[Telemetry Sources & Ingress API] -->|Log Event / Job Exec| Gateway[FastAPI Backend Service]
+      
+      Gateway -->|Rate-Limiter & State| Redis[(Redis State & Cache)]
+      Gateway -->|Cortex SOP Search & AI Complete| Snowflake[(Snowflake DB & Cortex AI)]
+      
+      Snowflake -->|Threat Risk & SOP RAG Context| Copilot[AI Copilot & SLA Audit Compiler]
+      Copilot -->|Directives & Alerts| Engine[Multi-Channel Job Execution Engine]
+      
+      Engine --> Dashboard[Live EOC Dashboard & Map]
+
+      classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+      classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+      class Redis,Snowflake storage;
 tradeoffs:
   - "**Structured Log Aggregation & Threat Scoring:** Implemented structured data ingestion pipelines that aggregate log events to compute dynamic threat risk scores without causing database write saturation."
   - "**Async Job Execution & State Coordination:** Built a state coordination engine with worker lease management and Redis heartbeat pings to ensure operational correctness under network blips, worker crashes, and rate limits."
@@ -12,23 +28,7 @@ tradeoffs:
 
 import { Mermaid } from "@/components/common/Mermaid";
 
-export const chart = `flowchart TD
-    Sources[Telemetry Sources & Ingress API] -->|Log Event / Job Exec| Gateway[FastAPI Backend Service]
-    
-    Gateway -->|Rate-Limiter & State| Redis[(Redis State & Cache)]
-    Gateway -->|Cortex SOP Search & AI Complete| Snowflake[(Snowflake DB & Cortex AI)]
-    
-    Snowflake -->|Threat Risk & SOP RAG Context| Copilot[AI Copilot & SLA Audit Compiler]
-    Copilot -->|Directives & Alerts| Engine[Multi-Channel Job Execution Engine]
-    
-    Engine --> Dashboard[Live EOC Dashboard & Map]
-
-    classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
-    classDef storage fill:#f4f4f4,stroke:#000000,stroke-width:1.5px,color:#000000;
-
-    class Redis,Snowflake storage;`;
-
 <div className="card p-6 md:p-8">
-  <Mermaid chart={chart} />
+  <Mermaid chart={frontmatter.chart} />
 </div>
 

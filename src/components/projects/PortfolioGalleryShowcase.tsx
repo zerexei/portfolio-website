@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ProductGallery, GalleryItem, productGalleries } from "../../data/galleries";
+import { Project, GalleryItem, galleryProjects } from "../../data/projects";
 import { Tag } from "../common/Tag";
 import { 
   Maximize2, 
@@ -13,27 +13,27 @@ import { motion, AnimatePresence } from "motion/react";
 
 export const PortfolioGalleryShowcase: React.FC = () => {
   const [selectedProductId, setSelectedProductId] = useState<string>("centro");
-  const [activeItem, setActiveItem] = useState<{ gallery: ProductGallery; item: GalleryItem; index: number } | null>(null);
+  const [activeItem, setActiveItem] = useState<{ project: Project; item: GalleryItem; index: number } | null>(null);
 
-  const activeProduct = productGalleries.find((p) => p.id === selectedProductId) || productGalleries[0];
+  const activeProduct = galleryProjects.find((p) => p.id === selectedProductId) || galleryProjects[0];
 
   const handleNext = React.useCallback(() => {
-    if (!activeItem) return;
-    const items = activeItem.gallery.items;
+    if (!activeItem || !activeItem.project.galleryItems) return;
+    const items = activeItem.project.galleryItems;
     const nextIndex = (activeItem.index + 1) % items.length;
     setActiveItem({
-      gallery: activeItem.gallery,
+      project: activeItem.project,
       item: items[nextIndex],
       index: nextIndex,
     });
   }, [activeItem]);
 
   const handlePrev = React.useCallback(() => {
-    if (!activeItem) return;
-    const items = activeItem.gallery.items;
+    if (!activeItem || !activeItem.project.galleryItems) return;
+    const items = activeItem.project.galleryItems;
     const prevIndex = (activeItem.index - 1 + items.length) % items.length;
     setActiveItem({
-      gallery: activeItem.gallery,
+      project: activeItem.project,
       item: items[prevIndex],
       index: prevIndex,
     });
@@ -55,7 +55,7 @@ export const PortfolioGalleryShowcase: React.FC = () => {
     <div className="space-y-6">
       {/* ─── Compact Product Switcher ─── */}
       <div className="flex flex-wrap items-center gap-2 p-1.5 bg-card-nested border border-border rounded-xl">
-        {productGalleries.map((prod) => {
+        {galleryProjects.map((prod) => {
           const isSelected = selectedProductId === prod.id;
           return (
             <button
@@ -67,7 +67,7 @@ export const PortfolioGalleryShowcase: React.FC = () => {
                   : "text-neutral-foreground hover:text-foreground hover:bg-neutral"
               }`}
             >
-              <span>{prod.name}</span>
+              <span>{prod.title}</span>
               <span
                 className={`text-[9px] font-mono px-1.5 py-0.5 rounded ${
                   isSelected
@@ -75,7 +75,7 @@ export const PortfolioGalleryShowcase: React.FC = () => {
                     : "bg-neutral text-neutral-foreground"
                 }`}
               >
-                {prod.items.length} views
+                {prod.galleryItems.length} views
               </span>
             </button>
           );
@@ -90,7 +90,7 @@ export const PortfolioGalleryShowcase: React.FC = () => {
               {activeProduct.badge}
             </span>
             <h3 className="text-lg font-bold text-foreground">
-              {activeProduct.name}
+              {activeProduct.title}
             </h3>
           </div>
           <p className="text-xs text-neutral-foreground">
@@ -105,9 +105,9 @@ export const PortfolioGalleryShowcase: React.FC = () => {
 
         {/* External links if available */}
         <div className="flex items-center gap-2 shrink-0">
-          {activeProduct.demoUrl && (
+          {activeProduct.demo && (
             <a
-              href={activeProduct.demoUrl}
+              href={activeProduct.demo}
               target="_blank"
               rel="noopener noreferrer"
               className="button button-primary button-sm text-xs gap-1"
@@ -115,9 +115,9 @@ export const PortfolioGalleryShowcase: React.FC = () => {
               <ExternalLink size={12} /> Live Site
             </a>
           )}
-          {activeProduct.githubUrl && (
+          {activeProduct.github && (
             <a
-              href={activeProduct.githubUrl}
+              href={activeProduct.github}
               target="_blank"
               rel="noopener noreferrer"
               className="button button-secondary button-sm text-xs gap-1"
@@ -130,10 +130,10 @@ export const PortfolioGalleryShowcase: React.FC = () => {
 
       {/* ─── Compact Grid of Previews for the Selected Product ─── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {activeProduct.items.map((item, idx) => (
+        {activeProduct.galleryItems.map((item, idx) => (
           <div
             key={item.id}
-            onClick={() => setActiveItem({ gallery: activeProduct, item, index: idx })}
+            onClick={() => setActiveItem({ project: activeProduct, item, index: idx })}
             className="group card p-2.5 flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-200 hover:border-primary/50 hover:shadow-sm"
           >
             <div className="relative aspect-16/10 rounded-lg overflow-hidden bg-neutral/40 border border-border">
@@ -181,13 +181,13 @@ export const PortfolioGalleryShowcase: React.FC = () => {
               <div className="flex items-center justify-between px-6 py-3.5 border-b border-border bg-card-nested shrink-0">
                 <div className="flex items-center gap-2.5">
                   <span className="badge badge-mono text-primary bg-primary-tint border border-primary-border">
-                    {activeItem.gallery.name}
+                    {activeItem.project.title}
                   </span>
                   <span className="text-xs text-foreground font-semibold truncate max-w-[280px] sm:max-w-md">
                     {activeItem.item.title}
                   </span>
                   <span className="text-[10px] font-mono text-neutral-foreground hidden sm:inline">
-                    ({activeItem.index + 1} of {activeItem.gallery.items.length})
+                    ({activeItem.index + 1} of {activeItem.project.galleryItems?.length ?? 0})
                   </span>
                 </div>
 
@@ -240,7 +240,7 @@ export const PortfolioGalleryShowcase: React.FC = () => {
                   {activeItem.item.caption}
                 </p>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  {activeItem.gallery.tech.slice(0, 4).map((t) => (
+                  {activeItem.project.tech.slice(0, 4).map((t) => (
                     <Tag key={t} className="text-[9px] px-1.5 py-0.5">{t}</Tag>
                   ))}
                 </div>

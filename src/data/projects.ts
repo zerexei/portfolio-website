@@ -1,16 +1,28 @@
+export interface Screenshot {
+  thumbnail: string;
+  caption: string;
+}
+
+export interface GalleryItem {
+  id: string;
+  title: string;
+  caption: string;
+  image: string;
+}
+
 export interface Project {
   id: string;
   title: string;
+  tagline?: string;
+  badge?: string;
   description: string;
   tech: string[];
   github?: string;
   demo?: string;
   featured?: boolean;
   hackathon?: string[];
-  screenshots?: {
-    thumbnail: string;
-    caption: string;
-  }[];
+  screenshots?: Screenshot[];
+  galleryItems?: GalleryItem[];
   featuredDetails?: {
     problem: string;
     architecture: string;
@@ -21,7 +33,7 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  // ─── Featured System Case Studies (Original Order) ───
+  // ─── Featured System Case Studies ───
   {
     id: "smicos",
     title: "Smicos",
@@ -75,6 +87,8 @@ export const projects: Project[] = [
   {
     id: "ad-sentry",
     title: "AD. Sentry",
+    tagline: "Log Ingestion Engine & Out-of-Band SLA Threat Auditing Platform",
+    badge: "Infrastructure",
     description:
       "An independent log ingestion and threat telemetry auditing platform that aggregates application events and compiles automated SLA compliance reports.",
     tech: ["React.js", "Python", "FastAPI", "PostgreSQL", "Redis", "ReportLab", "Traefik", "Docker"],
@@ -86,6 +100,44 @@ export const projects: Project[] = [
       { thumbnail: "/portfolio/sentry/6. issues.png", caption: "Fingerprinted Incident Clusters" },
       { thumbnail: "/portfolio/sentry/7. alerts.png", caption: "Telemetry Alert Rule Triggers" },
       { thumbnail: "/portfolio/sentry/8. reports.png", caption: "Executive SLA Audit Reports" },
+    ],
+    galleryItems: [
+      {
+        id: "sentry-4",
+        title: "Threat Severity & Uptime Dashboard",
+        caption: "Live operational telemetry scoring application incidents from 0 to 10 by impact and frequency.",
+        image: "/portfolio/sentry/4. dashboard.png",
+      },
+      {
+        id: "sentry-5",
+        title: "High-Speed Log Explorer",
+        caption: "Faceted search console querying structured JSON logs across distributed microservices.",
+        image: "/portfolio/sentry/5. log explorer.png",
+      },
+      {
+        id: "sentry-6",
+        title: "Fingerprinted Incident Clusters",
+        caption: "Stacktrace normalization deduplicating millions of raw log entries into clean incident tickets.",
+        image: "/portfolio/sentry/6. issues.png",
+      },
+      {
+        id: "sentry-7",
+        title: "Telemetry Alert Rule Triggers",
+        caption: "Automated webhook dispatching system sending high-priority alerts with backoff retries.",
+        image: "/portfolio/sentry/7. alerts.png",
+      },
+      {
+        id: "sentry-8",
+        title: "Executive SLA Audit Reports",
+        caption: "Asynchronous PDF compilation engine creating stakeholder-ready monthly compliance reports.",
+        image: "/portfolio/sentry/8. reports.png",
+      },
+      {
+        id: "sentry-1",
+        title: "Platform Architecture Overview",
+        caption: "Decoupled ingestion gateway pipeline maintaining uptime during heavy traffic bursts.",
+        image: "/portfolio/sentry/1. hero.png",
+      },
     ],
     featuredDetails: {
       problem:
@@ -103,6 +155,8 @@ export const projects: Project[] = [
   {
     id: "ad-sentinel",
     title: "AD. Sentinel",
+    tagline: "AI-Powered Disaster Telemetry & Emergency Command Copilot",
+    badge: "AI & Telemetry",
     description:
       "An AI-powered Emergency Operations Copilot built with Snowflake CoCo CLI that assists disaster response agencies in assessing flood risks, recommending tactical directives, and dispatching audited multi-channel public warnings.",
     tech: ["Python", "FastAPI", "React.js", "Snowflake", "Celery", "Redis", "WebSockets"],
@@ -114,6 +168,38 @@ export const projects: Project[] = [
       { thumbnail: "/portfolio/sentinel/3. flood incident walkthrough.png", caption: "Tactical Response Wizard" },
       { thumbnail: "/portfolio/sentinel/4. architecture.png", caption: "Audit Pipeline Architecture" },
       { thumbnail: "/portfolio/sentinel/5. agent skills specifications.png", caption: "Agent Function Calling Specs" },
+    ],
+    galleryItems: [
+      {
+        id: "sentinel-1",
+        title: "Emergency Operations Command Console",
+        caption: "Commander HUD tracking live river sensor feeds, affected population figures, and warning status.",
+        image: "/portfolio/sentinel/1. app.png",
+      },
+      {
+        id: "sentinel-2",
+        title: "Risk Telemetry & Sensor Models",
+        caption: "Automated threat evaluation algorithm comparing telemetry with historical flood baselines.",
+        image: "/portfolio/sentinel/2. problem - solution.png",
+      },
+      {
+        id: "sentinel-3",
+        title: "Tactical Response Incident Wizard",
+        caption: "Guided workflow directing commanders through shelter staging, resource dispatch, and SMS alerts.",
+        image: "/portfolio/sentinel/3. flood incident walkthrough.png",
+      },
+      {
+        id: "sentinel-4",
+        title: "Deterministic Architecture & Guardrails",
+        caption: "Human-in-the-loop audit pipeline ensuring zero unverified public announcements.",
+        image: "/portfolio/sentinel/4. architecture.png",
+      },
+      {
+        id: "sentinel-5",
+        title: "Agent Skill Matrix & Tool Contracts",
+        caption: "Specification schema defining LLM function calling across telemetry query and notification tools.",
+        image: "/portfolio/sentinel/5. agent skills specifications.png",
+      },
     ],
     hackathon: [
       "Snowflake CoCo CLI Hackathon 2026",
@@ -137,6 +223,8 @@ export const projects: Project[] = [
   {
     id: "centro",
     title: "Centro Workspace",
+    tagline: "Multi-Tenant Operations ERP & Client Management Suite",
+    badge: "Enterprise SaaS",
     description:
       "All-in-one multi-tenant operations ERP and client management platform centralizing attendance tracking, sprint Kanban pipelines, billing workflows, and client self-service portals.",
     tech: ["Laravel", "PostgreSQL", "Vue.js", "Redis", "Stripe API", "Tailwind CSS"],
@@ -148,10 +236,50 @@ export const projects: Project[] = [
       { thumbnail: "/portfolio/centro/5. InvoiceBuilderModal.png", caption: "Automated Invoice & Billing Engine" },
       { thumbnail: "/portfolio/centro/6. ClientPortalProjectView.png", caption: "Client Self-Service Project Portal" },
     ],
+    galleryItems: [
+      {
+        id: "centro-1",
+        title: "Executive Operations Dashboard",
+        caption: "Real-time revenue metrics, staff utilization tracking, and department workload counters.",
+        image: "/portfolio/centro/1. OperationsDashboard.png",
+      },
+      {
+        id: "centro-2",
+        title: "Staff Attendance & Shift Telemetry",
+        caption: "Automated clock-in synchronization with overtime calculation and geo-fence validation.",
+        image: "/portfolio/centro/2. AttendanceWidget.png",
+      },
+      {
+        id: "centro-3",
+        title: "Multi-Tenant CRM & Account Hub",
+        caption: "Customer relationship manager with deal pipelines, activity history, and lead scoring.",
+        image: "/portfolio/centro/3. ClientsAndCrmHub.png",
+      },
+      {
+        id: "centro-4",
+        title: "Interactive Sprint Kanban Pipeline",
+        caption: "Drag-and-drop task board with real-time WebSocket state syncing and workload distribution.",
+        image: "/portfolio/centro/4. ProjectKanbanBoard.png",
+      },
+      {
+        id: "centro-5",
+        title: "Invoice Builder & Automated Billing",
+        caption: "Multi-currency tax calculation engine and automated PDF generation for client billing.",
+        image: "/portfolio/centro/5. InvoiceBuilderModal.png",
+      },
+      {
+        id: "centro-6",
+        title: "Client Self-Service Portal",
+        caption: "External-facing portal for client approvals, milestone transparency, and invoice access.",
+        image: "/portfolio/centro/6. ClientPortalProjectView.png",
+      },
+    ],
   },
   {
     id: "kape-calle",
     title: "Kape Calle",
+    tagline: "Interactive Coffee Commerce & Direct Lead Ingestion Platform",
+    badge: "E-Commerce",
     description:
       "E-commerce storefront and digital brand platform featuring an interactive product catalog, direct order ingestion, customer reviews, and branch navigation.",
     tech: ["React.js", "Tailwind CSS", "TypeScript", "Responsive UI"],
@@ -160,6 +288,32 @@ export const projects: Project[] = [
       { thumbnail: "/portfolio/kape-calle/4.1. product-service catalog.png", caption: "Artisan Coffee & Pastry Catalog" },
       { thumbnail: "/portfolio/kape-calle/6. lead capture - direct order form.png", caption: "Direct Checkout & Order Ingestion" },
       { thumbnail: "/portfolio/kape-calle/7. location.png", caption: "Store Branch Locator & Transit Info" },
+    ],
+    galleryItems: [
+      {
+        id: "kape-2",
+        title: "Brand Hero & Order Experience",
+        caption: "Conversion-optimized landing interface for online menu browsing and direct customer ordering.",
+        image: "/portfolio/kape-calle/2. hero.png",
+      },
+      {
+        id: "kape-4",
+        title: "Artisan Coffee & Pastry Catalog",
+        caption: "Interactive product matrix with live dietary filters, size options, and add-to-order state management.",
+        image: "/portfolio/kape-calle/4.1. product-service catalog.png",
+      },
+      {
+        id: "kape-6",
+        title: "Instant Direct Order & Delivery Form",
+        caption: "Frictionless checkout form capturing customer delivery details, payment preference, and order items.",
+        image: "/portfolio/kape-calle/6. lead capture - direct order form.png",
+      },
+      {
+        id: "kape-7",
+        title: "Branch Locator & Maps Navigation",
+        caption: "Store operating schedule, location directions, and transit guidance.",
+        image: "/portfolio/kape-calle/7. location.png",
+      },
     ],
   },
   {
@@ -226,3 +380,9 @@ export const projects: Project[] = [
     github: "https://github.com/zerexei/peer-to-peer-file-sharing-app",
   },
 ];
+
+// Helper to get projects that have interactive galleries
+export const galleryProjects = projects.filter(
+  (p): p is Project & { galleryItems: GalleryItem[]; tagline: string; badge: string } =>
+    Boolean(p.galleryItems && p.galleryItems.length > 0 && p.tagline && p.badge)
+);

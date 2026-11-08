@@ -17,6 +17,7 @@ export interface SystemDesignFrontmatter {
   title: string;
   description: string;
   icon: string;
+  chart: string;
   tradeoffs: string[];
 }
 

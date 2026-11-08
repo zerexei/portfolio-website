@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Project } from "../../data/projects";
-import { systemDesigns, SystemDesignItem } from "../../data/systemDesigns";
+import { systemDesigns, SystemDesignFrontmatter } from "@/content";
 import { FeaturedProject } from "./FeaturedProject";
 import { ProjectGrid } from "./ProjectGrid";
 import { Mermaid } from "../common/Mermaid";
@@ -15,7 +15,7 @@ interface PortfolioHubProps {
 }
 
 interface ArchitectureSpecCardProps {
-  design: SystemDesignItem;
+  design: SystemDesignFrontmatter;
 }
 
 const ArchitectureSpecCard: React.FC<ArchitectureSpecCardProps> = ({ design }) => {
