@@ -1,0 +1,48 @@
+---
+id: "1"
+slug: "solving-out-of-order-webhooks-smicos"
+title: "Solving Out-of-Order Webhooks and Retries in Real-Time Messaging"
+description: "How we used idempotency keys and message timestamps to guarantee message order and prevent duplicates in a multi-channel SaaS inbox."
+date: "2026-06-13"
+readTime: "5 min read"
+category: "Backend Engineering"
+---
+
+When building **Smicos**, a real-time customer engagement platform, one of our biggest engineering challenges was integrating webhooks from multiple messaging channels (Facebook Messenger, WhatsApp, Instagram). Because these platforms process millions of events per second, they do not guarantee in-order delivery of webhooks.
+
+This non-deterministic delivery, coupled with automatic webhook retries during network blips, frequently led to:
+- **Out-of-order messages**: Users or support agents seeing replies in the wrong sequence.
+- **Duplicate tickets**: Multiple agents assigned to the same conversation due to retried webhook payloads.
+- **State corruption**: Older status updates overwriting newer ones.
+
+Here is how we designed a bulletproof system to handle out-of-order webhooks and ensure zero lead loss.
+
+## 1. Using Idempotency Keys for Webhook Retries
+To prevent duplicate side-effects (like creating duplicate message records or triggering multiple CRM syncs), we implemented an **idempotency layer**.
+
+For each incoming webhook, we extract a unique identifier provided by the third-party platform (such as WhatsApp's `message_id` or Messenger's `mid`). 
+Before processing the payload:
+1. We attempt to acquire a lock in Redis using the message ID.
+2. If the message ID already exists in our processed cache, we discard the payload and return a `200 OK` immediately to acknowledge the retry.
+3. If it is new, we store the ID with a TTL and proceed to queue the job.
+
+This completely eliminated duplicate entries during high-frequency API retries.
+
+## 2. Resolving Out-of-Order Delivery via Message Timestamps
+Even with idempotency keys, webhooks can arrive out of order (e.g., Message B arrives before Message A). To handle sequencing:
+- We track the source-of-truth **message timestamp** (`sent_at`) from the third-party payload, not the database insertion time.
+- In our message routing engine, we verify if the incoming message's `sent_at` timestamp is older than the last recorded message in that conversation thread.
+- If it is older, the message is inserted historically but does **not** trigger real-time routing updates or alter the conversation's "unread" status, preventing agent inbox confusion.
+
+## 3. Database Locks on Thread Routing
+Under high concurrency (multiple events hitting the server for the same conversation thread at once), race conditions can occur. We implemented **pessimistic locking** on the database thread record:
+
+```php
+DB::transaction(function () use ($threadId) {
+    $thread = Thread::where('id', $threadId)->lockForUpdate()->first();
+    // Safely assign agent and route message
+});
+```
+
+This guarantees that only one webhook process can read and update the routing state of a specific conversation at a time, ensuring reliable routing.
+

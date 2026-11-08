@@ -1,0 +1,51 @@
+---
+id: "2"
+slug: "preventing-double-bookings-concurrency"
+title: "Preventing Double Bookings: Database Locking for High-Concurrency Scheduling"
+description: "How to use pessimistic locking and unique constraints to prevent race conditions and double bookings in scheduling workflows."
+date: "2026-05-18"
+readTime: "6 min read"
+category: "System Design"
+---
+
+In scheduling systems, the "double booking" problem is a classic race condition known as **Time-of-Check to Time-of-Use (TOCTOU)**. If two users request the same slot at the exact same moment, both transactions check availability, see that the slot is open, and write their bookings—resulting in an oversold slot.
+
+Here is how to design a backend that guarantees concurrency safety.
+
+## The Flawed Check-then-Write Pattern
+A standard naive implementation looks like this:
+1. Query availability: `SELECT COUNT(*) FROM bookings WHERE slot_id = 10`
+2. If count is 0, insert booking: `INSERT INTO bookings (user_id, slot_id) VALUES (42, 10)`
+
+Under concurrent load, two requests will execute step 1 simultaneously, both get `0`, and both proceed to write to step 2.
+
+## Solution 1: Pessimistic Locking (SELECT ... FOR UPDATE)
+To prevent other transactions from reading or writing the selected slot until the current transaction is finished, use a pessimistic lock:
+
+```sql
+START TRANSACTION;
+
+-- Lock the slot row so no other request can check it
+SELECT * FROM slots WHERE id = 10 FOR UPDATE;
+
+-- Verify if already booked
+SELECT COUNT(*) FROM bookings WHERE slot_id = 10;
+
+-- Insert if free
+INSERT INTO bookings (user_id, slot_id) VALUES (42, 10);
+
+COMMIT;
+```
+
+With `FOR UPDATE`, the second transaction blocks and waits at the first query until the first transaction commits or rolls back, ensuring strict serialization.
+
+## Solution 2: Unique Index Constraints
+For absolute safety, backing up your database logic with a unique constraint is crucial. 
+By defining a unique index on `slot_id` (or a composite index on `room_id` and `booking_time`):
+
+```sql
+ALTER TABLE bookings ADD UNIQUE KEY unique_booking_slot (slot_id);
+```
+
+Even if a race condition somehow bypasses the application code layer, the database engine will reject the second insert with a duplicate key error, which the backend can catch and return as a clean `409 Conflict` response to the user.
+

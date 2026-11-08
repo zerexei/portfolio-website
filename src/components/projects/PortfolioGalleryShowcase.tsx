@@ -7,8 +7,6 @@ import {
   ChevronLeft, 
   ChevronRight, 
   ExternalLink,
-  Layers,
-  Sparkles,
   Github
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -18,6 +16,28 @@ export const PortfolioGalleryShowcase: React.FC = () => {
   const [activeItem, setActiveItem] = useState<{ gallery: ProductGallery; item: GalleryItem; index: number } | null>(null);
 
   const activeProduct = productGalleries.find((p) => p.id === selectedProductId) || productGalleries[0];
+
+  const handleNext = React.useCallback(() => {
+    if (!activeItem) return;
+    const items = activeItem.gallery.items;
+    const nextIndex = (activeItem.index + 1) % items.length;
+    setActiveItem({
+      gallery: activeItem.gallery,
+      item: items[nextIndex],
+      index: nextIndex,
+    });
+  }, [activeItem]);
+
+  const handlePrev = React.useCallback(() => {
+    if (!activeItem) return;
+    const items = activeItem.gallery.items;
+    const prevIndex = (activeItem.index - 1 + items.length) % items.length;
+    setActiveItem({
+      gallery: activeItem.gallery,
+      item: items[prevIndex],
+      index: prevIndex,
+    });
+  }, [activeItem]);
 
   // Close modal on Escape, arrow navigation
   useEffect(() => {
@@ -29,29 +49,7 @@ export const PortfolioGalleryShowcase: React.FC = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeItem]);
-
-  const handleNext = () => {
-    if (!activeItem) return;
-    const items = activeItem.gallery.items;
-    const nextIndex = (activeItem.index + 1) % items.length;
-    setActiveItem({
-      gallery: activeItem.gallery,
-      item: items[nextIndex],
-      index: nextIndex,
-    });
-  };
-
-  const handlePrev = () => {
-    if (!activeItem) return;
-    const items = activeItem.gallery.items;
-    const prevIndex = (activeItem.index - 1 + items.length) % items.length;
-    setActiveItem({
-      gallery: activeItem.gallery,
-      item: items[prevIndex],
-      index: prevIndex,
-    });
-  };
+  }, [activeItem, handleNext, handlePrev]);
 
   return (
     <div className="space-y-6">
